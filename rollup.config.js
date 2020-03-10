@@ -1,39 +1,40 @@
-import babel from 'rollup-plugin-babel'
-import commonjs from 'rollup-plugin-commonjs'
-import external from 'rollup-plugin-peer-deps-external'
-import postcss from 'rollup-plugin-postcss'
-import resolve from 'rollup-plugin-node-resolve'
-import url from 'rollup-plugin-url'
-import svgr from '@svgr/rollup'
+import json from '@rollup/plugin-json';
+import { terser } from "rollup-plugin-terser";
+import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 
-import pkg from './package.json'
-
-export default {
-  input: 'src/index.js',
-  output: [
-    {
-      file: pkg.main,
-      format: 'cjs',
-      sourcemap: true
+export default [
+  {
+    input: 'src/extend.js',
+    output: {
+      file: 'dist/extend.js',
+      format: 'cjs'
     },
-    {
-      file: pkg.module,
-      format: 'es',
-      sourcemap: true
-    }
-  ],
-  plugins: [
-    external(),
-    postcss({
-      modules: true
-    }),
-    url(),
-    svgr(),
-    babel({
-      exclude: 'node_modules/**',
-      plugins: [ 'external-helpers' ]
-    }),
-    resolve(),
-    commonjs()
-  ]
-}
+    plugins: [json(), terser()]
+  },
+  {
+    input: 'src/compiler.js',
+    output: {
+      file: 'dist/compiler.js',
+      format: 'cjs'
+    },
+    plugins: [sizeSnapshot(), terser({ compress: { ecma: 5 } })]
+  },
+  {
+    input: 'src/compiler.lite.js',
+    output: {
+      file: 'dist/compiler.lite.js',
+      format: 'iife',
+      name: "Ainsley"
+    },
+    plugins: [sizeSnapshot(), terser({ compress: { ecma: 2017 } })]
+  },
+  {
+    input: 'src/compiler.lite.js',
+    output: {
+      file: 'dist/compiler.lite.legacy.js',
+      format: 'iife',
+      name: "Ainsley"
+    },
+    plugins: [sizeSnapshot(), terser({ compress: { ecma: 5 } })]
+  }
+]
