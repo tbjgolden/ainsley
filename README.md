@@ -1,8 +1,7 @@
 # Ainsley
 
 Ainsley is a functional CSS framework and library with no compromises.
-
-It is the spiritual successor of Tachyons and Tailwind.
+It is the tiny spiritual successor of Tachyons and Tailwind.
 
 It is comprised of multiple sub-libraries that together make it possible to:
   * have an unmatched developer experience
@@ -11,21 +10,46 @@ It is comprised of multiple sub-libraries that together make it possible to:
   * have total flexibility
   * serialize your framework as tiny JSON
 
-## How do I use
+# Impossibly small
 
 Instead of writing a stylesheet in CSS, you write it in a small JavaScript
 object, which can be optionally serialized as JSON.
 
-The browser receives this small object and compiles it into CSS.
+The browser receives this small object and compiles it into CSS. This compresses
+it massively.
 
-This compresses it a lot. These numbers are in bytes and include gzip.
-
-Input JS | Compiler | Output CSS
---------:|---------:|----------:
-`1487`   | `568`    | `6406`
+```none
++--------------+ +-------+-----------+------------+
+| Base Ainsley | |    JS | JS-to-CSS | Equivalent |
++--------------+ | input |  compiler | CSS output |
++----------------+-------+-----------+------------+
+| minified bytes |  3520 |      1083 |      28091 |
+++---------------+-------+-----------+------------+
+ | gzipped bytes |  1478 |       572 |       6406 |
+ +---------------+-------+-----------+------------+
+ | over the wire | 1478 + 572 = 2050 |       6406 |
+ +---------------+-------------------+------------+
+  | rel diff (%) |          68% less |  212% more |
+  +--------------+-------------------+------------+
+```
 
 When added together the number of bytes sent over the wire is less than one
 third `(1487+568)/6406 = 32%` of the original number.
+
+# Comparisons to others
+
+All sizes in kB.
+
+Framework   | Original | Minified |  Gzip | Brotli | CSS Rule Count
+------------|---------:|---------:|------:|-------:|--------------:
+Ainsley     |      6.2 |      4.6 |   2.1 |    1.8 |           1069
+Tailwind    |    783.5 |    603.3 |  78.0 |   22.6 |          14445
+Bootstrap   |    187.8 |    152.1 |  22.7 |   16.7 |           2027
+Bulma       |    224.2 |    189.9 |  24.9 |   19.1 |           2142
+Foundation  |    154.1 |    119.2 |  15.9 |   12.9 |           1420
+Tachyons    |    111.7 |     71.8 |  13.4 |    7.5 |           2113
+Semantic UI |    809.4 |    613.8 | 100.6 |   77.8 |           5934
+Materialize |    175.0 |    138.5 |  21.1 |   17.1 |           1609
 
 ## What's the magic sauce?
 
@@ -47,18 +71,50 @@ The reason this is so much more efficient than sending CSS because:
 yarn add ainsley # or `npm install ainsley`
 ```
 
-```scss
-// custom ainsley variables
-...
+## Server
 
-// if you want to use the ainsley specific reset (recommended!)
-@import "~ainsley/reset";
+```js
+// server
+const { extend } = require('ainsley');
 
-// import ainsley
-@import "~ainsley";
+const ainsley = extend(
+  null, // <- null implies base config
+  {
+    "defs": [
+      [
+        ".fs&",
+        [
+          ["font-size", "{typeScale}"],
+          ["line-height", "1.2"]
+        ]
+      ]
+    ],
+    "props": [
+      ["letter-spacing", ["1px", "2px", "3px"]]
+    ],
+    "{typeScale}": {
+      "H1": "72px",
+      "H2": "48px",
+      "H3": "32px",
+      "H4": "24px",
+      "H5": "20px",
+      "LG": "20px",
+      "MD": "16px",
+      "SM": "14px",
+      "XS": "12px"
+    }
+  }
+);
 
-// your custom overrides
-...
+// send ainsley to client
+```
+
+## Client
+
+```html
+// receive result, assuming server-side rendering but any method works
+<script src="compiler.lite.js"></script>
+<script>document.write("<style>"+Ainsley(/* your extended ainsley here */)+"</style>")</script>
 ```
 
 (MIT Licence)

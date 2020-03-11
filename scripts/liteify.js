@@ -11,6 +11,6 @@ if (before.startsWith("let ")) process.exit(0);
 const after = before
   .replace(/\bconst\b/g, "let")
   .replace(/^[^;]*;/, 'let Ainsley=(()=>{')
-  .replace(/\(\);$/, ')();');
+  .replace(/\(\);\n?$/, ')();')
 
 fs.writeFileSync(litePath, after);
