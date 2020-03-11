@@ -1,19 +1,45 @@
 # Ainsley
 
-Pragmatic lightweight extensible functional CSS library.
+Ainsley is a functional CSS framework and library with no compromises.
 
-- [x] **Pragmatic:** only common classes that provide unique value have been
-      added
-- [x] **Lightweight:** no fluff, classes that don't allow extra functionality
-      omitted
-- [x] **Extensible:** bring your own project specific classes, and variables for
-      project specifics like colors and type scale
-- [x] **Functional:** all the benefits of functional CSS, faster development,
-      lower CSS size, consistency, easier to review in PRs
-- [x] **CSS library:** deliberately not a framework, as flexible as you need it
+It is the spiritual successor of Tachyons and Tailwind.
 
-Ainsley attempts to be opinionated about the tedious stuff, like best practices
-and accessibility, without interfering with your style!
+It is comprised of multiple sub-libraries that together make it possible to:
+  * have an unmatched developer experience
+  * use your existing CSS knowledge
+  * use the least possible bytes
+  * have total flexibility
+  * serialize your framework as tiny JSON
+
+## How do I use
+
+Instead of writing a stylesheet in CSS, you write it in a small JavaScript
+object, which can be optionally serialized as JSON.
+
+The browser receives this small object and compiles it into CSS.
+
+This compresses it a lot. These numbers are in bytes and include gzip.
+
+Input JS | Compiler | Output CSS
+--------:|---------:|----------:
+`1487`   | `568`    | `6406`
+
+When added together the number of bytes sent over the wire is less than one
+third `(1487+568)/6406 = 32%` of the original number.
+
+## What's the magic sauce?
+
+The reason this is so much more efficient than sending CSS because:
+
+1. JS can perform combinatorial recursion
+2. CSS frameworks often contain predictable patterns, as they are often created
+   by preprocessors
+3. CSS needs to send the whole attribute string every time it's used with a
+   different value
+4. CSS needs to send the whole value string every time it's used with a
+   different attribute
+5. The compiler is tiny, and minifies and compresses well, because JS minifies
+   and compresses well
 
 ## Getting started
 
@@ -35,59 +61,4 @@ yarn add ainsley # or `npm install ainsley`
 ...
 ```
 
-## Key Principles
-
-...
-
-## How to...
-
-> #### Add vendor prefixes for semi-old browsers?
->
-> autoprefixer
-
-> #### How to make it work on IE
->
-> IE11 is the only version of IE that supports flexbox, and it supports an older
-> version of the spec, and with quite a few bugs (flexbugs). Many bugs have been
-> accounted for in this library, but some cannot be fixed and may need you to
-> write your code differently to support it.
-
----
-
-## [Check out the docs!](docs)
-
----
-
 (MIT Licence)
-
-# ainsley
-
-> Pragmatic lightweight extensible functional CSS library
-
-[![NPM](https://img.shields.io/npm/v/ainsley.svg)](https://www.npmjs.com/package/ainsley) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-
-## Install
-
-```bash
-npm install --save ainsley
-```
-
-## Usage
-
-```tsx
-import * as React from 'react'
-
-import MyComponent from 'ainsley'
-
-class Example extends React.Component {
-  render () {
-    return (
-      <MyComponent />
-    )
-  }
-}
-```
-
-## License
-
-MIT © [tbjgolden](https://github.com/tbjgolden)

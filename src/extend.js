@@ -1,6 +1,6 @@
 import base from "./base.js";
 
-const extend = (ainsley = base, ...ainsleys) =>
+export const extend = (ainsley = base, ...ainsleys) =>
   ainsleys.reduce(
     (ainsley, next) => ({
       ...ainsley,
@@ -11,5 +11,3 @@ const extend = (ainsley = base, ...ainsleys) =>
     }),
     base
   );
-
-export default extend;

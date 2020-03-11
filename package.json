@@ -1,36 +1,16 @@
 {
   "name": "ainsley",
-  "amdName": "ainsley",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": false,
-  "description": "Pragmatic lightweight extensible functional CSS library",
+  "description": "CSS library with no compromises",
   "author": "tbjgolden",
   "license": "MIT",
   "repository": "tbjgolden/ainsley",
+  "main": "dist/extend.cjs.js",
+  "module": "dist/extend.js",
+  "browser": "dist/compiler.js",
   "scripts": {
     "build": "rollup -c && node scripts/liteify.js"
-  },
-  "//main": "dist/index.js",
-  "//source": "src/index.js",
-  "//exports": {
-    ".": {
-      "browser": "./extend/dist/extend.mjs.js",
-      "umd": "./extend/dist/extend.umd.js",
-      "import": "./extend/dist/extend.mjs.js",
-      "require": "./extend/dist/extend.js"
-    },
-    "./extend": {
-      "browser": "./extend/dist/extend.mjs.js",
-      "umd": "./extend/dist/extend.umd.js",
-      "import": "./extend/dist/extend.mjs.js",
-      "require": "./extend/dist/extend.js"
-    },
-    "./compiler": {
-      "browser": "./compiler/dist/compiler.mjs.js",
-      "umd": "./compiler/dist/compiler.umd.js",
-      "import": "./compiler/dist/compiler.mjs.js",
-      "require": "./compiler/dist/compiler.js"
-    }
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.2",

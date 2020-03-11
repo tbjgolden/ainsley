@@ -10,13 +10,22 @@
     "gzipped": 1613
   },
   "dist/compiler.js": {
+    "bundled": 2564,
+    "minified": 1325,
+    "gzipped": 644,
+    "treeshaked": {
+      "rollup": {
+        "code": 0,
+        "import_statements": 0
+      },
+      "webpack": {
+        "code": 951
+      }
+    }
+  },
+  "dist/compiler.cjs.js": {
     "bundled": 2762,
     "minified": 1503,
     "gzipped": 703
-  },
-  "dist/compiler.lite.legacy.js": {
-    "bundled": 2709,
-    "minified": 1120,
-    "gzipped": 589
   }
 }

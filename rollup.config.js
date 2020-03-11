@@ -5,19 +5,25 @@ import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 export default [
   {
     input: 'src/extend.js',
-    output: {
+    output: [{
       file: 'dist/extend.js',
+      format: 'es'
+    },{
+      file: 'dist/extend.cjs.js',
       format: 'cjs'
-    },
+    }],
     plugins: [json(), terser()]
   },
   {
     input: 'src/compiler.js',
-    output: {
+    output: [{
       file: 'dist/compiler.js',
+      format: 'es'
+    },{
+      file: 'dist/compiler.cjs.js',
       format: 'cjs'
-    },
-    plugins: [sizeSnapshot(), terser({ compress: { ecma: 5 } })]
+    }],
+    plugins: [sizeSnapshot(), terser()]
   },
   {
     input: 'src/compiler.lite.js',
@@ -26,15 +32,6 @@ export default [
       format: 'iife',
       name: "Ainsley"
     },
-    plugins: [sizeSnapshot(), terser({ compress: { ecma: 2017 } })]
-  },
-  {
-    input: 'src/compiler.lite.js',
-    output: {
-      file: 'dist/compiler.lite.legacy.js',
-      format: 'iife',
-      name: "Ainsley"
-    },
-    plugins: [sizeSnapshot(), terser({ compress: { ecma: 5 } })]
+    plugins: [sizeSnapshot(), terser()]
   }
 ]

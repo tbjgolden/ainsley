@@ -1,5 +1,5 @@
-const extend = require('../dist/extend.js');
-const Ainsley = require('../dist/compiler.js');
+const { ainsleyToCss } = require('../dist/compiler.cjs.js');
+const { extend } = require('../dist/extend.cjs.js');
 const csstree = require('css-tree');
 const fs = require("fs");
 const path = require("path");
@@ -10,7 +10,7 @@ const abbrMap = fs.readFileSync(path.join(__dirname, "../research/propMap.txt"),
     [prop]: abbr
   }), {});
 
-const css = Ainsley.ainsleyToCss(extend());
+const css = ainsleyToCss(extend());
 
 try {
   csstree.walk(csstree.parse(css), {
