@@ -19,9 +19,9 @@ The browser receives this small object and compiles it into CSS. This compresses
 it massively.
 
 ```none
-+--------------+ +-------+-----------+------------+
++==============+ +-------+-----------+------------+
 | Base Ainsley | |    JS | JS-to-CSS | Equivalent |
-+--------------+ | input |  compiler | CSS output |
++==============+ | input |  compiler | CSS output |
 +----------------+-------+-----------+------------+
 | minified bytes |  3520 |      1083 |      28091 |
 ++---------------+-------+-----------+------------+
@@ -40,16 +40,16 @@ third `(1487+568)/6406 = 32%` of the original number.
 
 All sizes in kB.
 
-Framework   | Original | Minified |  Gzip | Brotli | CSS Rule Count
-------------|---------:|---------:|------:|-------:|--------------:
-Ainsley     |      6.2 |      4.6 |   2.1 |    1.8 |           1069
-Tailwind    |    783.5 |    603.3 |  78.0 |   22.6 |          14445
-Bootstrap   |    187.8 |    152.1 |  22.7 |   16.7 |           2027
-Bulma       |    224.2 |    189.9 |  24.9 |   19.1 |           2142
-Foundation  |    154.1 |    119.2 |  15.9 |   12.9 |           1420
-Tachyons    |    111.7 |     71.8 |  13.4 |    7.5 |           2113
-Semantic UI |    809.4 |    613.8 | 100.6 |   77.8 |           5934
-Materialize |    175.0 |    138.5 |  21.1 |   17.1 |           1609
+Framework   | Original | Minified |      Gzip |    Brotli | CSS Rule Count
+------------|---------:|---------:|----------:|----------:|--------------:
+**Ainsley** |    `6.2` |    `4.6` | **`2.1`** | **`1.8`** |         `1069`
+Tailwind    |  `783.5` |  `603.3` |    `78.0` |    `22.6` |        `14445`
+Bootstrap   |  `187.8` |  `152.1` |    `22.7` |    `16.7` |         `2027`
+Bulma       |  `224.2` |  `189.9` |    `24.9` |    `19.1` |         `2142`
+Foundation  |  `154.1` |  `119.2` |    `15.9` |    `12.9` |         `1420`
+Tachyons    |  `111.7` |   `71.8` |    `13.4` |     `7.5` |         `2113`
+Semantic UI |  `809.4` |  `613.8` |   `100.6` |    `77.8` |         `5934`
+Materialize |  `175.0` |  `138.5` |    `21.1` |    `17.1` |         `1609`
 
 ## What's the magic sauce?
 
@@ -65,56 +65,52 @@ The reason this is so much more efficient than sending CSS because:
 5. The compiler is tiny, and minifies and compresses well, because JS minifies
    and compresses well
 
-## Getting started
+# Getting started
+
+### Server
 
 ```bash
 yarn add ainsley # or `npm install ainsley`
 ```
 
-## Server
-
 ```js
-// server
+// server, only needed if you are going to modify the config
 const { extend } = require('ainsley');
 
+// extend is only needed if you want to merge two ainsleys
 const ainsley = extend(
   null, // <- null implies base config
   {
     "defs": [
       [
-        ".fs&",
-        [
-          ["font-size", "{typeScale}"],
-          ["line-height", "1.2"]
-        ]
+        ".ls&",
+        [["list-style", "{listStyleType} {listStylePosition}"]]
       ]
     ],
     "props": [
-      ["letter-spacing", ["1px", "2px", "3px"]]
+      ["letter-spacing", ["0", "1px", "2px", "3px"]]
     ],
-    "{typeScale}": {
-      "H1": "72px",
-      "H2": "48px",
-      "H3": "32px",
-      "H4": "24px",
-      "H5": "20px",
-      "LG": "20px",
-      "MD": "16px",
-      "SM": "14px",
-      "XS": "12px"
+    "{listStyleType}": {
+      "D": disc,
+      "C": circle,
+      "S": square
+    },
+    "{listStylePosition}": {
+      "I": inside,
+      "O": outside
     }
   }
 );
 
-// send ainsley to client
+// send custom ainsley to client
 ```
 
-## Client
+### Client
 
 ```html
-// receive result, assuming server-side rendering but any method works
+// receive ainsley, assuming server-side rendering but any method works
 <script src="compiler.lite.js"></script>
-<script>document.write("<style>"+Ainsley(/* your extended ainsley here */)+"</style>")</script>
+<script>document.write("<style>"+Ainsley(/* your ainsley here */)+"</style>")</script>
 ```
 
 (MIT Licence)
