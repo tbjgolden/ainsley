@@ -8,13 +8,11 @@ export default {
       ]
     ],
     [".c&", [["color", "{colors}"]]],
+    [".d&", [["display", "{display}"]]],
     [".bgc&", [["background-color", "{colors}"]]],
     [".&&", [["{scalar}", "{scale}"]]],
-    // A for all? ↓
-    // [".&&", [["{vector}", "{scale}"]]],
+    [".&a&", [["{vector}", "{scale}"]]],
     [".&&&", [["{vector}-{direction}", "{scale}"]]],
-    // A for all? ↓
-    // [".mN&", [["margin", "{scale}"]]],
     [".m&N&", [["margin-{direction}", "-{scale}"]]],
     [".fw&", [["font-weight", "{weight}"]]],
     [".ws&", [["white-space", "{whiteSpace}"]]],
@@ -41,7 +39,7 @@ export default {
     ["cursor", ["default", "pointer"]],
     ["pointer-events", ["none", "all"]]
   ],
-  "{block}": {
+  "{display}": {
     "I": "inline",
     "B": "block",
     "IB": "inline-block",

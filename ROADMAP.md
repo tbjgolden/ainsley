@@ -1,6 +1,12 @@
+- focus/hover/breakpoints
+- formalise the api
+- clean up the defaults, and come up with common recipes
+- write reset as ainsley
+- automatic documentation generation
+- jest tests
+- flowtypes?
 - remove non-inherited properties default case in props
 - check feasibility of something between props and defs
 - formally remove abbrev clashes in properties
 - do we need to remove prop abbrev clashes if vals don't clash
-- automatic documentation generation
 - look an mnemonic sorting of properties

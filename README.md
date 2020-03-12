@@ -91,13 +91,13 @@ const ainsley = extend(
       ["letter-spacing", ["0", "1px", "2px", "3px"]]
     ],
     "{listStyleType}": {
-      "D": disc,
-      "C": circle,
-      "S": square
+      "D": "disc",
+      "C": "circle",
+      "S": "square"
     },
     "{listStylePosition}": {
-      "I": inside,
-      "O": outside
+      "I": "inside",
+      "O": "outside"
     }
   }
 );
