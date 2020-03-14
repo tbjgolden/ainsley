@@ -1,8 +1,13 @@
 - focus/hover/breakpoints
-- formalise the api
+- determine cost of str => [str] convenience
+- determine if a recurse fn can be changed to work for both recursions
+- formalise/document the api
 - clean up the defaults, and come up with common recipes
 - write reset as ainsley
+- recalc the byte sizes
 - automatic documentation generation
+- webpack/rollup integration?
+- gui?
 - jest tests
 - flowtypes?
 - remove non-inherited properties default case in props

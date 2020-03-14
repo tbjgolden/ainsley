@@ -1,31 +1,25 @@
 export default {
   "defs": [
-    [
-      ".fs&",
-      [
-        ["font-size", "{typeScale}"],
-        ["line-height", "1.2"]
-      ]
-    ],
-    [".c&", [["color", "{colors}"]]],
-    [".d&", [["display", "{display}"]]],
-    [".bgc&", [["background-color", "{colors}"]]],
-    [".&&", [["{scalar}", "{scale}"]]],
-    [".&a&", [["{vector}", "{scale}"]]],
-    [".&&&", [["{vector}-{direction}", "{scale}"]]],
-    [".m&N&", [["margin-{direction}", "-{scale}"]]],
-    [".fw&", [["font-weight", "{weight}"]]],
-    [".ws&", [["white-space", "{whiteSpace}"]]],
-    [".bgp&&", [["background-position", "{xLoc} {yLoc}"]]],
-    [".bgs&", [["background-size", "{bgSize}"]]],
-    [".b&w&", [["border-{direction}-width", "{scale}"]]],
-    [".b&c&", [["border-{direction}-color", "{colors}"]]],
-    [".fx&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]],
-    [".fxd&", [["flex-direction", "{flexDirection}"]]],
-    [".&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]],
-    [".jc&", [["justify-content", "{flexMainAxis}"]]],
-    [".ov&&", [["overflow", "{overflow} {overflow}"]]],
-    [".o&", [["opacity", "{opacity}"]]]
+    ["c&", [["color", "{colors}"]]],
+    ["d&", [["display", "{display}"]]],
+    ["bgc&", [["background-color", "{colors}"]]],
+    ["fs&", [["font-size", "{typeScale}"], ["line-height", "1.2"]]],
+    ["&&", [["{scalar}", "{scale}"]]],
+    ["&a&", [["{vector}", "{scale}"]]],
+    ["&&&", [["{vector}-{direction}", "{scale}"]]],
+    ["m&N&", [["margin-{direction}", "-{scale}"]]],
+    ["fw&", [["font-weight", "{weight}"]]],
+    ["ws&", [["white-space", "{whiteSpace}"]]],
+    ["bgp&&", [["background-position", "{xLoc} {yLoc}"]]],
+    ["bgs&", [["background-size", "{bgSize}"]]],
+    ["b&w&", [["border-{direction}-width", "{scale}"]]],
+    ["b&c&", [["border-{direction}-color", "{colors}"]]],
+    ["fx&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]],
+    ["fxd&", [["flex-direction", "{flexDirection}"]]],
+    ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]],
+    ["jc&", [["justify-content", "{flexMainAxis}"]]],
+    ["ov&&", [["overflow", "{overflow} {overflow}"]]],
+    ["o&", [["opacity", "{opacity}"]]]
   ],
   "props": [
     ["text-decoration", ["line-through", "underline", "none"]],
@@ -38,6 +32,15 @@ export default {
     ["vertical-align", ["top", "middle", "bottom"]],
     ["cursor", ["default", "pointer"]],
     ["pointer-events", ["none", "all"]]
+  ],
+  "mods": [
+    [["o-", [":hover", ":focus", ":active"]]],
+    [
+      ["s-", ["@media(min-width:384px)"]],
+      ["m-", ["@media(min-width:768px)"]],
+      ["l-", ["@media(min-width:1024px)"]],
+      ["x-", ["@media(min-width:1536px)"]]
+    ]
   ],
   "{display}": {
     "I": "inline",

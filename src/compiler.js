@@ -60,7 +60,7 @@ export const expandProps = ([prop, values]) => {
     .map(w => (propFragMap[w] || w[0]))
     .join("");
   return values.map(value => [
-    `.${propAbbrev}${value
+    `${propAbbrev}${value
       .split(" ")
       .map(w => w[0].toUpperCase())
       .join("")}`,
@@ -82,7 +82,7 @@ export const astToCss = ast =>
   ast
     .map(
       ([selector, ruleSet]) =>
-        `${selector}{${ruleSet
+        `.${selector}{${ruleSet
           .map(([property, value]) => `${property}:${value}`)
           .join(";")}}`
     )

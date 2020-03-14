@@ -12,7 +12,7 @@
   "dist/compiler.js": {
     "bundled": 2564,
     "minified": 1325,
-    "gzipped": 644,
+    "gzipped": 645,
     "treeshaked": {
       "rollup": {
         "code": 0,
@@ -26,6 +26,6 @@
   "dist/compiler.cjs.js": {
     "bundled": 2762,
     "minified": 1503,
-    "gzipped": 703
+    "gzipped": 704
   }
 }

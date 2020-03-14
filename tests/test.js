@@ -12,6 +12,10 @@ const abbrMap = fs.readFileSync(path.join(__dirname, "../research/propMap.txt"),
 
 const css = ainsleyToCss(extend());
 
+const CHARS = Infinity;
+console.log("\nOutput:");
+console.log((css.length > CHARS * 2) ? `${css.slice(0, CHARS)}\n...\n${css.slice(-CHARS)}` : css);
+
 try {
   csstree.walk(csstree.parse(css), {
     visit: 'Raw',
@@ -55,7 +59,7 @@ try {
       const property = properties[0];
       const expectedPrefix = property.split("-").map(w => w[0]).join("");
 
-      if (prefix !== abbrMap[property]) {
+      if (prefix !== abbrMap[property] && !["ma", "pa"].includes(prefix)) {
         console.log(className, prefix, property, abbrMap[property]);
         throw new Error("unexpected attr prefix on class");
       }

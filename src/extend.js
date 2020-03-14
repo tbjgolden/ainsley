@@ -7,7 +7,8 @@ export const extend = (ainsley = base, ...ainsleys) =>
       ...(next || {}),
       defs: [...(ainsley.defs || []), ...(next.defs || [])],
       props: [...(ainsley.props || []), ...(next.props || [])],
-      raw: [...(ainsley.raw || []), ...(next.raw || [])]
+      raw: [...(ainsley.raw || []), ...(next.raw || [])],
+      mods: [...(ainsley.mods || []), ...(next.mods || [])]
     }),
     base
   );
