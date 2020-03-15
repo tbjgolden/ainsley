@@ -16,6 +16,8 @@ const CHARS = Infinity;
 console.log("\nOutput:");
 console.log((css.length > CHARS * 2) ? `${css.slice(0, CHARS)}\n...\n${css.slice(-CHARS)}` : css);
 
+let ruleCount = 0;
+
 try {
   csstree.walk(csstree.parse(css), {
     visit: 'Raw',
@@ -26,12 +28,13 @@ try {
   csstree.walk(csstree.parse(css), {
     visit: 'Rule',
     enter: node => {
+      ruleCount++;
+
       const { prelude, block } = node;
 
       const firstSelector = prelude.children.head;
       if (firstSelector.next) throw new Error("multiple selectors on a block");
       const firstFrag = firstSelector.data.children.head;
-      if (firstFrag.next) throw new Error("multiple fragments on a selector");
       if (firstFrag.data.type !== "ClassSelector") throw new Error("frag is not a class");
       const className = firstFrag.data.name;
       let attrSearch = className.match(/^([a-z]+)/);
@@ -59,12 +62,14 @@ try {
       const property = properties[0];
       const expectedPrefix = property.split("-").map(w => w[0]).join("");
 
-      if (prefix !== abbrMap[property] && !["ma", "pa"].includes(prefix)) {
-        console.log(className, prefix, property, abbrMap[property]);
-        throw new Error("unexpected attr prefix on class");
-      }
+      // if (prefix !== abbrMap[property] && !["ma", "pa"].includes(prefix)) {
+      //   console.log(className, prefix, property, abbrMap[property]);
+      //   throw new Error("unexpected attr prefix on class");
+      // }
     }
   });
 } catch (err) {
   console.error(err);
 }
+
+console.log({ ruleCount });

@@ -1,12 +1,9 @@
 const iteratorRegex = /\{[a-z]+\}/gi;
 
-// subrecursion utility
-const recurse = (ainsley, fn, keys, results = []) => {
-  if (keys.length === 0) return fn(results);
-
-  Object.entries(ainsley[keys[0]]).forEach(pair => {
-    recurse(ainsley, fn, keys.slice(1), [...results, [keys[0], ...pair]]);
-  });
+const combinations = mods => {
+  let list = [[]];
+  while (mods.length) list = mods.shift().flatMap(opt => list.map(prev => [...prev, opt]));
+  return list;
 };
 
 export const propFragMap = {
@@ -19,7 +16,7 @@ export const propFragMap = {
   cursor: "cu"
 };
 
-// recurse through ainsley.defs
+// expand ainsley.defs
 export const expandDefs = (ainsley, ruleSet) => {
   let [selector, block] = ruleSet;
 
@@ -30,8 +27,10 @@ export const expandDefs = (ainsley, ruleSet) => {
     const v = value.match(iteratorRegex);
     if (v) iterators[1].push(...v);
   }
-  const list = [];
-  recurse(ainsley, perm => {
+
+  return combinations(
+    iterators.flat().map(i => Object.entries(ainsley[i]).map(([k, v]) => [i, k, v]))
+  ).map(perm => {
     const ruleSet = [selector, block.map(d => [...d])];
     for (let i = 0; ruleSet[0].includes("&"); i++) {
       ruleSet[0] = ruleSet[0].replace("&", perm[i][1]);
@@ -48,9 +47,8 @@ export const expandDefs = (ainsley, ruleSet) => {
         decl[1] = decl[1].replace(before, after);
       }
     }
-    list.push(ruleSet);
-  }, iterators.flat());
-  return list;
+    return ruleSet;
+  });
 };
 
 // expand ainsley.props
@@ -70,11 +68,25 @@ export const expandProps = ([prop, values]) => {
 
 // compile ainsley to a simple stylesheet ast
 export const ainsleyToAst = ainsley => {
-  const ast = [];
-  if (ainsley.defs) ast.push(...ainsley.defs.flatMap(def => expandDefs(ainsley, def)));
-  if (ainsley.props) ast.push(...ainsley.props.flatMap(expandProps));
-  if (ainsley.raw) ast.push(...ainsley.raw);
-  return ast;
+  const ast = [
+    ...(ainsley.defs || []).flatMap(def => expandDefs(ainsley, def)),
+    ...(ainsley.props || []).flatMap(expandProps),
+    ...(ainsley.raw || [])
+  ];
+  return combinations((ainsley.mods || []).map(mod => [["", ""], ...mod])).flatMap(comb =>
+    comb.reduce((ast, [prefix, mod]) => {
+      if (!mod) {
+        return ast;
+      } else if (mod[0] === "@") {
+        return [[
+          mod,
+          ast.map(([sel, block]) => [`${prefix}${sel}`, block])
+        ]];
+      } else {
+        return ast.map(([sel, block]) => [`${prefix}${sel}${mod}`, block]);
+      }
+    }, ast)
+  );
 };
 
 // generate css from simple stylesheet ast
@@ -82,9 +94,11 @@ export const astToCss = ast =>
   ast
     .map(
       ([selector, ruleSet]) =>
-        `.${selector}{${ruleSet
-          .map(([property, value]) => `${property}:${value}`)
-          .join(";")}}`
+        selector[0] === "@"
+          ? `${selector}{${astToCss(ruleSet)}}`
+          : `.${selector}{${ruleSet
+            .map(([property, value]) => `${property}:${value}`)
+            .join(";")}}`
     )
     .join("");
 

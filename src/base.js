@@ -34,12 +34,16 @@ export default {
     ["pointer-events", ["none", "all"]]
   ],
   "mods": [
-    [["o-", [":hover", ":focus", ":active"]]],
     [
-      ["s-", ["@media(min-width:384px)"]],
-      ["m-", ["@media(min-width:768px)"]],
-      ["l-", ["@media(min-width:1024px)"]],
-      ["x-", ["@media(min-width:1536px)"]]
+      ["o-", ":hover"],
+      ["o-", ":focus"],
+      ["o-", ":active"]
+    ],
+    [
+      ["s-", "@media(min-width:384px)"],
+      ["m-", "@media(min-width:768px)"],
+      ["l-", "@media(min-width:1024px)"],
+      ["x-", "@media(min-width:1536px)"]
     ]
   ],
   "{display}": {

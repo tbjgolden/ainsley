@@ -1,8 +1,8 @@
 {
   "dist/compiler.lite.js": {
-    "bundled": 2709,
-    "minified": 1120,
-    "gzipped": 589
+    "bundled": 3148,
+    "minified": 1309,
+    "gzipped": 661
   },
   "dist/extend.js": {
     "bundled": 5512,
@@ -10,9 +10,9 @@
     "gzipped": 1613
   },
   "dist/compiler.js": {
-    "bundled": 2564,
-    "minified": 1325,
-    "gzipped": 645,
+    "bundled": 2973,
+    "minified": 1526,
+    "gzipped": 720,
     "treeshaked": {
       "rollup": {
         "code": 0,
@@ -24,8 +24,8 @@
     }
   },
   "dist/compiler.cjs.js": {
-    "bundled": 2762,
-    "minified": 1503,
-    "gzipped": 704
+    "bundled": 3171,
+    "minified": 1704,
+    "gzipped": 782
   }
 }
