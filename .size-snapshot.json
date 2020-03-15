@@ -1,18 +1,36 @@
 {
   "dist/compiler.lite.js": {
-    "bundled": 3148,
-    "minified": 1309,
-    "gzipped": 661
+    "bundled": 2867,
+    "minified": 1454,
+    "gzipped": 695,
+    "treeshaked": {
+      "rollup": {
+        "code": 0,
+        "import_statements": 0
+      },
+      "webpack": {
+        "code": 951
+      }
+    }
   },
   "dist/extend.js": {
-    "bundled": 5512,
-    "minified": 3823,
-    "gzipped": 1613
+    "bundled": 5557,
+    "minified": 4001,
+    "gzipped": 1680,
+    "treeshaked": {
+      "rollup": {
+        "code": 0,
+        "import_statements": 0
+      },
+      "webpack": {
+        "code": 951
+      }
+    }
   },
   "dist/compiler.js": {
-    "bundled": 2973,
-    "minified": 1526,
-    "gzipped": 720,
+    "bundled": 2925,
+    "minified": 1504,
+    "gzipped": 704,
     "treeshaked": {
       "rollup": {
         "code": 0,
@@ -24,8 +42,115 @@
     }
   },
   "dist/compiler.cjs.js": {
-    "bundled": 3171,
-    "minified": 1704,
-    "gzipped": 782
+    "bundled": 3123,
+    "minified": 1682,
+    "gzipped": 764
+  },
+  "dist/compiler.browser.js": {
+    "bundled": 3318,
+    "minified": 1381,
+    "gzipped": 693
+  },
+  "dist/compiler.lite.browser.js": {
+    "bundled": 3095,
+    "minified": 1282,
+    "gzipped": 640
+  },
+  "dist/compiler.web.js": {
+    "bundled": 3318,
+    "minified": 1381,
+    "gzipped": 693
+  },
+  "dist/compiler.lite.web.js": {
+    "bundled": 3095,
+    "minified": 1282,
+    "gzipped": 640
+  },
+  "dist/extend.cjs.js": {
+    "bundled": 5642,
+    "minified": 4076,
+    "gzipped": 1733
+  },
+  "dist/extend.web.js": {
+    "bundled": 6083,
+    "minified": 4019,
+    "gzipped": 1698
+  },
+  "dist/extend.es5.cjs.js": {
+    "bundled": 6758,
+    "minified": 4844,
+    "gzipped": 2020
+  },
+  "dist/extend.es5.web.js": {
+    "bundled": 7251,
+    "minified": 4712,
+    "gzipped": 1994
+  },
+  "dist/extend.es5.js": {
+    "bundled": 6673,
+    "minified": 4769,
+    "gzipped": 1990,
+    "treeshaked": {
+      "rollup": {
+        "code": 0,
+        "import_statements": 0
+      },
+      "webpack": {
+        "code": 951
+      }
+    }
+  },
+  "dist/compiler.es5.cjs.js": {
+    "bundled": 3039,
+    "minified": 1775,
+    "gzipped": 770
+  },
+  "dist/compiler.es5.web.js": {
+    "bundled": 3172,
+    "minified": 1474,
+    "gzipped": 696
+  },
+  "dist/compiler.es5.js": {
+    "bundled": 2841,
+    "minified": 1597,
+    "gzipped": 708,
+    "treeshaked": {
+      "rollup": {
+        "code": 0,
+        "import_statements": 0
+      },
+      "webpack": {
+        "code": 951
+      }
+    }
+  },
+  "dist/compiler.lite.cjs.js": {
+    "bundled": 2884,
+    "minified": 1467,
+    "gzipped": 701
+  },
+  "dist/compiler.lite.es5.web.js": {
+    "bundled": 2949,
+    "minified": 1375,
+    "gzipped": 645
+  },
+  "dist/compiler.lite.es5.cjs.js": {
+    "bundled": 2800,
+    "minified": 1560,
+    "gzipped": 705
+  },
+  "dist/compiler.lite.es5.js": {
+    "bundled": 2783,
+    "minified": 1547,
+    "gzipped": 701,
+    "treeshaked": {
+      "rollup": {
+        "code": 0,
+        "import_statements": 0
+      },
+      "webpack": {
+        "code": 951
+      }
+    }
   }
 }

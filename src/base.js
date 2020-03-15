@@ -1,9 +1,15 @@
 export default {
-  "defs": [
+  defs: [
     ["c&", [["color", "{colors}"]]],
     ["d&", [["display", "{display}"]]],
     ["bgc&", [["background-color", "{colors}"]]],
-    ["fs&", [["font-size", "{typeScale}"], ["line-height", "1.2"]]],
+    [
+      "fs&",
+      [
+        ["font-size", "{typeScale}"],
+        ["line-height", "1.2"]
+      ]
+    ],
     ["&&", [["{scalar}", "{scale}"]]],
     ["&a&", [["{vector}", "{scale}"]]],
     ["&&&", [["{vector}-{direction}", "{scale}"]]],
@@ -21,7 +27,7 @@ export default {
     ["ov&&", [["overflow", "{overflow} {overflow}"]]],
     ["o&", [["opacity", "{opacity}"]]]
   ],
-  "props": [
+  props: [
     ["text-decoration", ["line-through", "underline", "none"]],
     ["font-style", ["italic", "normal"]],
     ["text-transform", ["uppercase", "lowercase"]],
@@ -33,7 +39,7 @@ export default {
     ["cursor", ["default", "pointer"]],
     ["pointer-events", ["none", "all"]]
   ],
-  "mods": [
+  mods: [
     [
       ["o-", ":hover"],
       ["o-", ":focus"],
@@ -47,12 +53,12 @@ export default {
     ]
   ],
   "{display}": {
-    "I": "inline",
-    "B": "block",
-    "IB": "inline-block",
-    "F": "flex",
-    "IF": "inline-flex",
-    "N": "none"
+    I: "inline",
+    B: "block",
+    IB: "inline-block",
+    F: "flex",
+    IF: "inline-flex",
+    N: "none"
   },
   "{z}": {
     "0": "0",
@@ -62,7 +68,7 @@ export default {
     "8": "8",
     "16": "16",
     "32": "32",
-    "N1": "-1"
+    N1: "-1"
   },
   "{opacity}": {
     "0": "0",
@@ -72,105 +78,105 @@ export default {
     "80": "80",
     "100": "100"
   },
-  "{overflow}": { "H": "hidden", "S": "scroll", "A": "auto", "V": "visible" },
+  "{overflow}": { H: "hidden", S: "scroll", A: "auto", V: "visible" },
   "{flexMainAxis}": {
-    "FS": "flex-start",
-    "FE": "flex-end",
-    "C": "center",
-    "SB": "space-between",
-    "SE": "space-evenly"
+    FS: "flex-start",
+    FE: "flex-end",
+    C: "center",
+    SB: "space-between",
+    SE: "space-evenly"
   },
   "{flexCrossAxes}": {
-    "ai": "align-items",
-    "as": "align-self",
-    "ac": "align-content"
+    ai: "align-items",
+    as: "align-self",
+    ac: "align-content"
   },
   "{flexCrossAxis}": {
-    "FS": "flex-start",
-    "FE": "flex-end",
-    "C": "center",
-    "B": "baseline",
-    "S": "stretch"
+    FS: "flex-start",
+    FE: "flex-end",
+    C: "center",
+    B: "baseline",
+    S: "stretch"
   },
-  "{flexChange}": { "0": "0", "1": "1", "2": "2", "X": "11111111" },
-  "{flexBasis}": { "0": "0%", "A": "auto", "P": "100%" },
+  "{flexChange}": { "0": "0", "1": "1", "2": "2", X: "11111111" },
+  "{flexBasis}": { "0": "0%", A: "auto", P: "100%" },
   "{flexDirection}": {
-    "R": "row",
-    "C": "column",
-    "RR": "row-reverse",
-    "CR": "column-reverse"
+    R: "row",
+    C: "column",
+    RR: "row-reverse",
+    CR: "column-reverse"
   },
   "{whiteSpace}": {
-    "C": "nowrap",
-    "CW": "normal",
-    "P": "pre",
-    "PW": "pre-wrap"
+    C: "nowrap",
+    CW: "normal",
+    P: "pre",
+    PW: "pre-wrap"
   },
-  "{weight}": { "N": 400, "M": 600, "B": 700 },
-  "{lineHeight}": { "B": 1, "T": 1.2, "C": 1.3 },
-  "{xLoc}": { "L": "left", "R": "right", "C": "center" },
-  "{bgSize}": { "CV": "cover", "CT": "contain" },
-  "{yLoc}": { "T": "top", "B": "bottom", "C": "center" },
+  "{weight}": { N: 400, M: 600, B: 700 },
+  "{lineHeight}": { B: 1, T: 1.2, C: 1.3 },
+  "{xLoc}": { L: "left", R: "right", C: "center" },
+  "{bgSize}": { CV: "cover", CT: "contain" },
+  "{yLoc}": { T: "top", B: "bottom", C: "center" },
   "{colors}": {
-    "W": "white",
-    "B": "black",
-    "TR": "transparent",
-    "G98": "hsl(0,0%,98%)",
-    "G94": "hsl(0,0%,94%)",
-    "G88": "hsl(0,0%,88%)",
-    "G80": "hsl(0,0%,80%)",
-    "G30": "hsl(0,0%,30%)",
-    "G20": "hsl(0,0%,20%)",
-    "G10": "hsl(0,0%,10%)",
-    "B05": "hsla(0,0%,0%,05%)",
-    "B10": "hsla(0,0%,0%,10%)",
-    "B20": "hsla(0,0%,0%,20%)",
-    "B40": "hsla(0,0%,0%,40%)",
-    "B80": "hsla(0,0%,0%,80%)",
-    "W05": "hsla(0,0%,100%,05%)",
-    "W10": "hsla(0,0%,100%,10%)",
-    "W20": "hsla(0,0%,100%,20%)",
-    "W40": "hsla(0,0%,100%,40%)",
-    "W80": "hsla(0,0%,100%,80%)",
-    "PRIMARY": "#8d1d90",
-    "ALTPRIMARY": "#9d3ea0",
-    "SECONDARY": "#b7de58",
-    "ALTSECONDARY": "#c1e270",
-    "GOOD": "#3bb273",
-    "LIGHTGOOD": "#ebf7f1",
-    "WARN": "#e1bc29",
-    "LIGHTWARN": "#fcf8e9",
-    "BAD": "#e15554",
-    "LIGHTBAD": "#fceeed",
-    "MSG": "#3d70b2",
-    "LIGHTMSG": "#ebf0f7"
+    W: "white",
+    B: "black",
+    TR: "transparent",
+    G98: "hsl(0,0%,98%)",
+    G94: "hsl(0,0%,94%)",
+    G88: "hsl(0,0%,88%)",
+    G80: "hsl(0,0%,80%)",
+    G30: "hsl(0,0%,30%)",
+    G20: "hsl(0,0%,20%)",
+    G10: "hsl(0,0%,10%)",
+    B05: "hsla(0,0%,0%,05%)",
+    B10: "hsla(0,0%,0%,10%)",
+    B20: "hsla(0,0%,0%,20%)",
+    B40: "hsla(0,0%,0%,40%)",
+    B80: "hsla(0,0%,0%,80%)",
+    W05: "hsla(0,0%,100%,05%)",
+    W10: "hsla(0,0%,100%,10%)",
+    W20: "hsla(0,0%,100%,20%)",
+    W40: "hsla(0,0%,100%,40%)",
+    W80: "hsla(0,0%,100%,80%)",
+    PRIMARY: "#8d1d90",
+    ALTPRIMARY: "#9d3ea0",
+    SECONDARY: "#b7de58",
+    ALTSECONDARY: "#c1e270",
+    GOOD: "#3bb273",
+    LIGHTGOOD: "#ebf7f1",
+    WARN: "#e1bc29",
+    LIGHTWARN: "#fcf8e9",
+    BAD: "#e15554",
+    LIGHTBAD: "#fceeed",
+    MSG: "#3d70b2",
+    LIGHTMSG: "#ebf0f7"
   },
   "{typeScale}": {
-    "H1": "72px",
-    "H2": "48px",
-    "H3": "32px",
-    "H4": "24px",
-    "H5": "20px",
-    "LG": "20px",
-    "MD": "16px",
-    "SM": "14px",
-    "XS": "12px"
+    H1: "72px",
+    H2: "48px",
+    H3: "32px",
+    H4: "24px",
+    H5: "20px",
+    LG: "20px",
+    MD: "16px",
+    SM: "14px",
+    XS: "12px"
   },
   "{scalar}": {
-    "w": "width",
-    "xw": "max-width",
-    "nw": "min-width",
-    "h": "height",
-    "xh": "max-height",
-    "nh": "min-height",
-    "t": "top",
-    "l": "left",
-    "r": "right",
-    "b": "bottom",
-    "br": "border-radius"
+    w: "width",
+    xw: "max-width",
+    nw: "min-width",
+    h: "height",
+    xh: "max-height",
+    nh: "min-height",
+    t: "top",
+    l: "left",
+    r: "right",
+    b: "bottom",
+    br: "border-radius"
   },
-  "{vector}": { "m": "margin", "p": "padding" },
-  "{direction}": { "t": "top", "l": "left", "r": "right", "b": "bottom" },
+  "{vector}": { m: "margin", p: "padding" },
+  "{direction}": { t: "top", l: "left", r: "right", b: "bottom" },
   "{scale}": {
     "0": "0",
     "1": "1px",
@@ -194,10 +200,10 @@ export default {
     "85": "768px",
     "90": "1024px",
     "95": "1536px",
-    "P50": "50%",
-    "P": "100%",
-    "H": "100vh",
-    "W": "100vw",
-    "X": "11111111px"
+    P50: "50%",
+    P: "100%",
+    H: "100vh",
+    W: "100vw",
+    X: "11111111px"
   }
-}
+};

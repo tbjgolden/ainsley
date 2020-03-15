@@ -2,7 +2,8 @@ const iteratorRegex = /\{[a-z]+\}/gi;
 
 const combinations = mods => {
   let list = [[]];
-  while (mods.length) list = mods.shift().flatMap(opt => list.map(prev => [...prev, opt]));
+  while (mods.length)
+    list = mods.shift().flatMap(opt => list.map(prev => [...prev, opt]));
   return list;
 };
 
@@ -29,7 +30,9 @@ export const expandDefs = (ainsley, ruleSet) => {
   }
 
   return combinations(
-    iterators.flat().map(i => Object.entries(ainsley[i]).map(([k, v]) => [i, k, v]))
+    iterators
+      .flat()
+      .map(i => Object.entries(ainsley[i]).map(([k, v]) => [i, k, v]))
   ).map(perm => {
     const ruleSet = [selector, block.map(d => [...d])];
     for (let i = 0; ruleSet[0].includes("&"); i++) {
@@ -55,7 +58,7 @@ export const expandDefs = (ainsley, ruleSet) => {
 export const expandProps = ([prop, values]) => {
   const propAbbrev = prop
     .split("-")
-    .map(w => (propFragMap[w] || w[0]))
+    .map(w => propFragMap[w] || w[0])
     .join("");
   return values.map(value => [
     `${propAbbrev}${value
@@ -73,15 +76,14 @@ export const ainsleyToAst = ainsley => {
     ...(ainsley.props || []).flatMap(expandProps),
     ...(ainsley.raw || [])
   ];
-  return combinations((ainsley.mods || []).map(mod => [["", ""], ...mod])).flatMap(comb =>
+  return combinations(
+    (ainsley.mods || []).map(mod => [["", ""], ...mod])
+  ).flatMap(comb =>
     comb.reduce((ast, [prefix, mod]) => {
       if (!mod) {
         return ast;
       } else if (mod[0] === "@") {
-        return [[
-          mod,
-          ast.map(([sel, block]) => [`${prefix}${sel}`, block])
-        ]];
+        return [[mod, ast.map(([sel, block]) => [`${prefix}${sel}`, block])]];
       } else {
         return ast.map(([sel, block]) => [`${prefix}${sel}${mod}`, block]);
       }
@@ -92,11 +94,10 @@ export const ainsleyToAst = ainsley => {
 // generate css from simple stylesheet ast
 export const astToCss = ast =>
   ast
-    .map(
-      ([selector, ruleSet]) =>
-        selector[0] === "@"
-          ? `${selector}{${astToCss(ruleSet)}}`
-          : `.${selector}{${ruleSet
+    .map(([selector, ruleSet]) =>
+      selector[0] === "@"
+        ? `${selector}{${astToCss(ruleSet)}}`
+        : `.${selector}{${ruleSet
             .map(([property, value]) => `${property}:${value}`)
             .join(";")}}`
     )

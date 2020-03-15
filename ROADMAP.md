@@ -1,17 +1,19 @@
-- focus/hover/breakpoints
-- determine cost of str => [str] convenience
-- determine if a recurse fn can be changed to work for both recursions
-- formalise/document the api
-- clean up the defaults, and come up with common recipes
-- write reset as ainsley
-- recalc the byte sizes
-- automatic documentation generation
-- webpack/rollup integration?
-- gui?
-- jest tests
-- flowtypes?
-- remove non-inherited properties default case in props
-- check feasibility of something between props and defs
-- formally remove abbrev clashes in properties
-- do we need to remove prop abbrev clashes if vals don't clash
-- look an mnemonic sorting of properties
+- [x] focus/hover/breakpoints
+- [x] determine cost of str => [str] convenience
+- [x] determine if a recurse fn can be changed to work for both recursions
+- [x] es5 version
+- [ ] remove spreads and destructuring from compiler
+- [ ] formalise/document the api
+- [ ] clean up the defaults, and come up with common recipes
+- [ ] write reset as ainsley
+- [ ] recalc the byte sizes
+- [ ] automatic documentation generation
+- [ ] webpack/rollup integration?
+- [ ] gui?
+- [ ] jest tests
+- [ ] flowtypes?
+- [ ] remove non-inherited properties default case in props
+- [ ] check feasibility of something between props and defs
+- [ ] formally remove abbrev clashes in properties
+- [ ] do we need to remove prop abbrev clashes if vals don't clash
+- [ ] look an mnemonic sorting of properties

@@ -1,37 +1,48 @@
-import json from '@rollup/plugin-json';
+import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 import { sizeSnapshot } from "rollup-plugin-size-snapshot";
+import babel from "rollup-plugin-babel";
 
-export default [
+const input = ["extend", "compiler", "compiler.lite"];
+
+export default ["extend", "compiler", "compiler.lite"].flatMap(file => [
   {
-    input: 'src/extend.js',
-    output: [{
-      file: 'dist/extend.js',
-      format: 'es'
-    },{
-      file: 'dist/extend.cjs.js',
-      format: 'cjs'
-    }],
-    plugins: [json(), terser()]
+    input: `src/${file}.js`,
+    output: [
+      {
+        file: `dist/${file}.js`,
+        format: "es"
+      },
+      {
+        file: `dist/${file}.cjs.js`,
+        format: "cjs"
+      },
+      {
+        file: `dist/${file}.web.js`,
+        format: "iife",
+        name: `A${file[0].toUpperCase()}`
+      }
+    ],
+    plugins: [json(), sizeSnapshot(), terser()]
   },
   {
-    input: 'src/compiler.js',
-    output: [{
-      file: 'dist/compiler.js',
-      format: 'es'
-    },{
-      file: 'dist/compiler.cjs.js',
-      format: 'cjs'
-    }],
-    plugins: [sizeSnapshot(), terser()]
-  },
-  {
-    input: 'src/compiler.lite.js',
-    output: {
-      file: 'dist/compiler.lite.js',
-      format: 'iife',
-      name: "Ainsley"
-    },
-    plugins: [sizeSnapshot(), terser()]
+    input: `src/${file}.js`,
+    output: [
+      {
+        file: `dist/${file}.es5.js`,
+        format: "es"
+      },
+      {
+        file: `dist/${file}.es5.cjs.js`,
+        format: "cjs"
+      },
+      {
+        file: `dist/${file}.es5.web.js`,
+        format: "iife",
+        name: `A${file[0].toUpperCase()}`
+      }
+    ],
+    plugins: [babel(), json(), sizeSnapshot(), terser()]
   }
-]
+]);
+

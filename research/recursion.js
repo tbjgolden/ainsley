@@ -12,6 +12,7 @@ const input = [
   ]
 ];
 
+// prettier-ignore
 const expected = [
   [["", ""], ["", ""]],
   [["", ""], ["s-", "@media(min-width:384px)"]],
@@ -37,16 +38,21 @@ const expected = [
 
 const combinations = mods => {
   let list = [[]];
-  while (mods.length) list = mods.shift().flatMap(opt => list.map(prev => [...prev, opt]));
+  while (mods.length)
+    list = mods.shift().flatMap(opt => list.map(prev => [...prev, opt]));
   return list;
 };
 
-const result = combinations(
-  input.map(mod => [["", ""], ...mod])
-);
+const result = combinations(input.map(mod => [["", ""], ...mod]));
 
-const expOut = expected.map(x => x.toString()).sort().join(";");
-const resOut = result.map(x => x.toString()).sort().join(";");
+const expOut = expected
+  .map(x => x.toString())
+  .sort()
+  .join(";");
+const resOut = result
+  .map(x => x.toString())
+  .sort()
+  .join(";");
 
 if (expOut === resOut) {
   console.log("Yay success");

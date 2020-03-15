@@ -1,2 +1,2 @@
-import { ainsleyToCss } from './compiler';
+import { ainsleyToCss } from "./compiler";
 export default ainsleyToCss;
