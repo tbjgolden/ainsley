@@ -11,16 +11,19 @@ export default ["extend", "compiler", "compiler.lite"].flatMap(file => [
     output: [
       {
         file: `dist/${file}.js`,
-        format: "es"
+        format: "es",
+        sourcemap: true
       },
       {
         file: `dist/${file}.cjs.js`,
-        format: "cjs"
+        format: "cjs",
+        sourcemap: true
       },
       {
         file: `dist/${file}.web.js`,
         format: "iife",
-        name: `A${file[0].toUpperCase()}`
+        name: `A${file[0].toUpperCase()}`,
+        sourcemap: true
       }
     ],
     plugins: [json(), sizeSnapshot(), terser()]
@@ -30,16 +33,19 @@ export default ["extend", "compiler", "compiler.lite"].flatMap(file => [
     output: [
       {
         file: `dist/${file}.es5.js`,
-        format: "es"
+        format: "es",
+        sourcemap: true
       },
       {
         file: `dist/${file}.es5.cjs.js`,
-        format: "cjs"
+        format: "cjs",
+        sourcemap: true
       },
       {
         file: `dist/${file}.es5.web.js`,
         format: "iife",
-        name: `A${file[0].toUpperCase()}`
+        name: `A${file[0].toUpperCase()}`,
+        sourcemap: true
       }
     ],
     plugins: [babel(), json(), sizeSnapshot(), terser()]

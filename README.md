@@ -26,10 +26,12 @@ it massively.
 +----------------+-------+-----------+------------+
 | minified bytes | 4,072 |   1,347   |   761,941  |
 ++---------------+-------+-----------+------------+
- | gzipped bytes | 1,591 |     657   |   137,658  |
- +---------------+-------+-----------+------------+
- | over the wire |       2,248       |   137,658  |
- +---------------+-------------------+------------+
+ | gzipped bytes | 1,591 |     695   |   137,658  |
+ ++--------------+-------+-----------+------------+
+  | brotli bytes | 1,353 |     632   |    23,161  |
+  +-+------------+-------+-----------+------------+
+    | TOTAL SENT |    🎉 1,985 🎉    |    23,161  |
+    +------------+-------------------+------------+
 ```
 
 When added together the number of bytes sent over the wire is less than one
@@ -37,18 +39,24 @@ third `(1487+568)/6406 = 32%` of the original number.
 
 # Comparisons to others
 
-All sizes in kB.
+| Framework     | Minified |    Gzip |  Brotli | CSS Rule Count |  Load 1 | Load 2 | Load 3 |
+| ------------- | -------: | ------: | ------: | -------------: | ------: | -----: | -----: |
+| **ainsley**   |   `5419` |  `2248` |  `1985` |        `22580` |  `4272` | `1263` |  `128` |
+| tailwindcss   | `710997` | `97417` | `10199` |        `14445` | `18031` | `5075` |  `183` |
+| tachyons      |  `73497` | `13697` |  `2421` |         `2113` |  `5606` | `1621` |   `71` |
+| sane-tachyons |  `49793` |  `9200` |  `1957` |         `1278` |  `5345` | `1552` |   `75` |
+| turretcss     |  `93542` | `17025` |  `4311` |         `1588` |   n/a\* |  n/a\* |  n/a\* |
+| solid         |  `82482` | `12585` |  `2497` |         `1469` |   n/a\* |  n/a\* |  n/a\* |
+| basscss       |  `11326` |  `2477` |   `589` |          `260` |   n/a\* |  n/a\* |  n/a\* |
 
-| Framework   | Original | Minified |      Gzip |    Brotli | CSS Rule Count |
-| ----------- | -------: | -------: | --------: | --------: | -------------: |
-| **Ainsley** |    `6.1` |    `5.1` | **`2.3`** | **`1.9`** |    **`22580`** |
-| Tailwind    |  `783.5` |  `603.3` |    `78.0` |    `22.6` |        `14445` |
-| Bootstrap   |  `187.8` |  `152.1` |    `22.7` |    `16.7` |         `2027` |
-| Bulma       |  `224.2` |  `189.9` |    `24.9` |    `19.1` |         `2142` |
-| Foundation  |  `154.1` |  `119.2` |    `15.9` |    `12.9` |         `1420` |
-| Tachyons    |  `111.7` |   `71.8` |    `13.4` |     `7.5` |         `2113` |
-| Semantic UI |  `809.4` |  `613.8` |   `100.6` |    `77.8` |         `5934` |
-| Materialize |  `175.0` |  `138.5` |    `21.1` |    `17.1` |         `1609` |
+> \* these frameworks do not expose classes for `:hover`.
+>
+> Load times are measured milliseconds to first contentful paint using an example html file.
+> The test server and browser both use brotli compression.
+>
+> - Load Test 1: Chrome, Low-end mobile, Slow 3G, 360x640
+> - Load Test 2: Chrome, Mid-tier mobile, Fast 3G, 414x736
+> - Load Test 3: Chrome, \$3k MacBook Pro, South Korea speed, full resolution
 
 ## What's the magic sauce?
 
