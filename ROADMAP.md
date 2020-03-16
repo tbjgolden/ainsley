@@ -2,16 +2,17 @@
 - [x] determine cost of str => [str] convenience
 - [x] determine if a recurse fn can be changed to work for both recursions
 - [x] es5 version
-- [ ] remove spreads and destructuring from compiler
+- [x] remove spreads and destructuring from compiler
+- [ ] actually use it on something
+- [ ] build a basic repl with it
+- [ ] monorepo
 - [ ] formalise/document the api
 - [ ] clean up the defaults, and come up with common recipes
 - [ ] write reset as ainsley
 - [ ] recalc the byte sizes
+- [ ] flowtypes
 - [ ] automatic documentation generation
-- [ ] webpack/rollup integration?
-- [ ] gui?
 - [ ] jest tests
-- [ ] flowtypes?
 - [ ] remove non-inherited properties default case in props
 - [ ] check feasibility of something between props and defs
 - [ ] formally remove abbrev clashes in properties

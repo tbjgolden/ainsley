@@ -1,79 +1,21 @@
 var AC = (function() {
   "use strict";
-  function r(r, t) {
-    return (
-      (function(r) {
-        if (Array.isArray(r)) return r;
-      })(r) ||
-      (function(r, t) {
-        if (
-          !(
-            Symbol.iterator in Object(r) ||
-            "[object Arguments]" === Object.prototype.toString.call(r)
-          )
-        )
-          return;
-        var n = [],
-          a = !0,
-          e = !1,
-          o = void 0;
-        try {
-          for (
-            var c, u = r[Symbol.iterator]();
-            !(a = (c = u.next()).done) &&
-            (n.push(c.value), !t || n.length !== t);
-            a = !0
-          );
-        } catch (r) {
-          (e = !0), (o = r);
-        } finally {
-          try {
-            a || null == u.return || u.return();
-          } finally {
-            if (e) throw o;
-          }
-        }
-        return n;
-      })(r, t) ||
-      (function() {
-        throw new TypeError(
-          "Invalid attempt to destructure non-iterable instance"
-        );
-      })()
-    );
-  }
-  function t(r) {
-    return (
-      (function(r) {
-        if (Array.isArray(r)) {
-          for (var t = 0, n = new Array(r.length); t < r.length; t++)
-            n[t] = r[t];
-          return n;
-        }
-      })(r) ||
-      (function(r) {
-        if (
-          Symbol.iterator in Object(r) ||
-          "[object Arguments]" === Object.prototype.toString.call(r)
-        )
-          return Array.from(r);
-      })(r) ||
-      (function() {
-        throw new TypeError("Invalid attempt to spread non-iterable instance");
-      })()
-    );
-  }
   var n = /\{[a-z]+\}/gi,
-    a = function(r) {
-      for (var n = [[]]; r.length; )
-        n = r.shift().flatMap(function(r) {
-          return n.map(function(n) {
-            return [].concat(t(n), [r]);
-          });
-        });
-      return n;
+    t = function(n) {
+      return [].concat.apply([], n);
     },
-    e = {
+    r = function(n) {
+      for (var r = [[]]; n.length; )
+        r = t(
+          n.shift().map(function(n) {
+            return r.map(function(t) {
+              return t.concat([n]);
+            });
+          })
+        );
+      return r;
+    },
+    c = {
       flex: "fx",
       background: "bg",
       min: "n",
@@ -82,213 +24,126 @@ var AC = (function() {
       overflow: "ov",
       cursor: "cu"
     },
-    o = function(t) {
-      var n = r(t, 2),
-        a = n[0],
-        o = n[1],
-        c = a
-          .split("-")
-          .map(function(r) {
-            return e[r] || r[0];
-          })
-          .join("");
-      return o.map(function(r) {
+    o = function(n) {
+      var t = n[0]
+        .split("-")
+        .map(function(n) {
+          return c[n] || n[0];
+        })
+        .join("");
+      return n[1].map(function(r) {
         return [
-          "".concat(c).concat(
+          "".concat(t).concat(
             r
               .split(" ")
-              .map(function(r) {
-                return r[0].toUpperCase();
+              .map(function(n) {
+                return n[0].toUpperCase();
               })
               .join("")
           ),
-          [[a, r]]
+          [[n[0], r]]
         ];
       });
     },
-    c = function(e) {
-      var c = [].concat(
+    a = function(c) {
+      var a = [].concat(
         t(
-          (e.defs || []).flatMap(function(o) {
-            return (function(e, o) {
-              var c = r(o, 2),
-                u = c[0],
-                i = c[1],
-                f = [[], []],
-                l = !0,
-                p = !1,
-                v = void 0;
-              try {
-                for (
-                  var y, m = i[Symbol.iterator]();
-                  !(l = (y = m.next()).done);
-                  l = !0
-                ) {
-                  var s,
-                    h,
-                    d = r(y.value, 2),
-                    b = d[0],
-                    g = d[1],
-                    j = b.match(n);
-                  j && (s = f[0]).push.apply(s, t(j));
-                  var w = g.match(n);
-                  w && (h = f[1]).push.apply(h, t(w));
-                }
-              } catch (r) {
-                (p = !0), (v = r);
-              } finally {
-                try {
-                  l || null == m.return || m.return();
-                } finally {
-                  if (p) throw v;
-                }
-              }
-              return a(
-                f.flat().map(function(t) {
-                  return Object.entries(e[t]).map(function(n) {
-                    var a = r(n, 2),
-                      e = a[0],
-                      o = a[1];
-                    return [t, e, o];
-                  });
+          (c.defs || []).map(function(t) {
+            return (function(t, c) {
+              var o = [],
+                a = [];
+              return (
+                c[1].forEach(function(t) {
+                  (o = o.concat(t[0].match(n) || [])),
+                    (a = a.concat(t[1].match(n) || []));
+                }),
+                r(
+                  o.concat(a).map(function(n) {
+                    return Object.keys(t[n]).map(function(r) {
+                      return [n, r, t[n][r]];
+                    });
+                  })
+                ).map(function(n) {
+                  for (
+                    var t = JSON.parse(JSON.stringify(c)), r = 0;
+                    t[0].includes("&");
+                    r++
+                  )
+                    t[0] = t[0].replace("&", n[r][1]);
+                  for (var o = 0; o < t[1].length; o++)
+                    for (
+                      var a = t[1][o];
+                      n.length > 0 && a[0].includes(n[0][0]);
+
+                    ) {
+                      var u = n.shift();
+                      a[0] = a[0].replace(u[0], u[2]);
+                    }
+                  for (var e = 0; e < t[1].length; e++)
+                    for (
+                      var i = t[1][e];
+                      n.length > 0 && i[1].includes(n[0][0]);
+
+                    ) {
+                      var f = n.shift();
+                      i[1] = i[1].replace(f[0], f[2]);
+                    }
+                  return t;
                 })
-              ).map(function(n) {
-                for (
-                  var a = [
-                      u,
-                      i.map(function(r) {
-                        return t(r);
-                      })
-                    ],
-                    e = 0;
-                  a[0].includes("&");
-                  e++
-                )
-                  a[0] = a[0].replace("&", n[e][1]);
-                var o = !0,
-                  c = !1,
-                  f = void 0;
-                try {
-                  for (
-                    var l, p = a[1][Symbol.iterator]();
-                    !(o = (l = p.next()).done);
-                    o = !0
-                  )
-                    for (
-                      var v = l.value;
-                      n.length > 0 && v[0].includes(n[0][0]);
-
-                    ) {
-                      var y = r(n.shift(), 3),
-                        m = y[0],
-                        s = y[2];
-                      v[0] = v[0].replace(m, s);
-                    }
-                } catch (r) {
-                  (c = !0), (f = r);
-                } finally {
-                  try {
-                    o || null == p.return || p.return();
-                  } finally {
-                    if (c) throw f;
-                  }
-                }
-                var h = !0,
-                  d = !1,
-                  b = void 0;
-                try {
-                  for (
-                    var g, j = a[1][Symbol.iterator]();
-                    !(h = (g = j.next()).done);
-                    h = !0
-                  )
-                    for (
-                      var w = g.value;
-                      n.length > 0 && w[1].includes(n[0][0]);
-
-                    ) {
-                      var A = r(n.shift(), 3),
-                        x = A[0],
-                        S = A[2];
-                      w[1] = w[1].replace(x, S);
-                    }
-                } catch (r) {
-                  (d = !0), (b = r);
-                } finally {
-                  try {
-                    h || null == j.return || j.return();
-                  } finally {
-                    if (d) throw b;
-                  }
-                }
-                return a;
-              });
-            })(e, o);
+              );
+            })(c, t);
           })
         ),
-        t((e.props || []).flatMap(o)),
-        t(e.raw || [])
+        t((c.props || []).map(o)),
+        c.raw || []
       );
-      return a(
-        (e.mods || []).map(function(r) {
-          return [["", ""]].concat(t(r));
-        })
-      ).flatMap(function(t) {
-        return t.reduce(function(t, n) {
-          var a = r(n, 2),
-            e = a[0],
-            o = a[1];
-          return o
-            ? "@" === o[0]
-              ? [
-                  [
-                    o,
-                    t.map(function(t) {
-                      var n = r(t, 2),
-                        a = n[0],
-                        o = n[1];
-                      return ["".concat(e).concat(a), o];
-                    })
+      return t(
+        r(
+          (c.mods || []).map(function(n) {
+            return [["", ""]].concat(n);
+          })
+        ).map(function(n) {
+          return n.reduce(function(n, t) {
+            return t[1]
+              ? "@" === t[1][0]
+                ? [
+                    [
+                      t[1],
+                      n.map(function(n) {
+                        return ["".concat(t[0]).concat(n[0]), n[1]];
+                      })
+                    ]
                   ]
-                ]
-              : t.map(function(t) {
-                  var n = r(t, 2),
-                    a = n[0],
-                    c = n[1];
-                  return [
-                    ""
-                      .concat(e)
-                      .concat(a)
-                      .concat(o),
-                    c
-                  ];
-                })
-            : t;
-        }, c);
-      });
+                : n.map(function(n) {
+                    return [
+                      ""
+                        .concat(t[0])
+                        .concat(n[0])
+                        .concat(t[1]),
+                      n[1]
+                    ];
+                  })
+              : n;
+          }, a);
+        })
+      );
     };
-  return function(t) {
-    return (function t(n) {
-      return n
-        .map(function(n) {
-          var a = r(n, 2),
-            e = a[0],
-            o = a[1];
-          return "@" === e[0]
-            ? "".concat(e, "{").concat(t(o), "}")
-            : ".".concat(e, "{").concat(
-                o
-                  .map(function(t) {
-                    var n = r(t, 2),
-                      a = n[0],
-                      e = n[1];
-                    return "".concat(a, ":").concat(e);
+  return function(n) {
+    return (function n(t) {
+      return t
+        .map(function(t) {
+          return "@" === t[0][0]
+            ? "".concat(t[0], "{").concat(n(t[1]), "}")
+            : ".".concat(t[0], "{").concat(
+                t[1]
+                  .map(function(n) {
+                    return n.join(":");
                   })
                   .join(";"),
                 "}"
               );
         })
         .join("");
-    })(c(t));
+    })(a(n));
   };
 })();

@@ -19,7 +19,7 @@ const abbrMap = fs
 
 const css = ainsleyToCss(extend());
 
-const CHARS = Infinity;
+const CHARS = 500;
 console.log("\nOutput:");
 console.log(
   css.length > CHARS * 2
