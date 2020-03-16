@@ -3,6 +3,8 @@ const { extend } = require("../dist/extend.cjs.js");
 const csstree = require("css-tree");
 const fs = require("fs");
 const path = require("path");
+const { gzip } = require("node-gzip");
+const brotli = require("brotli");
 
 const abbrMap = fs
   .readFileSync(path.join(__dirname, "../research/propMap.txt"), "utf8")
@@ -17,7 +19,9 @@ const abbrMap = fs
     {}
   );
 
-const css = ainsleyToCss(extend());
+const ainsley = extend();
+
+const css = ainsleyToCss(ainsley);
 
 const CHARS = 500;
 console.log("\nOutput:");
@@ -87,6 +91,32 @@ try {
   console.error(err);
 }
 
-fs.writeFileSync(path.join(__dirname, "output.css"), css);
+const cssBuffer = Buffer.from(css);
+const ainsleyBuffer = Buffer.from(JSON.stringify(ainsley));
+const compilerBuffer = fs.readFileSync(
+  path.join(__dirname, "../dist/compiler.lite.web.js")
+);
 
-console.log({ ruleCount });
+fs.writeFileSync(path.join(__dirname, "output.css"), cssBuffer);
+
+(async () => {
+  console.log("\nStats:");
+  console.log({
+    ruleCount,
+    ainsley: {
+      minifiedBytes: ainsleyBuffer.byteLength,
+      gzipBytes: (await gzip(ainsleyBuffer)).byteLength,
+      brotliBytes: brotli.compress(ainsleyBuffer, { mode: 1 }).byteLength
+    },
+    compiler: {
+      minifiedBytes: compilerBuffer.byteLength,
+      gzipBytes: (await gzip(compilerBuffer)).byteLength,
+      brotliBytes: brotli.compress(compilerBuffer, { mode: 1 }).byteLength
+    },
+    outputCSS: {
+      minifiedBytes: cssBuffer.byteLength,
+      gzipBytes: (await gzip(cssBuffer)).byteLength,
+      brotliBytes: brotli.compress(cssBuffer, { mode: 1 }).byteLength
+    }
+  });
+})();

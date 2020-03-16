@@ -24,14 +24,12 @@ it massively.
 | Base Ainsley | |    JS | JS-to-CSS | Equivalent |
 +==============+ | input |  compiler | CSS output |
 +----------------+-------+-----------+------------+
-| minified bytes |  3520 |      1083 |      28091 |
+| minified bytes | 4,072 |   1,347   |   761,941  |
 ++---------------+-------+-----------+------------+
- | gzipped bytes |  1478 |       572 |       6406 |
+ | gzipped bytes | 1,591 |     657   |   137,658  |
  +---------------+-------+-----------+------------+
- | over the wire | 1478 + 572 = 2050 |       6406 |
+ | over the wire |       2,248       |   137,658  |
  +---------------+-------------------+------------+
-  | rel diff (%) |          68% less |  212% more |
-  +--------------+-------------------+------------+
 ```
 
 When added together the number of bytes sent over the wire is less than one
