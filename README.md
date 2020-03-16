@@ -41,7 +41,7 @@ All sizes in kB.
 
 | Framework   | Original | Minified |      Gzip |    Brotli | CSS Rule Count |
 | ----------- | -------: | -------: | --------: | --------: | -------------: |
-| **Ainsley** |    `6.1` |    `5.1` | **`2.3`** | **`1.9`** |        `22580` |
+| **Ainsley** |    `6.1` |    `5.1` | **`2.3`** | **`1.9`** |    **`22580`** |
 | Tailwind    |  `783.5` |  `603.3` |    `78.0` |    `22.6` |        `14445` |
 | Bootstrap   |  `187.8` |  `152.1` |    `22.7` |    `16.7` |         `2027` |
 | Bulma       |  `224.2` |  `189.9` |    `24.9` |    `19.1` |         `2142` |
@@ -162,8 +162,6 @@ property words are mapped to irregular abbreviations.
 |   overflow | ov           | "o" = {"opacity", "overflow"}       |
 |    padding | pa           | "p" = {"position", "padding"}       |
 |      style | st           | "fs" = {"font-size", "font-style"}  |
-
-````
 
 # Full base ainsley
 
@@ -377,6 +375,6 @@ property words are mapped to irregular abbreviations.
     X: "11111111px"
   }
 }
-````
+```
 
 (MIT Licence)
