@@ -30,10 +30,10 @@ calcStats().then(stats => {
     ag: `\`${ftNum(stats.baseConfig.bytes.gz + stats.compiler.bytes.gz)}\``,
     ab: `\`${ftNum(stats.baseConfig.bytes.br11 + stats.compiler.bytes.br11)}\``,
     arc: `\`${ftNum(stats.ruleCount)}\``,
-    arpb: `\`${ftNum(
+    arpb: `\`${(
       stats.ruleCount /
-        (stats.baseConfig.bytes.br11 + stats.compiler.bytes.br11)
-    )}\``
+      (stats.baseConfig.bytes.br11 + stats.compiler.bytes.br11)
+    ).toFixed(2)}\``
   };
 
   fs.writeFileSync(
