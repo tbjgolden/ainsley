@@ -1,5 +1,5 @@
 const { extend } = require("ainsley");
-const compile = require("ainsley/dist/compiler.lite.cjs");
+const { ainsleyToCss } = require("ainsley/dist/compiler.cjs");
 
 const ainsley = extend(null, {
   defs: [["ff&", [["font-family", "{fontFamily}"]]]],
@@ -32,23 +32,33 @@ const path = require("path");
   await fs.remove(path.join(__dirname, "dist"));
   // copy all files
   await fs.copy(path.join(__dirname, "src"), path.join(__dirname, "dist"));
-  // move template file
-  await fs.move(
-    path.join(__dirname, "dist/index.template.html"),
-    path.join(__dirname, "dist/index.html")
-  );
-  // compile static css file
-  await fs.writeFile(
-    path.join(__dirname, "dist/equiv.min.css"),
-    compile(ainsley)
-  );
+  await Promise.all([
+    fs.copy(
+      path.join(__dirname, "../dist/compiler.lite.web.js"),
+      path.join(__dirname, "dist/compiler.lite.web.js")
+    ),
+    fs.copy(
+      path.join(__dirname, "../dist/compiler.lite.web.js.map"),
+      path.join(__dirname, "dist/compiler.lite.web.js.map")
+    ),
+    fs.move(
+      path.join(__dirname, "dist/index.template.html"),
+      path.join(__dirname, "dist/index.html")
+    ),
+    fs.writeFile(
+      path.join(__dirname, "dist/equiv.min.css"),
+      ainsleyToCss(ainsley)
+    )
+  ]);
   // replace template with variable
   const template = await fs.readFile(
     path.join(__dirname, "dist/index.html"),
     "utf8"
   );
-  const html = template.replace(/\/\*AINSLEY\*\//g, JSON.stringify(ainsley));
-  await fs.writeFile(path.join(__dirname, "dist/index.html"), html);
+  await fs.writeFile(
+    path.join(__dirname, "dist/index.html"),
+    template.replace(/\/\*AINSLEY\*\//g, JSON.stringify(ainsley))
+  );
 
   const app = express();
   app.use(express.static(path.join(__dirname, "dist")));

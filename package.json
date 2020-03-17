@@ -10,7 +10,7 @@
   "module": "dist/extend.js",
   "browser": "dist/compiler.js",
   "scripts": {
-    "build": "rollup -c && node scripts/liteify.js"
+    "build": "rollup -c"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
@@ -26,6 +26,7 @@
     "prettier": "^1.19.1",
     "rollup": "^2.0.2",
     "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-jscc": "^1.0.0",
     "rollup-plugin-local-resolve": "^1.0.7",
     "rollup-plugin-size-snapshot": "^0.11.0",
     "rollup-plugin-terser": "^5.2.0"

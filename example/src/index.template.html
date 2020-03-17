@@ -7,15 +7,19 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <link href="/reset.min.css" rel="stylesheet" type="text/css" />
-    <style>
-      /* to avoid flash of unstyled content */
-      body {
-        display: none;
+    <script>
+      var ainsley = /*AINSLEY*/;
+      function accb(ac) {
+        var styleEl = document.createElement('style');
+        styleEl.appendChild(document.createTextNode(ac(ainsley)));
+        document.head.appendChild(styleEl);
+        document.body.style.display = "block";
       }
-    </style>
+    </script>
+    <script async="async" src="/compiler.lite.web.js"></script>
+    <link href="/reset.min.css" rel="stylesheet" type="text/css" />
   </head>
-  <body class="bgcB ffSANS cW dB">
+  <body class="bgcB ffSANS cW" style="display:none">
     <div class="nhH pa40 dF fxdC aiC">
       <div class="xw85">
         <h1 class="fwB fsH2">
@@ -57,9 +61,5 @@
         </p>
       </div>
     </div>
-    <script src="/compiler.lite.web.js"></script>
-    <script>
-      document.write("<style>" + AC(/*AINSLEY*/) + "</style>");
-    </script>
   </body>
 </html>
