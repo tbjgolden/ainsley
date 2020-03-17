@@ -1,5 +1,5 @@
 const { ainsleyToCss } = require("../dist/compiler.cjs.js");
-const { extend } = require("../dist/extend.cjs.js");
+const { base } = require("../dist/tools.cjs.js");
 const csstree = require("css-tree");
 const fs = require("fs");
 const path = require("path");
@@ -19,9 +19,7 @@ const abbrMap = fs
     {}
   );
 
-const ainsley = extend();
-
-const css = ainsleyToCss(ainsley);
+const css = ainsleyToCss(base);
 
 const CHARS = 500;
 console.log("\nOutput:");
@@ -92,7 +90,7 @@ try {
 }
 
 const cssBuffer = Buffer.from(css);
-const ainsleyBuffer = Buffer.from(JSON.stringify(ainsley));
+const baseConfigBuffer = Buffer.from(JSON.stringify(base));
 const compilerBuffer = fs.readFileSync(
   path.join(__dirname, "../dist/compiler.lite.web.js")
 );
@@ -103,10 +101,10 @@ fs.writeFileSync(path.join(__dirname, "output.css"), cssBuffer);
   console.log("\nStats:");
   console.log({
     ruleCount,
-    ainsley: {
-      minifiedBytes: ainsleyBuffer.byteLength,
-      gzipBytes: (await gzip(ainsleyBuffer)).byteLength,
-      brotliBytes: brotli.compress(ainsleyBuffer, { mode: 1 }).byteLength
+    baseConfig: {
+      minifiedBytes: baseConfigBuffer.byteLength,
+      gzipBytes: (await gzip(baseConfigBuffer)).byteLength,
+      brotliBytes: brotli.compress(baseConfigBuffer, { mode: 1 }).byteLength
     },
     compiler: {
       minifiedBytes: compilerBuffer.byteLength,

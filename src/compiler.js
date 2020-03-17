@@ -1,4 +1,7 @@
-import callback from "accb";
+//#if _CB
+import ACCB from "ACCB";
+//#endif
+
 import { fastClone, map, flat, combinations } from "./utils";
 
 export const propFragMap = {
@@ -17,6 +20,7 @@ export const iteratorRegex = /\{[a-z]+\}/gi;
 const _abbrev = w => propFragMap[w] || w[0];
 const _expandDeclaration = subpair => `${subpair[0]}:${subpair[1]}`;
 const _addEmptyMod = mod => [["", ""]].concat(mod);
+const _abbrevWord = w => w[0].toUpperCase();
 
 // expand ainsley.defs
 export const expandDefs = (ainsley, ruleSet) => {
@@ -66,7 +70,7 @@ export const expandDefs = (ainsley, ruleSet) => {
 export const expandProps = pair => {
   const propAbbrev = map(pair[0].split("-"), _abbrev).join("");
   return map(pair[1], value => [
-    `${propAbbrev}${map(value.split(" "), w => w[0].toUpperCase()).join("")}`,
+    `${propAbbrev}${map(value.split(" "), _abbrevWord).join("")}`,
     [[pair[0], value]]
   ]);
 };
@@ -120,5 +124,6 @@ export const ainsleyInsert = (ainsley, stylesheet) => {
   }
 };
 
-// callback for async scripts
-if (callback) callback(ainsleyToCss);
+//#if _CB
+if (ACCB) ACCB(ainsleyToCss);
+//#endif

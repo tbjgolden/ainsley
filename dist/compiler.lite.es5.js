@@ -1,8 +1,7 @@
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.auto = {}));
-}(this, (function (exports) { 'use strict';
+var AC = (function (ACCB) {
+  'use strict';
+
+  ACCB = ACCB && Object.prototype.hasOwnProperty.call(ACCB, 'default') ? ACCB['default'] : ACCB;
 
   function _typeof(obj) {
     "@babel/helpers - typeof";
@@ -58,6 +57,7 @@
     return list;
   };
 
+  //#if _CB
   var propFragMap = {
     flex: "fx",
     background: "bg",
@@ -163,25 +163,9 @@
     return astToCss(ainsleyToAst(ainsley));
   }; // insert ainsley into a dom
 
-  var ainsleyInsert = function ainsleyInsert(ainsley, stylesheet) {
-    var ast = ainsleyToAst(ainsley);
+  if (ACCB) ACCB(ainsleyToCss); //#endif
 
-    for (var i = ast.length - 1; i >= 0; i--) {
-      stylesheet.insertRule(ruleToCSS(ast[i]), 0);
-    }
-  };
+  return ainsleyToCss;
 
-  exports.ainsleyInsert = ainsleyInsert;
-  exports.ainsleyToAst = ainsleyToAst;
-  exports.ainsleyToCss = ainsleyToCss;
-  exports.astToCss = astToCss;
-  exports.expandDefs = expandDefs;
-  exports.expandProps = expandProps;
-  exports.iteratorRegex = iteratorRegex;
-  exports.propFragMap = propFragMap;
-  exports.ruleToCSS = ruleToCSS;
-
-  Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
-//# sourceMappingURL=compiler.js.map
+}(ACCB));
+//# sourceMappingURL=compiler.lite.es5.js.map
