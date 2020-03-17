@@ -10,7 +10,7 @@
   "module": "dist/extend.js",
   "browser": "dist/compiler.js",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c && node scripts/postBuild.js"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",

@@ -22,7 +22,10 @@ calcStats().then(stats => {
     jb: ftNum(stats.baseConfig.bytes.br11).padStart(5, " "),
     cb: ftNum(stats.compiler.bytes.br11).padStart(9, " "),
     ob: ftNum(stats.equiv.bytes.br11).padStart(10, " "),
-    at: ftNum(stats.baseConfig.bytes.br11 + stats.compiler.bytes.br11),
+    at: ftNum(stats.baseConfig.bytes.br11 + stats.compiler.bytes.br11).padStart(
+      17,
+      " "
+    ),
     am: `\`${ftNum(stats.baseConfig.bytes.min + stats.compiler.bytes.min)}\``,
     ag: `\`${ftNum(stats.baseConfig.bytes.gz + stats.compiler.bytes.gz)}\``,
     ab: `\`${ftNum(stats.baseConfig.bytes.br11 + stats.compiler.bytes.br11)}\``,
