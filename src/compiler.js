@@ -1,5 +1,3 @@
-import "./globalThis";
-
 import { fastClone, map, flat, combinations } from "./utils";
 
 export const propFragMap = {

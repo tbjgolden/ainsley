@@ -22,18 +22,6 @@
     return _typeof(obj);
   }
 
-  (function (Object) {
-    (typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis)) !== "object" && (this ? get() : (Object.defineProperty(Object.prototype, "_T_", {
-      configurable: true,
-      get: get
-    }), _T_));
-
-    function get() {
-      this.globalThis = this;
-      delete Object.prototype._T_;
-    }
-  })(Object);
-
   var fastClone = function fastClone(val) {
     if (_typeof(val) !== "object") return val;
     var arr = [];
