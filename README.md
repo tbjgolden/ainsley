@@ -163,13 +163,15 @@ This can be done in many ways! Here's some ideas to start from.
   <script src="/compiler.lite.js"></script>
   <script>
     var req = new XMLHttpRequest();
-    req.open('GET', '/ainsley.json');
-    req.onreadystatechange = function () {
+    req.open("GET", "/ainsley.json");
+    req.onreadystatechange = function() {
       if (req.readyState === 4 && req.status === 200) {
-        var styleEl = document.createElement('style');
-        styleEl.appendChild(document.createTextNode(AC(JSON.parse(req.responseText))));
+        var styleEl = document.createElement("style");
+        styleEl.appendChild(
+          document.createTextNode(AC(JSON.parse(req.responseText)))
+        );
         document.head.appendChild(styleEl);
-        document.body.style.display = 'block';
+        document.body.style.display = "block";
       }
     };
     req.send();
@@ -221,17 +223,17 @@ With this strategy alone, most abbreviations are unique to the property they
 come from, which avoids properties clashing. To fully prevent clashes, some
 property words are mapped to irregular abbreviations.
 
-|       Word | Abbreviation | Reason                              |
-| ---------: | :----------- | :---------------------------------- |
-| background | bg           | "b" = {"border", "background"}      |
-|     cursor | cu           | "c" = {"color", "cursor"}           |
-|       flex | fx           | "fw" = {"font-weight", "flex-wrap"} |
-|     margin | ma           | "m" = {"min", "max", "margin"}      |
-|        max | x            | "m" = {"min", "max", "margin"}      |
-|        min | n            | "m" = {"min", "max", "margin"}      |
-|   overflow | ov           | "o" = {"opacity", "overflow"}       |
-|    padding | pa           | "p" = {"position", "padding"}       |
-|      style | st           | "fs" = {"font-size", "font-style"}  |
+|       Word | Abbreviation | Reason                                                      |
+| ---------: | :----------- | :---------------------------------------------------------- |
+| background | bg           | "b" = {"border", "background"}                              |
+|     cursor | cu           | "c" = {"color", "cursor"}                                   |
+|       flex | fx           | "f" = {"float", "flex"}, fw" = {"font-weight", "flex-wrap"} |
+|     margin | ma           | "m" = {"min", "max", "margin"}                              |
+|        max | x            | "m" = {"min", "max", "margin"}                              |
+|        min | n            | "m" = {"min", "max", "margin"}                              |
+|   overflow | ov           | "o" = {"opacity", "overflow"}                               |
+|    padding | pa           | "p" = {"position", "padding"}                               |
+|      style | st           | "fs" = {"font-size", "font-style"}                          |
 
 # Full base ainsley
 
