@@ -2,7 +2,7 @@
   "name": "ainsley",
   "version": "0.0.1-alpha.1",
   "private": false,
-  "description": "CSS library with no compromises",
+  "description": "Ainsley is a zero compromise CSS compiler/library/framework/methodology",
   "author": "tbjgolden",
   "license": "MIT",
   "repository": "tbjgolden/ainsley",
