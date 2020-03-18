@@ -21,3 +21,17 @@ export const combinations = mods => {
     list = flat(mods.shift().map(opt => list.map(prev => prev.concat([opt]))));
   return list;
 };
+
+export const assign = objects => {
+  //#if !_LITE
+  if (!Array.isArray(objects)) throw new Error("assign needs an array");
+  //#endif
+
+  const out = {};
+  const len = objects.length;
+  for (let i = 1; i < len; i++) {
+    var obj = objects[i];
+    if (obj) for (let nextKey in obj) out[nextKey] = obj[nextKey];
+  }
+  return out;
+};

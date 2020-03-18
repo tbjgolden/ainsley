@@ -1,6 +1,4 @@
-//#if _CB
-import ACCB from "ACCB";
-//#endif
+import "./globalThis";
 
 import { fastClone, map, flat, combinations } from "./utils";
 
@@ -124,6 +122,4 @@ export const ainsleyInsert = (ainsley, stylesheet) => {
   }
 };
 
-//#if _CB
-if (ACCB) ACCB(ainsleyToCss);
-//#endif
+if (globalThis.ACCB) globalThis.ACCB(ainsleyToCss);

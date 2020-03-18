@@ -1,17 +1,25 @@
 import baseConfig from "./base";
+import { iteratorRegex } from "./compiler";
+import { flat, assign } from "./utils";
 
 export const base = baseConfig;
 
-export const extend = (...ainsleys) =>
-  ainsleys.reduce(
-    (ainsley, next) => ({
-      ...(ainsley || {}),
-      ...(next || {}),
-      defs: [...ainsley.defs, ...(next.defs || [])],
-      props: [...ainsley.props, ...(next.props || [])],
-      raw: [...ainsley.raw, ...(next.raw || [])],
-      mods: [...ainsley.mods, ...(next.mods || [])]
-    }),
+export const extend = ainsleys => {
+  //#if !_LITE
+  if (!Array.isArray(ainsleys)) throw new Error("extend needs an array");
+  //#endif
+  return ainsleys.reduce(
+    (ainsley, next) =>
+      assign([
+        ainsley || {},
+        next || {},
+        {
+          defs: flat([ainsley.defs, next.defs || []]),
+          props: flat([ainsley.props, next.props || []]),
+          raw: flat([ainsley.raw, next.raw || []]),
+          mods: flat([ainsley.mods, next.mods || []])
+        }
+      ]),
     {
       defs: [],
       props: [],
@@ -19,9 +27,4 @@ export const extend = (...ainsleys) =>
       mods: []
     }
   );
-
-export const check = ainsley => {
-  Object.entries(([k, v]) => {
-    console.log(k, v);
-  });
 };

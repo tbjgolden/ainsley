@@ -1,119 +1,10 @@
+/** @license Ainsley v0.0.1-alpha.1 (Tom Golden <tom.bio> @tbjgolden) */
+
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = global || self, factory(global.auto = {}));
 }(this, (function (exports) { 'use strict';
-
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
-  function ownKeys(object, enumerableOnly) {
-    var keys = Object.keys(object);
-
-    if (Object.getOwnPropertySymbols) {
-      var symbols = Object.getOwnPropertySymbols(object);
-      if (enumerableOnly) symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-      keys.push.apply(keys, symbols);
-    }
-
-    return keys;
-  }
-
-  function _objectSpread2(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-
-      if (i % 2) {
-        ownKeys(Object(source), true).forEach(function (key) {
-          _defineProperty(target, key, source[key]);
-        });
-      } else if (Object.getOwnPropertyDescriptors) {
-        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-      } else {
-        ownKeys(Object(source)).forEach(function (key) {
-          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-        });
-      }
-    }
-
-    return target;
-  }
-
-  function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
-  }
-
-  function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
-  }
-
-  function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) {
-      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
-
-      return arr2;
-    }
-  }
-
-  function _arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-  }
-
-  function _iterableToArray(iter) {
-    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
-  }
-
-  function _iterableToArrayLimit(arr, i) {
-    if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
-      return;
-    }
-
-    var _arr = [];
-    var _n = true;
-    var _d = false;
-    var _e = undefined;
-
-    try {
-      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-        _arr.push(_s.value);
-
-        if (i && _arr.length === i) break;
-      }
-    } catch (err) {
-      _d = true;
-      _e = err;
-    } finally {
-      try {
-        if (!_n && _i["return"] != null) _i["return"]();
-      } finally {
-        if (_d) throw _e;
-      }
-    }
-
-    return _arr;
-  }
-
-  function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance");
-  }
-
-  function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance");
-  }
 
   var baseConfig = {
     defs: [["c&", [["color", "{colors}"]]], ["d&", [["display", "{display}"]]], ["bgc&", [["background-color", "{colors}"]]], ["fs&", [["font-size", "{typeScale}"], ["line-height", "1.2"]]], ["&&", [["{scalar}", "{scale}"]]], ["&a&", [["{vector}", "{scale}"]]], ["&&&", [["{vector}-{direction}", "{scale}"]]], ["m&N&", [["margin-{direction}", "-{scale}"]]], ["fw&", [["font-weight", "{weight}"]]], ["ws&", [["white-space", "{whiteSpace}"]]], ["bgp&&", [["background-position", "{xLoc} {yLoc}"]]], ["bgs&", [["background-size", "{bgSize}"]]], ["b&w&", [["border-{direction}-width", "{scale}"]]], ["b&c&", [["border-{direction}-color", "{colors}"]]], ["fx&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]], ["fxd&", [["flex-direction", "{flexDirection}"]]], ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]], ["jc&", [["justify-content", "{flexMainAxis}"]]], ["ov&&", [["overflow", "{overflow} {overflow}"]]], ["o&", [["opacity", "{opacity}"]]]],
@@ -316,19 +207,202 @@
     }
   };
 
-  var base = baseConfig;
-  var extend = function extend() {
-    for (var _len = arguments.length, ainsleys = new Array(_len), _key = 0; _key < _len; _key++) {
-      ainsleys[_key] = arguments[_key];
+  function _typeof(obj) {
+    "@babel/helpers - typeof";
+
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+      _typeof = function (obj) {
+        return typeof obj;
+      };
+    } else {
+      _typeof = function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      };
     }
 
-    return ainsleys.reduce(function (ainsley, next) {
-      return _objectSpread2({}, ainsley || {}, {}, next || {}, {
-        defs: [].concat(_toConsumableArray(ainsley.defs), _toConsumableArray(next.defs || [])),
-        props: [].concat(_toConsumableArray(ainsley.props), _toConsumableArray(next.props || [])),
-        raw: [].concat(_toConsumableArray(ainsley.raw), _toConsumableArray(next.raw || [])),
-        mods: [].concat(_toConsumableArray(ainsley.mods), _toConsumableArray(next.mods || []))
+    return _typeof(obj);
+  }
+
+  (function (Object) {
+    (typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis)) !== "object" && (this ? get() : (Object.defineProperty(Object.prototype, "_T_", {
+      configurable: true,
+      get: get
+    }), _T_));
+
+    function get() {
+      this.globalThis = this;
+      delete Object.prototype._T_;
+    }
+  })(Object);
+
+  var fastClone = function fastClone(val) {
+    if (_typeof(val) !== "object") return val;
+    var arr = [];
+    var len = val.length;
+
+    for (var i = 0; i < len; i++) {
+      arr.push(fastClone(val[i]));
+    }
+
+    return arr;
+  };
+  var map = function map(arr, fn) {
+    var out = [];
+    var len = arr.length;
+
+    for (var i = 0; i < len; i++) {
+      out.push(fn(arr[i]));
+    }
+
+    return out;
+  };
+  var flat = function flat(arr) {
+    return [].concat.apply([], arr);
+  };
+  var combinations = function combinations(mods) {
+    var list = [[]];
+
+    while (mods.length) {
+      list = flat(mods.shift().map(function (opt) {
+        return list.map(function (prev) {
+          return prev.concat([opt]);
+        });
+      }));
+    }
+
+    return list;
+  };
+  var assign = function assign(objects) {
+    if (!Array.isArray(objects)) throw new Error("assign needs an array");
+    var out = {};
+    var len = objects.length;
+
+    for (var i = 1; i < len; i++) {
+      var obj = objects[i];
+      if (obj) for (var nextKey in obj) {
+        out[nextKey] = obj[nextKey];
+      }
+    }
+
+    return out;
+  };
+
+  var propFragMap = {
+    flex: "fx",
+    background: "bg",
+    min: "n",
+    max: "x",
+    style: "st",
+    overflow: "ov",
+    cursor: "cu"
+  };
+  var iteratorRegex = /\{[a-z]+\}/gi; // private helpers
+
+  var _abbrev = function _abbrev(w) {
+    return propFragMap[w] || w[0];
+  };
+
+  var _expandDeclaration = function _expandDeclaration(subpair) {
+    return "".concat(subpair[0], ":").concat(subpair[1]);
+  };
+
+  var _addEmptyMod = function _addEmptyMod(mod) {
+    return [["", ""]].concat(mod);
+  };
+
+  var _abbrevWord = function _abbrevWord(w) {
+    return w[0].toUpperCase();
+  }; // expand ainsley.defs
+
+
+  var expandDefs = function expandDefs(ainsley, ruleSet) {
+    var pair = ruleSet[1].reduce(function (iters, pair) {
+      return [iters[0].concat(pair[0].match(iteratorRegex) || []), iters[1].concat(pair[1].match(iteratorRegex) || [])];
+    }, [[], []]);
+    return map(combinations(map(pair[0].concat(pair[1]), function (iter) {
+      return map(Object.keys(ainsley[iter]), function (abbr) {
+        return [iter, abbr, ainsley[iter][abbr]];
       });
+    })), function (perm) {
+      var clone = fastClone(ruleSet);
+
+      for (var i = 0; clone[0].includes("&"); i++) {
+        clone[0] = clone[0].replace("&", perm[i][1]);
+      }
+
+      for (var _i = 0; _i < clone[1].length; _i++) {
+        var decl = clone[1][_i];
+
+        while (perm.length > 0 && decl[0].includes(perm[0][0])) {
+          var first = perm.shift();
+          decl[0] = decl[0].replace(first[0], first[2]);
+        }
+      }
+
+      for (var _i2 = 0; _i2 < clone[1].length; _i2++) {
+        var _decl = clone[1][_i2];
+
+        while (perm.length > 0 && _decl[1].includes(perm[0][0])) {
+          var _first = perm.shift();
+
+          _decl[1] = _decl[1].replace(_first[0], _first[2]);
+        }
+      }
+
+      return clone;
+    });
+  }; // expand ainsley.props
+
+  var expandProps = function expandProps(pair) {
+    var propAbbrev = map(pair[0].split("-"), _abbrev).join("");
+    return map(pair[1], function (value) {
+      return ["".concat(propAbbrev).concat(map(value.split(" "), _abbrevWord).join("")), [[pair[0], value]]];
+    });
+  }; // compile ainsley to a simple stylesheet ast
+
+  var ainsleyToAst = function ainsleyToAst(ainsley) {
+    var ast = [].concat(flat(map(ainsley.defs || [], function (def) {
+      return expandDefs(ainsley, def);
+    })), flat(map(ainsley.props || [], expandProps)), ainsley.raw || []);
+    return flat(map(combinations(map(ainsley.mods || [], _addEmptyMod)), function (comb) {
+      return comb.reduce(function (ast, pair) {
+        if (!pair[1]) {
+          return ast;
+        } else if (pair[1][0] === "@") {
+          return [[pair[1], map(ast, function (subpair) {
+            return ["".concat(pair[0]).concat(subpair[0]), subpair[1]];
+          })]];
+        } else {
+          return map(ast, function (subpair) {
+            return ["".concat(pair[0]).concat(subpair[0]).concat(pair[1]), subpair[1]];
+          });
+        }
+      }, ast);
+    }));
+  };
+  var ruleToCSS = function ruleToCSS(rule) {
+    return rule[0][0] === "@" ? "".concat(rule[0], "{").concat(astToCss(rule[1]), "}") : ".".concat(rule[0], "{").concat(map(rule[1], _expandDeclaration).join(";"), "}");
+  }; // generate css from simple stylesheet ast
+
+  var astToCss = function astToCss(ast) {
+    return map(ast, ruleToCSS).join("");
+  }; // generate css from ainsley
+
+  var ainsleyToCss = function ainsleyToCss(ainsley) {
+    return astToCss(ainsleyToAst(ainsley));
+  }; // insert ainsley into a dom
+  if (globalThis.ACCB) globalThis.ACCB(ainsleyToCss);
+
+  var base = baseConfig;
+  var extend = function extend(ainsleys) {
+    if (!Array.isArray(ainsleys)) throw new Error("extend needs an array");
+    return ainsleys.reduce(function (ainsley, next) {
+      return assign([ainsley || {}, next || {}, {
+        defs: flat([ainsley.defs, next.defs || []]),
+        props: flat([ainsley.props, next.props || []]),
+        raw: flat([ainsley.raw, next.raw || []]),
+        mods: flat([ainsley.mods, next.mods || []])
+      }]);
     }, {
       defs: [],
       props: [],
@@ -336,18 +410,8 @@
       mods: []
     });
   };
-  var check = function check(ainsley) {
-    Object.entries(function (_ref) {
-      var _ref2 = _slicedToArray(_ref, 2),
-          k = _ref2[0],
-          v = _ref2[1];
-
-      console.log(k, v);
-    });
-  };
 
   exports.base = base;
-  exports.check = check;
   exports.extend = extend;
 
   Object.defineProperty(exports, '__esModule', { value: true });

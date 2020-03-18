@@ -1,3 +1,5 @@
+/** @license Ainsley v0.0.1-alpha.1 (Tom Golden <tom.bio> @tbjgolden) */
+
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -19,6 +21,18 @@
 
     return _typeof(obj);
   }
+
+  (function (Object) {
+    (typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis)) !== "object" && (this ? get() : (Object.defineProperty(Object.prototype, "_T_", {
+      configurable: true,
+      get: get
+    }), _T_));
+
+    function get() {
+      this.globalThis = this;
+      delete Object.prototype._T_;
+    }
+  })(Object);
 
   var fastClone = function fastClone(val) {
     if (_typeof(val) !== "object") return val;
@@ -170,6 +184,7 @@
       stylesheet.insertRule(ruleToCSS(ast[i]), 0);
     }
   };
+  if (globalThis.ACCB) globalThis.ACCB(ainsleyToCss);
 
   exports.ainsleyInsert = ainsleyInsert;
   exports.ainsleyToAst = ainsleyToAst;
