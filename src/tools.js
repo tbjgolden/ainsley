@@ -1,3 +1,8 @@
+//#if !_LITE
+import check from "./libs/checkTypes";
+import lint from "./lint";
+//#endif
+
 import baseConfig from "./base";
 import { iteratorRegex } from "./compiler";
 import { flat, assign } from "./utils";
@@ -6,13 +11,20 @@ export const base = baseConfig;
 
 export const extend = ainsleys => {
   //#if !_LITE
-  if (!Array.isArray(ainsleys)) throw new Error("extend needs an array");
+  check.assert.array.of.nonEmptyObject(ainsleys);
+  ainsleys.forEach(subainsley => {
+    check.assert.maybe.array.of.nonEmptyArray(subainsley.defs);
+    check.assert.maybe.array.of.nonEmptyArray(subainsley.props);
+    check.assert.maybe.array.of.nonEmptyArray(subainsley.raw);
+    check.assert.maybe.array.of.nonEmptyArray(subainsley.mods);
+  });
   //#endif
-  return ainsleys.reduce(
-    (ainsley, next) =>
+
+  const result = ainsleys.reduce(
+    (ainsley, next = {}) =>
       assign([
-        ainsley || {},
-        next || {},
+        ainsley,
+        next,
         {
           defs: flat([ainsley.defs, next.defs || []]),
           props: flat([ainsley.props, next.props || []]),
@@ -27,4 +39,10 @@ export const extend = ainsleys => {
       mods: []
     }
   );
+
+  //#if !_LITE
+  lint(result);
+  //#endif
+
+  return result;
 };

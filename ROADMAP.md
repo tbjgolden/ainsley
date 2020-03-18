@@ -3,18 +3,10 @@
 - [x] determine if a recurse fn can be changed to work for both recursions
 - [x] es5 version
 - [x] remove spreads and destructuring from compiler
-- [ ] actually use it on something
-- [ ] build a basic repl with it
-- [ ] monorepo
-- [ ] formalise/document the api
-- [ ] clean up the defaults, and come up with common recipes
-- [ ] write reset as ainsley
-- [ ] recalc the byte sizes
-- [ ] flowtypes
-- [ ] automatic documentation generation
 - [ ] jest tests
-- [ ] remove non-inherited properties default case in props
-- [ ] check feasibility of something between props and defs
-- [ ] formally remove abbrev clashes in properties
+- [ ] lint script which checks the types
+- [ ] formalise/document the api
+- [ ] reset in ainsley
+- [ ] repl
 - [ ] do we need to remove prop abbrev clashes if vals don't clash
-- [ ] look an mnemonic sorting of properties
+- [ ] mnemonics

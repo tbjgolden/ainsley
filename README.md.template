@@ -62,7 +62,7 @@ it massively.
 >
 > - Load Test 1: Chrome, Low-end mobile, Slow 3G, 360x640
 > - Load Test 2: Chrome, Mid-tier mobile, Fast 3G, 414x736
-> - Load Test 3: Chrome, \$3k MacBook Pro, South Korea speed, full resolution
+> - Load Test 3: Chrome, MacBook Pro, South Korea speed, full resolution
 
 ## What's the magic sauce?
 
@@ -91,7 +91,7 @@ yarn add ainsley # or `npm install ainsley`
 const { extend, base } = require("ainsley");
 
 // extend is only needed if you want to merge two ainsleys
-const ainsley = extend(
+const ainsley = extend([
   base,
   // your custom ainsley extension
   {
@@ -107,7 +107,7 @@ const ainsley = extend(
       O: "outside"
     }
   }
-);
+]);
 
 // send your custom ainsley object to client as JS/JSON
 // different ways of doing this are covered below in Client
@@ -117,7 +117,7 @@ const ainsley = extend(
 
 This can be done in many ways! Here's some ideas to start from.
 
-##### Idea 1: async script and callback + server/build-time rendering json
+##### Recipe 1: async script and callback + server/build-time rendering json
 
 ```html
 <head>
@@ -144,7 +144,7 @@ This can be done in many ways! Here's some ideas to start from.
 </body>
 ```
 
-##### Idea 2: fetch ainsley at runtime and run it using normal script
+##### Recipe 2: fetch ainsley at runtime and run it using normal script
 
 ```html
 <head>

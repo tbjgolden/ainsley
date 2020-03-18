@@ -25,7 +25,9 @@ export default {
     ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]],
     ["jc&", [["justify-content", "{flexMainAxis}"]]],
     ["ov&&", [["overflow", "{overflow} {overflow}"]]],
-    ["o&", [["opacity", "{opacity}"]]]
+    ["o&", [["opacity", "{opacity}"]]],
+    ["zi&", [["z-index", "{z}"]]],
+    ["lh&", [["line-height", "{lineHeight}"]]]
   ],
   props: [
     ["text-decoration", ["line-through", "underline", "none"]],

@@ -26,13 +26,13 @@ it massively.
 | Base Ainsley | |    JS | JS-to-CSS | Equivalent |
 +==============+ | input |  compiler | CSS output |
 +----------------+-------+-----------+------------+
-| minified bytes | 4,072 |     1,886 |    761,941 |
+| minified bytes | 4,141 |     1,886 |    767,408 |
 ++---------------+-------+-----------+------------+
- | gzipped bytes | 1,591 |       956 |    137,658 |
+ | gzipped bytes | 1,615 |       956 |    139,001 |
  ++--------------+-------+-----------+------------+
-  | brotli bytes | 1,353 |       856 |     23,161 |
+  | brotli bytes | 1,376 |       856 |     23,386 |
   +-+------------+-------+-----------+------------+
-    | TOTAL SENT |             2,209 |     23,161 |
+    | TOTAL SENT |             2,232 |     23,386 |
     +------------+-------------------+------------+
 ```
 
@@ -40,7 +40,7 @@ it massively.
 
 | **Name**      | **Minified** |   **Gzip** | **Brotli** | **CSS Rules** | **Efficiency\*** |  **Load 1** |  **Load 2** | **Load 3** |
 | :------------ | -----------: | ---------: | ---------: | ------------: | ---------------: | ----------: | ----------: | ---------: |
-| **ainsley**   |   **`5,958`** | **`2,547`** | **`2,209`** |   **`22,580`** |     **`10.22`** | **`4,272`** | **`1,263`** |      `115` |
+| **ainsley**   |   **`6,027`** | **`2,571`** | **`2,232`** |   **`22,800`** |     **`10.22`** | **`4,272`** | **`1,263`** |      `115` |
 | tailwindcss   |    `710,997` |   `97,417` |   `10,199` |      `14,445` |           `1.42` |    `18,031` |     `5,075` |      `183` |
 | tachyons      |     `73,497` |   `13,697` |    `2,421` |       `2,113` |           `0.87` |     `5,606` |     `1,621` |   **`71`** |
 | sane-tachyons |     `49,793` |    `9,200` |    `1,957` |       `1,278` |           `0.65` |     `5,345` |     `1,552` |       `75` |
@@ -64,7 +64,7 @@ it massively.
 >
 > - Load Test 1: Chrome, Low-end mobile, Slow 3G, 360x640
 > - Load Test 2: Chrome, Mid-tier mobile, Fast 3G, 414x736
-> - Load Test 3: Chrome, \$3k MacBook Pro, South Korea speed, full resolution
+> - Load Test 3: Chrome, MacBook Pro, South Korea speed, full resolution
 
 ## What's the magic sauce?
 
@@ -93,7 +93,7 @@ yarn add ainsley # or `npm install ainsley`
 const { extend, base } = require("ainsley");
 
 // extend is only needed if you want to merge two ainsleys
-const ainsley = extend(
+const ainsley = extend([
   base,
   // your custom ainsley extension
   {
@@ -109,7 +109,7 @@ const ainsley = extend(
       O: "outside"
     }
   }
-);
+]);
 
 // send your custom ainsley object to client as JS/JSON
 // different ways of doing this are covered below in Client
@@ -119,7 +119,7 @@ const ainsley = extend(
 
 This can be done in many ways! Here's some ideas to start from.
 
-##### Idea 1: async script and callback + server/build-time rendering json
+##### Recipe 1: async script and callback + server/build-time rendering json
 
 ```html
 <head>
@@ -146,7 +146,7 @@ This can be done in many ways! Here's some ideas to start from.
 </body>
 ```
 
-##### Idea 2: fetch ainsley at runtime and run it using normal script
+##### Recipe 2: fetch ainsley at runtime and run it using normal script
 
 ```html
 <head>
