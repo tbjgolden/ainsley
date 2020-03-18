@@ -1,7 +1,5 @@
 import lint from "./lint";
-import { base, extend } from "./tools";
-
-const empty = extend([]);
+import { base, empty } from "./tools";
 
 test("base produces no errors", () => {
   expect(lint(base)).toEqual(null);

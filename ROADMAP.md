@@ -4,6 +4,7 @@
 - [x] es5 version
 - [x] remove spreads and destructuring from compiler
 - [ ] jest tests
+- [ ] make props more flexible
 - [ ] lint script which checks the types
 - [ ] formalise/document the api
 - [ ] reset in ainsley

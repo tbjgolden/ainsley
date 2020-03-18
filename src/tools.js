@@ -9,9 +9,17 @@ import { flat, assign } from "./utils";
 
 export const base = baseConfig;
 
+export const empty = {
+  defs: [],
+  props: [],
+  raw: [],
+  mods: []
+};
+
 export const extend = ainsleys => {
   //#if !_LITE
-  check.assert.array.of.nonEmptyObject(ainsleys);
+  check.assert.nonEmptyArray(ainsleys);
+  check.assert.array.of.object(ainsleys);
   ainsleys.forEach(subainsley => {
     check.assert.maybe.array.of.nonEmptyArray(subainsley.defs);
     check.assert.maybe.array.of.nonEmptyArray(subainsley.props);
@@ -21,7 +29,7 @@ export const extend = ainsleys => {
   //#endif
 
   const result = ainsleys.reduce(
-    (ainsley, next = {}) =>
+    (ainsley, next) =>
       assign([
         ainsley,
         next,
@@ -32,12 +40,7 @@ export const extend = ainsleys => {
           mods: flat([ainsley.mods, next.mods || []])
         }
       ]),
-    {
-      defs: [],
-      props: [],
-      raw: [],
-      mods: []
-    }
+    empty
   );
 
   //#if !_LITE

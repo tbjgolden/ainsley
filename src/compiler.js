@@ -72,7 +72,7 @@ export const expandProps = pair => {
 };
 
 // compile ainsley to a simple stylesheet ast
-export const ainsleyToAst = ainsley => {
+export const ainsleyToAST = ainsley => {
   const ast = [].concat(
     flat(map(ainsley.defs || [], def => expandDefs(ainsley, def))),
     flat(map(ainsley.props || [], expandProps)),
@@ -103,21 +103,21 @@ export const ainsleyToAst = ainsley => {
 
 export const ruleToCSS = rule =>
   rule[0][0] === "@"
-    ? `${rule[0]}{${astToCss(rule[1])}}`
+    ? `${rule[0]}{${astToCSS(rule[1])}}`
     : `.${rule[0]}{${map(rule[1], _expandDeclaration).join(";")}}`;
 
 // generate css from simple stylesheet ast
-export const astToCss = ast => map(ast, ruleToCSS).join("");
+export const astToCSS = ast => map(ast, ruleToCSS).join("");
 
 // generate css from ainsley
-export const ainsleyToCss = ainsley => astToCss(ainsleyToAst(ainsley));
+export const ainsleyToCSS = ainsley => astToCSS(ainsleyToAST(ainsley));
 
 // insert ainsley into a dom
 export const ainsleyInsert = (ainsley, stylesheet) => {
-  const ast = ainsleyToAst(ainsley);
+  const ast = ainsleyToAST(ainsley);
   for (let i = ast.length - 1; i >= 0; i--) {
     stylesheet.insertRule(ruleToCSS(ast[i]), 0);
   }
 };
 
-if (globalThis.ACCB) globalThis.ACCB(ainsleyToCss);
+if (globalThis.ACCB) globalThis.ACCB(ainsleyToCSS);

@@ -86,18 +86,3 @@ test("assign", () => {
   expect(() => assign([{}])).toThrow();
   expect(() => assign([{}, { a: 1 }])).toThrow();
 });
-
-// export const assign = objects => {
-//   //#if !_LITE
-//   check.assert.nonEmptyArray(objects);
-//   check.assert.array.of.nonEmptyObject(objects);
-//   //#endif
-//
-//   const out = {};
-//   const len = objects.length;
-//   for (let i = 1; i < len; i++) {
-//     var obj = objects[i];
-//     if (obj) for (let nextKey in obj) out[nextKey] = obj[nextKey];
-//   }
-//   return out;
-// };
