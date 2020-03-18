@@ -1,6 +1,6 @@
 <!-- DO NOT EDIT DIRECTLY! -->
 
-# Ainsley
+# Ainsley 👨🏾‍🍳
 
 Ainsley is a functional CSS framework and library with no compromises.
 It is the tiny spiritual successor of Tachyons and Tailwind.
