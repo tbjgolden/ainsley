@@ -91,11 +91,12 @@ yarn add ainsley # or `npm install ainsley`
 
 ```js
 // server, only needed if you are going to modify the config
-const { extend } = require("ainsley");
+const { extend, base } = require("ainsley");
 
 // extend is only needed if you want to merge two ainsleys
 const ainsley = extend(
-  null, // <- null implies base config
+  base,
+  // your custom ainsley extension
   {
     defs: [[".ls&", [["list-style", "{listStyleType} {listStylePosition}"]]]],
     props: [["letter-spacing", ["0", "1px", "2px", "3px"]]],
@@ -111,17 +112,67 @@ const ainsley = extend(
   }
 );
 
-// send custom ainsley to client
+// send your custom ainsley object to client as JS/JSON
+// different ways of doing this are covered below in Client
 ```
 
 ### Client
 
+This can be done in many ways! Here's some ideas to start from.
+
+##### Idea 1: async script and callback + server/build-time rendering json
+
 ```html
-// receive ainsley, assuming server-side rendering but any method works
-<script src="compiler.lite.js"></script>
-<script>
-  document.write("<style>" + Ainsley(/* your ainsley here */) + "</style>");
-</script>
+<head>
+  <!-- your html here -->
+
+  <link href="/reset.min.css" rel="stylesheet" type="text/css" />
+  <script>
+    // receive ainsley object, assuming here that /*AINSLEY*/ is replaced by json
+    var ainsley = /*AINSLEY*/;
+
+    // this callback function exists to allow the script to be loaded with async
+    function ACCB(ac) {
+      var styleEl = document.createElement('style');
+      styleEl.appendChild(document.createTextNode(ac(ainsley)));
+      document.head.appendChild(styleEl);
+      document.body.style.display = 'block';
+    }
+  </script>
+  <script async="async" src="/compiler.lite.js"></script>
+</head>
+<!-- Hide body while loading to prevent flash of unstyled content -->
+<body style="display: none">
+  <!-- your html here -->
+</body>
+```
+
+##### Idea 2: fetch ainsley at runtime and run it using normal script
+
+```html
+<head>
+  <!-- your html here -->
+
+  <link href="/reset.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body style="display: none">
+  <!-- your html here -->
+
+  <script src="/compiler.lite.js"></script>
+  <script>
+    var req = new XMLHttpRequest();
+    req.open('GET', '/ainsley.json');
+    req.onreadystatechange = function () {
+      if (req.readyState === 4 && req.status === 200) {
+        var styleEl = document.createElement('style');
+        styleEl.appendChild(document.createTextNode(AC(JSON.parse(req.responseText))));
+        document.head.appendChild(styleEl);
+        document.body.style.display = 'block';
+      }
+    };
+    req.send();
+  </script>
+</body>
 ```
 
 # All classes are regular

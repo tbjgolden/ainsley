@@ -6,9 +6,9 @@
   "author": "tbjgolden",
   "license": "MIT",
   "repository": "tbjgolden/ainsley",
-  "main": "dist/extend.cjs.js",
-  "module": "dist/extend.js",
-  "browser": "dist/compiler.js",
+  "main": "dist/tools.js",
+  "module": "dist/tools.js",
+  "browser": "dist/compiler.lite.js",
   "scripts": {
     "build": "rollup -c && node scripts/postBuild.js"
   },

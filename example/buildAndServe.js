@@ -1,7 +1,7 @@
-const { extend } = require("ainsley");
-const { ainsleyToCss } = require("ainsley/dist/compiler.cjs");
+const { extend, base } = require("ainsley");
+const { ainsleyToCss } = require("ainsley/dist/compiler");
 
-const ainsley = extend(null, {
+const ainsley = extend(base, {
   defs: [["ff&", [["font-family", "{fontFamily}"]]]],
   props: [["letter-spacing", ["0", "1px", "2px", "3px"]]],
   "{listStyleType}": {
@@ -34,12 +34,12 @@ const path = require("path");
   await fs.copy(path.join(__dirname, "src"), path.join(__dirname, "dist"));
   await Promise.all([
     fs.copy(
-      path.join(__dirname, "../dist/compiler.lite.web.js"),
-      path.join(__dirname, "dist/compiler.lite.web.js")
+      path.join(__dirname, "../dist/compiler.lite.js"),
+      path.join(__dirname, "dist/compiler.lite.js")
     ),
     fs.copy(
-      path.join(__dirname, "../dist/compiler.lite.web.js.map"),
-      path.join(__dirname, "dist/compiler.lite.web.js.map")
+      path.join(__dirname, "../dist/compiler.lite.js.map"),
+      path.join(__dirname, "dist/compiler.lite.js.map")
     ),
     fs.move(
       path.join(__dirname, "dist/index.template.html"),
