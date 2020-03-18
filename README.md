@@ -2,6 +2,8 @@
 
 # Ainsley 👨🏾‍🍳
 
+![Coveralls github branch](https://img.shields.io/coveralls/github/tbjgolden/ainsley/master)
+
 Ainsley is a functional CSS framework and library with no compromises.
 It is the tiny spiritual successor of Tachyons and Tailwind.
 
