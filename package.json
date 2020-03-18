@@ -10,7 +10,7 @@
   "module": "dist/tools.js",
   "browser": "dist/compiler.lite.js",
   "scripts": {
-    "build": "rollup -c && node scripts/postBuild.js",
+    "build": "yarn test && rollup -c && node scripts/postBuild.js",
     "test": "jest"
   },
   "devDependencies": {

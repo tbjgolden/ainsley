@@ -2,6 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const calcStats = require("./calcStats");
 
+const testCoverage = require("../coverage/coverage-summary.json");
+
 const ftNum = n =>
   `${n}`
     .split("")
