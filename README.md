@@ -26,13 +26,13 @@ it massively.
 | Base Ainsley | |    JS | JS-to-CSS | Equivalent |
 +==============+ | input |  compiler | CSS output |
 +----------------+-------+-----------+------------+
-| minified bytes | 4,141 |     1,886 |    767,408 |
+| minified bytes | 4,141 |     1,669 |    767,408 |
 ++---------------+-------+-----------+------------+
- | gzipped bytes | 1,615 |       956 |    139,001 |
+ | gzipped bytes | 1,615 |       849 |    139,001 |
  ++--------------+-------+-----------+------------+
-  | brotli bytes | 1,376 |       856 |     23,386 |
+  | brotli bytes | 1,376 |       761 |     23,386 |
   +-+------------+-------+-----------+------------+
-    | TOTAL SENT |             2,232 |     23,386 |
+    | TOTAL SENT |             2,137 |     23,386 |
     +------------+-------------------+------------+
 ```
 
@@ -40,7 +40,7 @@ it massively.
 
 | **Name**      | **Minified** |   **Gzip** | **Brotli** | **CSS Rules** | **Efficiency\*** |  **Load 1** |  **Load 2** | **Load 3** |
 | :------------ | -----------: | ---------: | ---------: | ------------: | ---------------: | ----------: | ----------: | ---------: |
-| **ainsley**   |   **`6,027`** | **`2,571`** | **`2,232`** |   **`22,800`** |     **`10.22`** | **`4,272`** | **`1,263`** |      `115` |
+| **ainsley**   |   **`5,810`** | **`2,464`** | **`2,137`** |   **`22,800`** |     **`10.67`** | **`4,272`** | **`1,263`** |      `115` |
 | tailwindcss   |    `710,997` |   `97,417` |   `10,199` |      `14,445` |           `1.42` |    `18,031` |     `5,075` |      `183` |
 | tachyons      |     `73,497` |   `13,697` |    `2,421` |       `2,113` |           `0.87` |     `5,606` |     `1,621` |   **`71`** |
 | sane-tachyons |     `49,793` |    `9,200` |    `1,957` |       `1,278` |           `0.65` |     `5,345` |     `1,552` |       `75` |
@@ -119,34 +119,40 @@ const ainsley = extend([
 
 This can be done in many ways! Here's some ideas to start from.
 
-##### Recipe 1: async script and callback + server/build-time rendering json
+##### Common core concepts
 
 ```html
 <head>
-  <!-- your html here -->
+  <!-- your head html here -->
 
+  <!-- you will want a reset (normalize makes less sense with functional css)
+       this project includes one which is suitable for ainsley -->
   <link href="/reset.min.css" rel="stylesheet" type="text/css" />
-  <script>
-    // receive ainsley object, assuming here that /*AINSLEY*/ is replaced by json
-    var ainsley = /*AINSLEY*/;
-
-    // this callback function exists to allow the script to be loaded with async
-    function ACCB(ac) {
-      var styleEl = document.createElement('style');
-      styleEl.appendChild(document.createTextNode(ac(ainsley)));
-      document.head.appendChild(styleEl);
-      document.body.style.display = 'block';
-    }
-  </script>
-  <script async="async" src="/compiler.lite.js"></script>
 </head>
 <!-- Hide body while loading to prevent flash of unstyled content -->
 <body style="display: none">
-  <!-- your html here -->
+  <!-- your body html here -->
+
+  <!-- 👨🏾‍🍳 insert ainsley logic here! -->
 </body>
 ```
 
-##### Recipe 2: fetch ainsley at runtime and run it using normal script
+##### 👨🏾‍🍳 Recipe 1: embed it in script
+
+```html
+<script src="/compiler.lite.js"></script>
+<script>
+  var styleEl = document.createElement("style");
+  styleEl.appendChild(
+    // your ainsley object goes here
+    document.createTextNode(AinsleyToCSS(/*AINSLEY*/))
+  );
+  document.head.appendChild(styleEl);
+  document.body.style.display = "block";
+</script>
+```
+
+##### 👨🏾‍🍳 Recipe 2: fetch ainsley at runtime
 
 ```html
 <head>

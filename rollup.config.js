@@ -10,9 +10,9 @@ const pkgJson = require("./package.json");
 
 const config = (() => {
   const sources = [
-    ["compiler", ["auto"]],
-    ["compiler.lite", ["auto"]],
-    ["tools", ["auto"]],
+    ["compiler", ["AinsleyCompiler"]],
+    ["compiler.lite", ["AinsleyToCSS"]],
+    ["tools", ["AinsleyTools"]],
     ["lint", ["es", "cjs"]]
   ];
 

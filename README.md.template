@@ -117,34 +117,40 @@ const ainsley = extend([
 
 This can be done in many ways! Here's some ideas to start from.
 
-##### Recipe 1: async script and callback + server/build-time rendering json
+##### Common core concepts
 
 ```html
 <head>
-  <!-- your html here -->
+  <!-- your head html here -->
 
+  <!-- you will want a reset (normalize makes less sense with functional css)
+       this project includes one which is suitable for ainsley -->
   <link href="/reset.min.css" rel="stylesheet" type="text/css" />
-  <script>
-    // receive ainsley object, assuming here that /*AINSLEY*/ is replaced by json
-    var ainsley = /*AINSLEY*/;
-
-    // this callback function exists to allow the script to be loaded with async
-    function ACCB(ac) {
-      var styleEl = document.createElement('style');
-      styleEl.appendChild(document.createTextNode(ac(ainsley)));
-      document.head.appendChild(styleEl);
-      document.body.style.display = 'block';
-    }
-  </script>
-  <script async="async" src="/compiler.lite.js"></script>
 </head>
 <!-- Hide body while loading to prevent flash of unstyled content -->
 <body style="display: none">
-  <!-- your html here -->
+  <!-- your body html here -->
+
+  <!-- 👨🏾‍🍳 insert ainsley logic here! -->
 </body>
 ```
 
-##### Recipe 2: fetch ainsley at runtime and run it using normal script
+##### 👨🏾‍🍳 Recipe 1: embed it in script
+
+```html
+<script src="/compiler.lite.js"></script>
+<script>
+  var styleEl = document.createElement("style");
+  styleEl.appendChild(
+    // your ainsley object goes here
+    document.createTextNode(AinsleyToCSS(/*AINSLEY*/))
+  );
+  document.head.appendChild(styleEl);
+  document.body.style.display = "block";
+</script>
+```
+
+##### 👨🏾‍🍳 Recipe 2: fetch ainsley at runtime
 
 ```html
 <head>

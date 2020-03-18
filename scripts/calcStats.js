@@ -1,13 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 
-const { ainsleyToCss } = require("../dist/compiler");
+const { ainsleyToCSS } = require("../dist/compiler");
 const { base } = require("../dist/tools");
 const { gzip } = require("node-gzip");
 const brotli = require("brotli");
 const csstree = require("css-tree");
 
-const equivCSS = ainsleyToCss(base);
+const equivCSS = ainsleyToCSS(base);
 
 const equivBuffer = Buffer.from(equivCSS);
 const baseConfigBuffer = Buffer.from(JSON.stringify(base));

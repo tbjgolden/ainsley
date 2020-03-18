@@ -1158,155 +1158,7 @@ var check = mixin(functions, {
   maybe: maybe
 });
 
-var fastClone = function fastClone(val) {
-  check.assert.not.object(val);
-  check.assert.not["function"](val);
-  if (_typeof(val) !== "object") return val;
-  var arr = [];
-  var len = val.length;
-
-  for (var i = 0; i < len; i++) {
-    arr.push(fastClone(val[i]));
-  }
-
-  return arr;
-};
-var map$1 = function map(arr, fn) {
-  check.assert.array(arr);
-  check.assert["function"](fn);
-  var out = [];
-  var len = arr.length;
-
-  for (var i = 0; i < len; i++) {
-    out.push(fn(arr[i]));
-  }
-
-  return out;
-};
-var flat = function flat(arr) {
-  check.assert.array.of.array(arr);
-  return [].concat.apply([], arr);
-};
-var combinations = function combinations(mods) {
-  check.assert.nonEmptyArray(mods);
-  var list = [[]];
-
-  while (mods.length) {
-    list = flat(mods.shift().map(function (opt) {
-      return list.map(function (prev) {
-        return prev.concat([opt]);
-      });
-    }));
-  }
-
-  return list;
-};
-
-var propFragMap = {
-  flex: "fx",
-  background: "bg",
-  min: "n",
-  max: "x",
-  style: "st",
-  overflow: "ov",
-  cursor: "cu"
-};
 var iteratorRegex = /\{[a-z]+\}/gi; // private helpers
-
-var _abbrev = function _abbrev(w) {
-  return propFragMap[w] || w[0];
-};
-
-var _expandDeclaration = function _expandDeclaration(subpair) {
-  return "".concat(subpair[0], ":").concat(subpair[1]);
-};
-
-var _addEmptyMod = function _addEmptyMod(mod) {
-  return [["", ""]].concat(mod);
-};
-
-var _abbrevWord = function _abbrevWord(w) {
-  return w[0].toUpperCase();
-}; // expand ainsley.defs
-
-
-var expandDefs = function expandDefs(ainsley, ruleSet) {
-  var pair = ruleSet[1].reduce(function (iters, pair) {
-    return [iters[0].concat(pair[0].match(iteratorRegex) || []), iters[1].concat(pair[1].match(iteratorRegex) || [])];
-  }, [[], []]);
-  return map$1(combinations(map$1(pair[0].concat(pair[1]), function (iter) {
-    return map$1(Object.keys(ainsley[iter]), function (abbr) {
-      return [iter, abbr, ainsley[iter][abbr]];
-    });
-  })), function (perm) {
-    var clone = fastClone(ruleSet);
-
-    for (var i = 0; clone[0].includes("&"); i++) {
-      clone[0] = clone[0].replace("&", perm[i][1]);
-    }
-
-    for (var _i = 0; _i < clone[1].length; _i++) {
-      var decl = clone[1][_i];
-
-      while (perm.length > 0 && decl[0].includes(perm[0][0])) {
-        var first = perm.shift();
-        decl[0] = decl[0].replace(first[0], first[2]);
-      }
-    }
-
-    for (var _i2 = 0; _i2 < clone[1].length; _i2++) {
-      var _decl = clone[1][_i2];
-
-      while (perm.length > 0 && _decl[1].includes(perm[0][0])) {
-        var _first = perm.shift();
-
-        _decl[1] = _decl[1].replace(_first[0], _first[2]);
-      }
-    }
-
-    return clone;
-  });
-}; // expand ainsley.props
-
-var expandProps = function expandProps(pair) {
-  var propAbbrev = map$1(pair[0].split("-"), _abbrev).join("");
-  return map$1(pair[1], function (value) {
-    return ["".concat(propAbbrev).concat(map$1(value.split(" "), _abbrevWord).join("")), [[pair[0], value]]];
-  });
-}; // compile ainsley to a simple stylesheet ast
-
-var ainsleyToAst = function ainsleyToAst(ainsley) {
-  var ast = [].concat(flat(map$1(ainsley.defs || [], function (def) {
-    return expandDefs(ainsley, def);
-  })), flat(map$1(ainsley.props || [], expandProps)), ainsley.raw || []);
-  return flat(map$1(combinations(map$1(ainsley.mods || [], _addEmptyMod)), function (comb) {
-    return comb.reduce(function (ast, pair) {
-      if (!pair[1]) {
-        return ast;
-      } else if (pair[1][0] === "@") {
-        return [[pair[1], map$1(ast, function (subpair) {
-          return ["".concat(pair[0]).concat(subpair[0]), subpair[1]];
-        })]];
-      } else {
-        return map$1(ast, function (subpair) {
-          return ["".concat(pair[0]).concat(subpair[0]).concat(pair[1]), subpair[1]];
-        });
-      }
-    }, ast);
-  }));
-};
-var ruleToCSS = function ruleToCSS(rule) {
-  return rule[0][0] === "@" ? "".concat(rule[0], "{").concat(astToCss(rule[1]), "}") : ".".concat(rule[0], "{").concat(map$1(rule[1], _expandDeclaration).join(";"), "}");
-}; // generate css from simple stylesheet ast
-
-var astToCss = function astToCss(ast) {
-  return map$1(ast, ruleToCSS).join("");
-}; // generate css from ainsley
-
-var ainsleyToCss = function ainsleyToCss(ainsley) {
-  return astToCss(ainsleyToAst(ainsley));
-}; // insert ainsley into a dom
-if (globalThis.ACCB) globalThis.ACCB(ainsleyToCss);
 
 var isRegexp = function (input) {
   return Object.prototype.toString.call(input) === '[object RegExp]';
@@ -1344,6 +1196,14 @@ var isIterator = function isIterator(str) {
   return regex.test(str);
 };
 
+var checkDefs = function checkDefs(errors, defs) {
+  var isValid = check.array(defs) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
+
+  if (!isValid) {
+    errors.push("\"defs\" is invalid");
+  }
+};
+
 var checkProps = function checkProps(errors, props) {
   var isValid = check.array(props) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
 
@@ -1352,30 +1212,56 @@ var checkProps = function checkProps(errors, props) {
   }
 };
 
+var checkRaw = function checkRaw(errors, raw) {
+  var isValid = check.array(raw) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
+
+  if (!isValid) {
+    errors.push("\"raw\" is invalid");
+  }
+};
+
+var checkMods = function checkMods(errors, mods) {
+  var isValid = check.array(mods) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
+
+  if (!isValid) {
+    errors.push("\"mods\" is invalid");
+  }
+};
+
 var lint = function lint(ainsley) {
   var errors = [];
-  var defsJson = JSON.stringify(ainsley.defs);
 
-  for (var k in ainsley) {
-    if (isIterator(k)) {
-      if (!defsJson.includes(k)) {
-        errors.push("iterator ".concat(k, " defined but not used in \"defs\""));
-      }
-    } else if (k === "defs") {
-      var match = defsJson.match(k);
+  try {
+    var defsJson = JSON.stringify(ainsley.defs);
 
-      if (match) {
-        for (var i = 0; i < match.length; i++) {
-          if (!ainsley[match[i]]) {
-            errors.push("iterator ".concat(match[i], " referenced in \"defs\" but not defined"));
+    for (var k in ainsley) {
+      if (isIterator(k)) {
+        if (!defsJson.includes(k)) {
+          errors.push("iterator ".concat(k, " defined but not used in \"defs\""));
+        }
+      } else if (k === "defs") {
+        checkDefs(errors, ainsley.defs);
+        var match = defsJson.match(iteratorRegex);
+
+        if (match) {
+          for (var i = 0; i < match.length; i++) {
+            if (!ainsley[match[i]]) {
+              errors.push("iterator ".concat(match[i], " referenced in \"defs\" but not defined"));
+            }
           }
         }
+      } else if (k === "props") {
+        checkProps(errors, ainsley.props);
+      } else if (k === "raw") {
+        checkRaw(errors, ainsley.raw);
+      } else if (k === "mods") {
+        checkMods(errors, ainsley.mods);
+      } else {
+        errors.push("invalid property \"".concat(k, "\" found"));
       }
-    } else if (k === "props") {
-      checkProps(errors, ainsley.props);
-    } else if (k === "raw") ; else if (k === "mods") ; else {
-      errors.push("invalid property \"".concat(k, "\" found"));
     }
+  } catch (err) {
+    errors.push("Error during lint: ".concat(err.message));
   }
 
   return errors.length ? errors : null;

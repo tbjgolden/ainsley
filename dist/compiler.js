@@ -3,7 +3,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.auto = {}));
+  (global = global || self, factory(global.AinsleyCompiler = {}));
 }(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
@@ -1165,9 +1165,9 @@
   });
 
   var fastClone = function fastClone(val) {
-    check.assert.not.object(val);
     check.assert.not["function"](val);
     if (_typeof(val) !== "object") return val;
+    check.assert.array(val);
     var arr = [];
     var len = val.length;
 
@@ -1194,7 +1194,8 @@
     return [].concat.apply([], arr);
   };
   var combinations = function combinations(mods) {
-    check.assert.nonEmptyArray(mods);
+    check.assert.array(mods);
+    check.assert.array.of.nonEmptyArray(mods);
     var list = [[]];
 
     while (mods.length) {
@@ -1281,7 +1282,7 @@
     });
   }; // compile ainsley to a simple stylesheet ast
 
-  var ainsleyToAst = function ainsleyToAst(ainsley) {
+  var ainsleyToAST = function ainsleyToAST(ainsley) {
     var ast = [].concat(flat(map$1(ainsley.defs || [], function (def) {
       return expandDefs(ainsley, def);
     })), flat(map$1(ainsley.props || [], expandProps)), ainsley.raw || []);
@@ -1302,30 +1303,29 @@
     }));
   };
   var ruleToCSS = function ruleToCSS(rule) {
-    return rule[0][0] === "@" ? "".concat(rule[0], "{").concat(astToCss(rule[1]), "}") : ".".concat(rule[0], "{").concat(map$1(rule[1], _expandDeclaration).join(";"), "}");
+    return rule[0][0] === "@" ? "".concat(rule[0], "{").concat(astToCSS(rule[1]), "}") : ".".concat(rule[0], "{").concat(map$1(rule[1], _expandDeclaration).join(";"), "}");
   }; // generate css from simple stylesheet ast
 
-  var astToCss = function astToCss(ast) {
+  var astToCSS = function astToCSS(ast) {
     return map$1(ast, ruleToCSS).join("");
   }; // generate css from ainsley
 
-  var ainsleyToCss = function ainsleyToCss(ainsley) {
-    return astToCss(ainsleyToAst(ainsley));
+  var ainsleyToCSS = function ainsleyToCSS(ainsley) {
+    return astToCSS(ainsleyToAST(ainsley));
   }; // insert ainsley into a dom
 
   var ainsleyInsert = function ainsleyInsert(ainsley, stylesheet) {
-    var ast = ainsleyToAst(ainsley);
+    var ast = ainsleyToAST(ainsley);
 
     for (var i = ast.length - 1; i >= 0; i--) {
       stylesheet.insertRule(ruleToCSS(ast[i]), 0);
     }
   };
-  if (globalThis.ACCB) globalThis.ACCB(ainsleyToCss);
 
   exports.ainsleyInsert = ainsleyInsert;
-  exports.ainsleyToAst = ainsleyToAst;
-  exports.ainsleyToCss = ainsleyToCss;
-  exports.astToCss = astToCss;
+  exports.ainsleyToAST = ainsleyToAST;
+  exports.ainsleyToCSS = ainsleyToCSS;
+  exports.astToCSS = astToCSS;
   exports.expandDefs = expandDefs;
   exports.expandProps = expandProps;
   exports.iteratorRegex = iteratorRegex;
