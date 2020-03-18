@@ -6,5 +6,10 @@ module.exports = {
         useBuiltIns: false
       }
     ]
-  ]
+  ],
+  env: {
+    test: {
+      plugins: ["@babel/plugin-transform-runtime"]
+    }
+  }
 };

@@ -119,5 +119,3 @@ export const ainsleyInsert = (ainsley, stylesheet) => {
     stylesheet.insertRule(ruleToCSS(ast[i]), 0);
   }
 };
-
-if (globalThis.ACCB) globalThis.ACCB(ainsleyToCSS);

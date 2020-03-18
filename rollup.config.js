@@ -36,9 +36,6 @@ const config = (() => {
 
       // Licence comment
       let banner = `/** @license Ainsley v${pkgJson.version} (Tom Golden <tom.bio> @tbjgolden) */\n`;
-      // globalThis polyfill
-      if (vars.lite)
-        banner += `!function(t){function e(){this.globalThis=this,delete t.prototype._T_}"object"!=typeof globalThis&&(this?e():(t.defineProperty(t.prototype,"_T_",{configurable:!0,get:e}),_T_))}(Object);`;
 
       const config = [
         {

@@ -44,7 +44,7 @@ export const flat = arr => {
 
 export const combinations = mods => {
   //#if !_LITE
-  check.assert.nonEmptyArray(mods);
+  check.assert.array(mods);
   check.assert.array.of.nonEmptyArray(mods);
   //#endif
 

@@ -60,9 +60,9 @@ test("combinations", () => {
     [1, 4, 7],
     [2, 4, 7]
   ]);
+  expect(combinations([])).toEqual([[]]);
   expect(combinations([[1], [2], [3]])).toEqual([[1, 2, 3]]);
   expect(() => combinations([[1], [], []])).toThrow();
-  expect(() => combinations([])).toThrow();
 });
 
 test("assign", () => {
