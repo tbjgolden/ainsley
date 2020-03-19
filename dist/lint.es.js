@@ -1,4 +1,4 @@
-/** @license Ainsley v0.0.1-beta.1 (Tom Golden <tom.bio> @tbjgolden) */
+/** @license Ainsley v0.0.1-beta.2 (Tom Golden <tom.bio> @tbjgolden) */
 
 function _typeof(obj) {
   "@babel/helpers - typeof";
