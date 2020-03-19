@@ -27,6 +27,7 @@ prompt.get(
         JSON.stringify({ ...pkgJSON, version }, null, 2)
       );
       execSync(`git tag -a "v${version}" -m "${message}"`);
+      execSync(`git push --tags`);
       execSync(`yarn publish --new-version ${version}`);
     }
   }
