@@ -1,6 +1,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 const calcStats = require("./calcStats");
+const calcEfficiency = require("./calcEfficiency");
 
 const testCoverage = require("../coverage/coverage-summary.json");
 
@@ -45,9 +46,11 @@ const ftNum = n =>
     ag: `\`${ftNum(stats.baseConfig.bytes.gz + stats.compiler.bytes.gz)}\``,
     ab: `\`${ftNum(stats.baseConfig.bytes.br11 + stats.compiler.bytes.br11)}\``,
     arc: `\`${ftNum(stats.ruleCount)}\``,
-    arpb: `\`${(
-      stats.ruleCount /
-      (stats.baseConfig.bytes.br11 + stats.compiler.bytes.br11)
+    ae: `\`${calcEfficiency(
+      stats.baseConfig.bytes.min + stats.compiler.bytes.min,
+      stats.baseConfig.bytes.min + stats.compiler.bytes.min,
+      stats.baseConfig.bytes.min + stats.compiler.bytes.min,
+      stats.ruleCount
     ).toFixed(2)}\``
   };
 

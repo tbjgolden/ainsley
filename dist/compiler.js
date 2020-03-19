@@ -1208,6 +1208,9 @@
 
     return list;
   };
+  var toString$1 = function toString(value) {
+    return typeof value === "string" ? value : value + "";
+  };
 
   var propFragMap = {
     flex: "fx",
@@ -1218,7 +1221,10 @@
     overflow: "ov",
     cursor: "cu"
   };
-  var iteratorRegex = /\{[a-z]+\}/gi; // private helpers
+  var iteratorRegex = /\{[a-z]+\}/gi; // private constants
+
+  var _hyphenOrDigitRegex = /-|[^0-9]/g;
+  var _upperOrDigitRegex = /[^A-Z0-9]/g; // private helpers
 
   var _abbrev = function _abbrev(w) {
     return propFragMap[w] || w[0];
@@ -1232,14 +1238,30 @@
     return [["", ""]].concat(mod);
   };
 
-  var _abbrevWord = function _abbrevWord(w) {
-    return w[0].toUpperCase();
+  var _toPair = function _toPair(input, isProp) {
+    if (typeof input === "number") {
+      var str = toString$1(input);
+      return [str.replace(_hyphenOrDigitRegex, function (match) {
+        return match === "-" ? "N" : "";
+      }), str];
+    } else {
+      return [input.replace(_upperOrDigitRegex, ""), isProp ? input.toUpperCase() : input.toLowerCase()];
+    }
+  };
+
+  var _toPairs = function _toPairs(inputs) {
+    var isProp = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    return inputs.length ? map$1(inputs, function (input) {
+      return _toPair(input, isProp);
+    }) : map$1(Object.keys(inputs), function (key) {
+      return [toString$1(key), toString$1(inputs[key])];
+    });
   }; // expand ainsley.defs
 
 
   var expandDefs = function expandDefs(ainsley, ruleSet) {
     var pair = ruleSet[1].reduce(function (iters, pair) {
-      return [iters[0].concat(pair[0].match(iteratorRegex) || []), iters[1].concat(pair[1].match(iteratorRegex) || [])];
+      return [iters[0].concat(toString$1(pair[0]).match(iteratorRegex) || []), iters[1].concat(toString$1(pair[1]).match(iteratorRegex) || [])];
     }, [[], []]);
     return map$1(combinations(map$1(pair[0].concat(pair[1]), function (iter) {
       return map$1(Object.keys(ainsley[iter]), function (abbr) {
@@ -1277,9 +1299,8 @@
 
   var expandProps = function expandProps(pair) {
     var propAbbrev = map$1(pair[0].split("-"), _abbrev).join("");
-    return map$1(pair[1], function (value) {
-      if (!Array.isArray(value)) value = [value, map$1(value.split(" "), _abbrevWord).join("")];
-      return ["".concat(propAbbrev).concat(value[1]), [[pair[0], value[0]]]];
+    return map$1(_toPairs(pair[1], false), function (subpair) {
+      return ["".concat(propAbbrev).concat(subpair[0]), [[pair[0], subpair[1]]]];
     });
   }; // compile ainsley to a simple stylesheet ast
 

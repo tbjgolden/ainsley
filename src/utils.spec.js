@@ -1,4 +1,4 @@
-import { fastClone, map, flat, combinations, assign } from "./utils";
+import { fastClone, map, flat, combinations, assign, toString } from "./utils";
 
 const testArr = [["a", "b"], [[]], [1, false], []];
 
@@ -85,4 +85,9 @@ test("assign", () => {
   expect(() => assign([])).toThrow();
   expect(() => assign([{}])).toThrow();
   expect(() => assign([{}, { a: 1 }])).toThrow();
+});
+
+test("toString", () => {
+  expect(toString(1)).toBe("1");
+  expect(toString("1")).toBe("1");
 });

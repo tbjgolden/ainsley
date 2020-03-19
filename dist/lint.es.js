@@ -1158,7 +1158,7 @@ var check = mixin(functions, {
   maybe: maybe
 });
 
-var iteratorRegex = /\{[a-z]+\}/gi; // private helpers
+var iteratorRegex = /\{[a-z]+\}/gi; // private constants
 
 var isRegexp = function (input) {
   return Object.prototype.toString.call(input) === '[object RegExp]';

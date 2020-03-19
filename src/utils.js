@@ -68,3 +68,6 @@ export const assign = objects => {
   }
   return out;
 };
+
+export const toString = value =>
+  typeof value === "string" ? value : value + "";

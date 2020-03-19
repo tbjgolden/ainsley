@@ -5,9 +5,12 @@
 - [x] remove spreads and destructuring from compiler
 - [x] jest tests
 - [x] make props more flexible
+- [ ] different value abbreviation strategies (identity, 1st char, hyphens)
+- [ ] range abbreviation strategy
 - [ ] lint script which checks the types
-- [ ] formalise/document the api
 - [ ] reset in ainsley
+- [ ] formalise/document the api
+- [ ] postcss integration for autoprefixer et al?
 - [ ] repl
 - [ ] do we need to remove prop abbrev clashes if vals don't clash
 - [ ] mnemonics

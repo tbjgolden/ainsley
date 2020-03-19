@@ -1185,7 +1185,7 @@
     return out;
   };
 
-  var iteratorRegex = /\{[a-z]+\}/gi; // private helpers
+  var iteratorRegex = /\{[a-z]+\}/gi; // private constants
 
   var isRegexp = function (input) {
     return Object.prototype.toString.call(input) === '[object RegExp]';
@@ -1296,8 +1296,16 @@
 
   // prettier-ignore
   var baseConfig = {
-    defs: [["c&", [["color", "{colors}"]]], ["bgc&", [["background-color", "{colors}"]]], ["fs&", [["font-size", "{typeScale}"], ["line-height", "1.2"]]], ["&&", [["{scalar}", "{scale}"]]], ["&a&", [["{vector}", "{scale}"]]], ["&&&", [["{vector}-{direction}", "{scale}"]]], ["m&N&", [["margin-{direction}", "-{scale}"]]], ["bgp&&", [["background-position", "{xLoc} {yLoc}"]]], ["b&w&", [["border-{direction}-width", "{scale}"]]], ["b&c&", [["border-{direction}-color", "{colors}"]]], ["fx&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]], ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]], ["ov&&", [["overflow", "{overflow} {overflow}"]]]],
-    props: [["display", ["inline", "block", "flex", "none", ["inline-block", "IB"], ["inline-flex", "IF"]]], ["text-decoration", ["line-through", "underline", "none"]], ["font-style", ["italic", "normal"]], ["text-transform", ["uppercase", "lowercase"]], ["overflow-wrap", ["break-word", "anywhere", "normal"]], ["background-repeat", ["repeat", "no-repeat"]], ["position", ["relative", "absolute", "fixed", "sticky"]], ["text-align", ["left", "center", "right", "justify"]], ["vertical-align", ["top", "middle", "bottom"]], ["cursor", ["default", "pointer"]], ["pointer-events", ["none", "all"]], ["line-height", [["1", "B"], ["1.2", "T"], ["1.3", "C"]]], ["z-index", ["0", "1", "2", "4", "8", ["16", "16"], ["32", "32"], ["-1", "N1"]]], ["opacity", ["0", ["10", "10"], ["20", "20"], ["40", "40"], ["80", "80"], ["100", "100"]]], ["font-weight", [["400", "N"], ["600", "M"], ["700", "B"]]], ["white-space", ["pre", ["pre-wrap", "PW"], ["nowrap", "C"], ["normal", "CW"]]], ["background-size", [["cover", "CV"], ["contain", "CT"]]], ["flex-direction", [["row", "R"], ["column", "C"], ["row-reverse", "RR"], ["column-reverse", "CR"]]], ["justify-content", ["center", ["flex-start", "FS"], ["flex-end", "FE"], ["space-between", "SB"], ["space-evenly", "SE"]]]],
+    defs: [["c&", [["color", "{colors}"]]], ["bgc&", [["background-color", "{colors}"]]], ["fs&", [["font-size", "{typeScale}"], ["line-height", 1.2]]], ["&&", [["{scalar}", "{scale}"]]], ["&a&", [["{vector}", "{scale}"]]], ["&&&", [["{vector}-{direction}", "{scale}"]]], ["m&N&", [["margin-{direction}", "-{scale}"]]], ["bgp&&", [["background-position", "{xLoc} {yLoc}"]]], ["b&w&", [["border-{direction}-width", "{scale}"]]], ["b&c&", [["border-{direction}-color", "{colors}"]]], ["fx&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]], ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]], ["ov&&", [["overflow", "{overflow} {overflow}"]]]],
+    props: [["display", ["Inline", "Block", "FleX", "None", "Inline-Block", "Inline-FleX"]], ["text-decoration", ["Line-through", "Underline", "None"]], ["font-style", ["Italic", "Normal"]], ["text-transform", ["Uppercase", "Lowercase"]], ["overflow-wrap", ["Break-Word", "Anywhere", "Normal"]], ["background-repeat", ["Repeat", "No-repeat"]], ["position", ["Relative", "Absolute", "Fixed", "Sticky"]], ["text-align", ["Left", "Center", "Right", "Justify"]], ["vertical-align", ["Top", "Middle", "Bottom"]], ["cursor", ["Default", "Pointer"]], ["pointer-events", ["None", "All"]], ["line-height", {
+      B: 1,
+      T: 1.2,
+      C: 1.3
+    }], ["z-index", [0, 1, 2, 4, 8, 16, 32, -1]], ["opacity", [0, 10, 20, 40, 80, 100]], ["font-weight", {
+      N: 400,
+      M: 600,
+      B: 700
+    }], ["white-space", ["Pre", "Pre-Wrap", "NoWrap", "Normal"]], ["background-size", ["CoVer", "ConTain"]], ["flex-direction", ["Row", "Column", "Row-Reverse", "Column-Reverse"]], ["justify-content", ["Center", "Flex-Start", "Flex-End", "Space-Between", "Space-Evenly"]]],
     mods: [[["o-", ":hover"], ["o-", ":focus"], ["o-", ":active"]], [["s-", "@media(min-width:384px)"], ["m-", "@media(min-width:768px)"], ["l-", "@media(min-width:1024px)"], ["x-", "@media(min-width:1536px)"]]],
     "{overflow}": {
       H: "hidden",

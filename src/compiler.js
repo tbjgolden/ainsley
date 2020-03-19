@@ -1,4 +1,4 @@
-import { fastClone, map, flat, combinations } from "./utils";
+import { fastClone, map, flat, combinations, toString } from "./utils";
 
 export const propFragMap = {
   flex: "fx",
@@ -12,18 +12,40 @@ export const propFragMap = {
 
 export const iteratorRegex = /\{[a-z]+\}/gi;
 
+// private constants
+const _hyphenOrDigitRegex = /-|[^0-9]/g;
+const _upperOrDigitRegex = /[^A-Z0-9]/g;
+
 // private helpers
 const _abbrev = w => propFragMap[w] || w[0];
 const _expandDeclaration = subpair => `${subpair[0]}:${subpair[1]}`;
 const _addEmptyMod = mod => [["", ""]].concat(mod);
 const _abbrevWord = w => w[0].toUpperCase();
+const _toPair = (input, isProp) => {
+  if (typeof input === "number") {
+    const str = toString(input);
+    return [
+      str.replace(_hyphenOrDigitRegex, match => (match === "-" ? "N" : "")),
+      str
+    ];
+  } else {
+    return [
+      input.replace(_upperOrDigitRegex, ""),
+      isProp ? input.toUpperCase() : input.toLowerCase()
+    ];
+  }
+};
+const _toPairs = (inputs, isProp = true) =>
+  inputs.length
+    ? map(inputs, input => _toPair(input, isProp))
+    : map(Object.keys(inputs), key => [toString(key), toString(inputs[key])]);
 
 // expand ainsley.defs
 export const expandDefs = (ainsley, ruleSet) => {
   const pair = ruleSet[1].reduce(
     (iters, pair) => [
-      iters[0].concat(pair[0].match(iteratorRegex) || []),
-      iters[1].concat(pair[1].match(iteratorRegex) || [])
+      iters[0].concat(toString(pair[0]).match(iteratorRegex) || []),
+      iters[1].concat(toString(pair[1]).match(iteratorRegex) || [])
     ],
     [[], []]
   );
@@ -65,11 +87,10 @@ export const expandDefs = (ainsley, ruleSet) => {
 // expand ainsley.props
 export const expandProps = pair => {
   const propAbbrev = map(pair[0].split("-"), _abbrev).join("");
-  return map(pair[1], value => {
-    if (!Array.isArray(value))
-      value = [value, map(value.split(" "), _abbrevWord).join("")];
-    return [`${propAbbrev}${value[1]}`, [[pair[0], value[0]]]];
-  });
+  return map(_toPairs(pair[1], false), subpair => [
+    `${propAbbrev}${subpair[0]}`,
+    [[pair[0], subpair[1]]]
+  ]);
 };
 
 // compile ainsley to a simple stylesheet ast
