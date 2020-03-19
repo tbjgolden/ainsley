@@ -9,17 +9,196 @@ test("empty produces no errors", () => {
   expect(lint(empty)).toEqual(null);
 });
 
-test("invalid defs produces error", () => {
-  expect(lint({ ...empty, defs: null })).toContain('"defs" is invalid');
-});
-test("invalid props produces error", () => {
-  expect(lint({ ...empty, props: null })).toContain('"props" is invalid');
-});
-test("invalid raw produces error", () => {
-  expect(lint({ ...empty, raw: null })).toContain('"raw" is invalid');
-});
-test("invalid mods produces error", () => {
-  expect(lint({ ...empty, mods: null })).toContain('"mods" is invalid');
+describe("types", () => {
+  test("defs", () => {
+    expect(lint({ ...empty, defs: null })).toContain(
+      '"defs" is invalid: expected null to be Array'
+    );
+    expect(lint({ ...empty, defs: [] })).toBe(null);
+    expect(lint({ ...empty, defs: {} })).toContain(
+      '"defs" is invalid: expected Object to be Array'
+    );
+    expect(lint({ ...empty, defs: [[]] })).toContain(
+      '"defs" is invalid: expected Array to be non-empty array'
+    );
+    expect(lint({ ...empty, defs: [[null, "a"]] })).toContain(
+      '"defs" is invalid: expected null to be non-empty string'
+    );
+    expect(lint({ ...empty, defs: [["a", null]] })).toContain(
+      '"defs" is invalid: expected null to be non-empty array'
+    );
+    expect(lint({ ...empty, defs: [["a", "b"]] })).toContain(
+      '"defs" is invalid: expected "b" to be non-empty array'
+    );
+    expect(lint({ ...empty, defs: [["a", ["b", "c"]]] })).toContain(
+      '"defs" is invalid: expected Array to be non-empty array'
+    );
+    expect(lint({ ...empty, defs: [["a", [["b", "c"]]]] })).toBe(null);
+  });
+
+  test("props", () => {
+    expect(lint({ ...empty, props: null })).toContain(
+      '"props" is invalid: expected null to be Array'
+    );
+    expect(lint({ ...empty, props: [] })).toBe(null);
+    expect(lint({ ...empty, props: {} })).toContain(
+      '"props" is invalid: expected Object to be Array'
+    );
+    expect(lint({ ...empty, props: [["a"]] })).toContain(
+      '"props" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, props: [["a", "a"]] })).toContain(
+      '"props" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, props: [["a", []]] })).toContain(
+      '"props" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, props: [["a", ["a"]]] })).toBe(null);
+    expect(lint({ ...empty, props: [["a", [0, 1]]] })).toBe(null);
+    expect(lint({ ...empty, props: [["a", [false]]] })).toContain(
+      '"props" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, props: [["a", {}]] })).toContain(
+      '"props" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, props: [["a", { 2: 1, a: "b" }]] })).toBe(null);
+  });
+
+  test("raw", () => {
+    expect(lint({ ...empty, raw: null })).toContain(
+      '"raw" is invalid: expected null to be Array'
+    );
+    expect(lint({ ...empty, raw: [] })).toBe(null);
+    expect(lint({ ...empty, raw: {} })).toContain(
+      '"raw" is invalid: expected Object to be Array'
+    );
+    expect(lint({ ...empty, raw: [[]] })).toContain(
+      '"raw" is invalid: expected Array to be non-empty array'
+    );
+    expect(lint({ ...empty, raw: [[null, "a"]] })).toContain(
+      '"raw" is invalid: expected null to be non-empty string'
+    );
+    expect(lint({ ...empty, raw: [["a", null]] })).toContain(
+      '"raw" is invalid: expected null to be non-empty array'
+    );
+    expect(lint({ ...empty, raw: [["a", "b"]] })).toContain(
+      '"raw" is invalid: expected "b" to be non-empty array'
+    );
+    expect(lint({ ...empty, raw: [["a", ["b", "c"]]] })).toContain(
+      '"raw" is invalid: expected Array to be non-empty array'
+    );
+    expect(lint({ ...empty, raw: [["a", [["b", "c"]]]] })).toBe(null);
+  });
+
+  test("mods", () => {
+    expect(lint({ ...empty, mods: null })).toContain(
+      '"mods" is invalid: expected null to be Array'
+    );
+    expect(lint({ ...empty, mods: {} })).toContain(
+      '"mods" is invalid: expected Object to be Array'
+    );
+    expect(lint({ ...empty, mods: [[]] })).toContain(
+      '"mods" is invalid: expected Array to be non-empty array'
+    );
+    expect(lint({ ...empty, mods: [[null, "a"]] })).toContain(
+      '"mods" is invalid: expected Array to be non-empty array'
+    );
+    expect(lint({ ...empty, mods: [["a", null]] })).toContain(
+      '"mods" is invalid: expected Array to be non-empty array'
+    );
+    expect(lint({ ...empty, mods: [["a", "b"]] })).toContain(
+      '"mods" is invalid: expected Array to be non-empty array'
+    );
+    expect(lint({ ...empty, mods: [["a", ["b", "c"]]] })).toContain(
+      '"mods" is invalid: expected Array to be non-empty array'
+    );
+    expect(lint({ ...empty, mods: [["a", [["b", "c"]]]] })).toContain(
+      '"mods" is invalid: expected Array to be non-empty array'
+    );
+
+    expect(lint({ ...empty, mods: [] })).toBe(null);
+    expect(lint({ ...empty, mods: [[[]]] })).toContain(
+      '"mods" is invalid: expected Array to be non-empty array'
+    );
+    expect(lint({ ...empty, mods: [[["a"]]] })).toContain(
+      '"mods" is invalid: expected Array to have length 2'
+    );
+    expect(lint({ ...empty, mods: [[["a", "b", "c"]]] })).toContain(
+      '"mods" is invalid: expected Array to have length 2'
+    );
+    expect(lint({ ...empty, mods: [[["a", "b"]]] })).toBe(null);
+    expect(lint({ ...empty, mods: [[["a", ""]]] })).toContain(
+      '"mods" is invalid: expected "" to be non-empty string'
+    );
+    expect(
+      lint({
+        ...empty,
+        mods: [
+          [
+            ["a", "b"],
+            ["a", "b"],
+            ["a", "b"]
+          ]
+        ]
+      })
+    ).toBe(null);
+    expect(
+      lint({
+        ...empty,
+        mods: [
+          [
+            ["a", "b"],
+            ["a", "b"],
+            ["a", "b"]
+          ],
+          [
+            ["a", "b"],
+            ["a", "b"]
+          ]
+        ]
+      })
+    ).toBe(null);
+    expect(
+      lint({
+        ...empty,
+        mods: [
+          [
+            ["a", "b"],
+            ["a", "b"],
+            ["a", "b"]
+          ],
+          []
+        ]
+      })
+    ).toContain('"mods" is invalid: expected Array to be non-empty array');
+  });
+
+  test("iterator", () => {
+    expect(lint({ ...empty, "{iterator}": null })).toContain(
+      '"{iterator}" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, "{iterator}": [] })).toContain(
+      '"{iterator}" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, "{iterator}": {} })).toContain(
+      '"{iterator}" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, "{iterator}": ["a"] })).not.toContain(
+      '"{iterator}" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, "{iterator}": [0, 1] })).not.toContain(
+      '"{iterator}" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, "{iterator}": [false] })).toContain(
+      '"{iterator}" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, "{iterator}": {} })).toContain(
+      '"{iterator}" is invalid: assert failed'
+    );
+    expect(lint({ ...empty, "{iterator}": { 2: 1, a: "b" } })).not.toContain(
+      '"{iterator}" is invalid: assert failed'
+    );
+  });
 });
 
 test("ainsley contains an unused iterator", () => {

@@ -66,7 +66,7 @@ const fns = [
 ];
 
 fns.forEach(({ n, f, s }) => {
-  messages[n] = `assert failed: expected {a} to ${s}`;
+  messages[n] = `expected {a} to ${s}`;
   predicates[n] = f;
 });
 

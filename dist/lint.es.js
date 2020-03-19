@@ -1199,8 +1199,19 @@ var isIterator = function isIterator(str) {
 var checkDefs = function checkDefs(errors, defs) {
   try {
     check.assert.array(defs);
+    check.assert.array.of.nonEmptyArray(defs);
+    defs.forEach(function (def) {
+      check.assert.string(def[0]);
+      check.assert.nonEmptyArray(def[1]);
+      check.assert.array.of.nonEmptyArray(def[1]);
+      def[1].forEach(function (decl) {
+        check.assert.hasLength(decl, 2);
+        check.assert.string(decl[0]);
+        check.assert(check.nonEmptyString(decl[1]) || check.number(decl[1]));
+      });
+    });
   } catch (err) {
-    errors.push("\"defs\" is invalid");
+    errors.push("\"defs\" is invalid: ".concat(err.message));
   }
 };
 
@@ -1208,7 +1219,7 @@ var checkProps = function checkProps(errors, props) {
   try {
     check.assert.array(props);
   } catch (err) {
-    errors.push("\"props\" is invalid");
+    errors.push("\"props\" is invalid: ".concat(err.message));
   }
 };
 
@@ -1216,7 +1227,7 @@ var checkRaw = function checkRaw(errors, raw) {
   try {
     check.assert.array(raw);
   } catch (err) {
-    errors.push("\"raw\" is invalid");
+    errors.push("\"raw\" is invalid: ".concat(err.message));
   }
 };
 
@@ -1224,7 +1235,7 @@ var checkMods = function checkMods(errors, mods) {
   try {
     check.assert.array(mods);
   } catch (err) {
-    errors.push("\"mods\" is invalid");
+    errors.push("\"mods\" is invalid: ".concat(err.message));
   }
 };
 
