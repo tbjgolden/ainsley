@@ -26,6 +26,8 @@ prompt.get(
         path.join(__dirname, "../package.json"),
         JSON.stringify({ ...pkgJSON, version }, null, 2)
       );
+      execSync(`git commit -a -m "v${version}: ${message}"`);
+      execSync(`git push`);
       execSync(`git tag -a "v${version}" -m "${message}"`);
       execSync(`git push --tags`);
       execSync(`yarn publish --new-version ${version}`);
