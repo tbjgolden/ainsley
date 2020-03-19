@@ -2,49 +2,47 @@ import check from "./libs/checkTypes";
 import { iteratorRegex } from "./compiler";
 import cloneRegExp from "clone-regexp";
 
+const propFragMap = {
+  flex: "fx",
+  background: "bg",
+  min: "n",
+  max: "x",
+  style: "st",
+  overflow: "ov",
+  cursor: "cu"
+};
+
 const regex = cloneRegExp(iteratorRegex, { global: false });
 const isIterator = str => regex.test(str);
 
 const checkDefs = (errors, defs) => {
-  const isValid =
-    check.array(defs) &&
-    true &&
-    !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-  if (!isValid) {
+  try {
+    check.assert.array(defs);
+  } catch (err) {
     errors.push(`"defs" is invalid`);
   }
 };
 
 const checkProps = (errors, props) => {
-  const isValid =
-    check.array(props) &&
-    true &&
-    !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-  if (!isValid) {
+  try {
+    check.assert.array(props);
+  } catch (err) {
     errors.push(`"props" is invalid`);
   }
 };
 
 const checkRaw = (errors, raw) => {
-  const isValid =
-    check.array(raw) &&
-    true &&
-    !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-  if (!isValid) {
+  try {
+    check.assert.array(raw);
+  } catch (err) {
     errors.push(`"raw" is invalid`);
   }
 };
 
 const checkMods = (errors, mods) => {
-  const isValid =
-    check.array(mods) &&
-    true &&
-    !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-  if (!isValid) {
+  try {
+    check.assert.array(mods);
+  } catch (err) {
     errors.push(`"mods" is invalid`);
   }
 };

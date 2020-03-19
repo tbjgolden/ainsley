@@ -1197,33 +1197,33 @@ var isIterator = function isIterator(str) {
 };
 
 var checkDefs = function checkDefs(errors, defs) {
-  var isValid = check.array(defs) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-  if (!isValid) {
+  try {
+    check.assert.array(defs);
+  } catch (err) {
     errors.push("\"defs\" is invalid");
   }
 };
 
 var checkProps = function checkProps(errors, props) {
-  var isValid = check.array(props) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-  if (!isValid) {
+  try {
+    check.assert.array(props);
+  } catch (err) {
     errors.push("\"props\" is invalid");
   }
 };
 
 var checkRaw = function checkRaw(errors, raw) {
-  var isValid = check.array(raw) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-  if (!isValid) {
+  try {
+    check.assert.array(raw);
+  } catch (err) {
     errors.push("\"raw\" is invalid");
   }
 };
 
 var checkMods = function checkMods(errors, mods) {
-  var isValid = check.array(mods) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-  if (!isValid) {
+  try {
+    check.assert.array(mods);
+  } catch (err) {
     errors.push("\"mods\" is invalid");
   }
 };

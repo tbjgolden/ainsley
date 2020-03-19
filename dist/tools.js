@@ -1224,33 +1224,33 @@
   };
 
   var checkDefs = function checkDefs(errors, defs) {
-    var isValid = check.array(defs) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-    if (!isValid) {
+    try {
+      check.assert.array(defs);
+    } catch (err) {
       errors.push("\"defs\" is invalid");
     }
   };
 
   var checkProps = function checkProps(errors, props) {
-    var isValid = check.array(props) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-    if (!isValid) {
+    try {
+      check.assert.array(props);
+    } catch (err) {
       errors.push("\"props\" is invalid");
     }
   };
 
   var checkRaw = function checkRaw(errors, raw) {
-    var isValid = check.array(raw) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-    if (!isValid) {
+    try {
+      check.assert.array(raw);
+    } catch (err) {
       errors.push("\"raw\" is invalid");
     }
   };
 
   var checkMods = function checkMods(errors, mods) {
-    var isValid = check.array(mods) && true && !!"shjcdsnkdskndskjdlkadlkaklsakldskldknlsnlfknlsfndlsnkdlsnlds";
-
-    if (!isValid) {
+    try {
+      check.assert.array(mods);
+    } catch (err) {
       errors.push("\"mods\" is invalid");
     }
   };
@@ -1297,15 +1297,15 @@
   // prettier-ignore
   var baseConfig = {
     defs: [["c&", [["color", "{colors}"]]], ["bgc&", [["background-color", "{colors}"]]], ["fs&", [["font-size", "{typeScale}"], ["line-height", 1.2]]], ["&&", [["{scalar}", "{scale}"]]], ["&&", [["{direction}", "{scale}"]]], ["&&&", [["{vector}-{direction}", "{scale}"]]], ["m&N&", [["margin-{direction}", "-{scale}"]]], ["bgp&&", [["background-position", "{xLoc} {yLoc}"]]], ["b&w&", [["border-{direction}-width", "{scale}"]]], ["b&c&", [["border-{direction}-color", "{colors}"]]], ["fx&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]], ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]], ["ov&&", [["overflow", "{overflow} {overflow}"]]]],
-    props: [["Display", ["Inline", "Block", "FleX", "None", "Inline-Block", "Inline-FleX"]], ["Text-Decoration", ["Line-through", "Underline", "None"]], ["Font-STyle", ["Italic", "Normal"]], ["Text-Transform", ["Uppercase", "Lowercase"]], ["Overflow-Wrap", ["Break-Word", "Anywhere", "Normal"]], ["Background-Repeat", ["Repeat", "No-repeat"]], ["Position", ["Relative", "Absolute", "Fixed", "Sticky"]], ["Text-Align", ["Left", "Center", "Right", "Justify"]], ["Vertical-Align", ["Top", "Middle", "Bottom"]], ["Cursor", ["Default", "Pointer"]], ["Pointer-Events", ["None", "All"]], ["Line-Height", {
+    props: [["Display", ["Inline", "Block", "FleX", "None", "Inline-Block", "Inline-FleX"]], ["Text-Decoration", ["Line-through", "Underline", "None"]], ["Font-STyle", ["Italic", "Normal"]], ["Text-Transform", ["Uppercase", "Lowercase"]], ["Overflow-Wrap", ["Break-Word", "Anywhere", "Normal"]], ["Background-Repeat", ["Repeat", "No-repeat"]], ["Position", ["Relative", "Absolute", "Fixed", "Sticky"]], ["Text-Align", ["Left", "Center", "Right", "Justify"]], ["Vertical-Align", ["Top", "Middle", "Bottom"]], ["Cursor", ["Default", "Pointer"]], ["Pointer-Events", ["None", "All"]], ["Z-Index", [0, 1, 2, 4, 8, 16, 32, -1]], ["Opacity", [0, 10, 20, 40, 80, 100]], ["White-Space", ["Pre", "Pre-Wrap", "NoWrap", "Normal"]], ["BackGround-Size", ["CoVer", "ConTain"]], ["FleX-Direction", ["Row", "Column", "Row-Reverse", "Column-Reverse"]], ["Justify-Content", ["Center", "Flex-Start", "Flex-End", "Space-Between", "Space-Evenly"]], ["Line-Height", {
       B: 1,
       T: 1.2,
       C: 1.3
-    }], ["Z-Index", [0, 1, 2, 4, 8, 16, 32, -1]], ["Opacity", [0, 10, 20, 40, 80, 100]], ["Font-Weight", {
+    }], ["Font-Weight", {
       N: 400,
       M: 600,
       B: 700
-    }], ["White-Space", ["Pre", "Pre-Wrap", "NoWrap", "Normal"]], ["BackGround-Size", ["CoVer", "ConTain"]], ["FleX-Direction", ["Row", "Column", "Row-Reverse", "Column-Reverse"]], ["Justify-Content", ["Center", "Flex-Start", "Flex-End", "Space-Between", "Space-Evenly"]]],
+    }]],
     mods: [[["o-", ":hover"], ["o-", ":focus"], ["o-", ":active"]], [["s-", "@media(min-width:384px)"], ["m-", "@media(min-width:768px)"], ["l-", "@media(min-width:1024px)"], ["x-", "@media(min-width:1536px)"]]],
     "{overflow}": ["Hidden", "Scroll", "Auto", "Visible"],
     "{flexCrossAxes}": ["Align-Items", "Align-Self", "Align-Content"],

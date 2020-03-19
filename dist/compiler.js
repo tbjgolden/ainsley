@@ -1212,23 +1212,10 @@
     return typeof value === "string" ? value : value + "";
   };
 
-  var propFragMap = {
-    flex: "fx",
-    background: "bg",
-    min: "n",
-    max: "x",
-    style: "st",
-    overflow: "ov",
-    cursor: "cu"
-  };
   var iteratorRegex = /\{[a-z]+\}/gi; // private constants
 
   var _hyphenOrDigitRegex = /-|[^0-9]/g;
   var _notUpperOrDigitRegex = /[^A-Z0-9]/g; // private helpers
-
-  var _abbrev = function _abbrev(w) {
-    return propFragMap[w] || w[0];
-  };
 
   var _expandDeclaration = function _expandDeclaration(subpair) {
     return "".concat(subpair[0], ":").concat(subpair[1]);
@@ -1307,7 +1294,6 @@
   var expandProps = function expandProps(pair) {
     var prop = _toPairs([pair[0]])[0];
 
-    map$1(pair[0].split("-"), _abbrev).join("");
     return map$1(_toPairs(pair[1], true), function (subpair) {
       return ["".concat(prop[0]).concat(subpair[0]), [[prop[1], subpair[1]]]];
     });
@@ -1360,7 +1346,6 @@
   exports.expandDefs = expandDefs;
   exports.expandProps = expandProps;
   exports.iteratorRegex = iteratorRegex;
-  exports.propFragMap = propFragMap;
   exports.ruleToCSS = ruleToCSS;
 
   Object.defineProperty(exports, '__esModule', { value: true });

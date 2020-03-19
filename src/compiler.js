@@ -1,15 +1,5 @@
 import { fastClone, map, flat, combinations, toString } from "./utils";
 
-export const propFragMap = {
-  flex: "fx",
-  background: "bg",
-  min: "n",
-  max: "x",
-  style: "st",
-  overflow: "ov",
-  cursor: "cu"
-};
-
 export const iteratorRegex = /\{[a-z]+\}/gi;
 
 // private constants
@@ -17,10 +7,8 @@ const _hyphenOrDigitRegex = /-|[^0-9]/g;
 const _notUpperOrDigitRegex = /[^A-Z0-9]/g;
 
 // private helpers
-const _abbrev = w => propFragMap[w] || w[0];
 const _expandDeclaration = subpair => `${subpair[0]}:${subpair[1]}`;
 const _addEmptyMod = mod => [["", ""]].concat(mod);
-const _abbrevWord = w => w[0].toUpperCase();
 const _toCase = (s, upper) => s["to" + (upper ? "Upp" : "Low") + "erCase"]();
 const _toPair = (input, isValue) => {
   if (typeof input === "number") {
@@ -89,8 +77,6 @@ export const expandDefs = (ainsley, ruleSet) => {
 // expand ainsley.props
 export const expandProps = pair => {
   const prop = _toPairs([pair[0]])[0];
-
-  map(pair[0].split("-"), _abbrev).join("");
   return map(_toPairs(pair[1], true), subpair => [
     `${prop[0]}${subpair[0]}`,
     [[prop[1], subpair[1]]]

@@ -27,14 +27,14 @@ export default {
     ["Vertical-Align", ["Top", "Middle", "Bottom"]],
     ["Cursor", ["Default", "Pointer"]],
     ["Pointer-Events", ["None", "All"]],
-    ["Line-Height", {B: 1, T: 1.2, C: 1.3}],
     ["Z-Index", [0, 1, 2, 4, 8, 16, 32, -1]],
     ["Opacity", [0, 10, 20, 40, 80, 100]],
-    ["Font-Weight", {N: 400, M: 600, B: 700}],
     ["White-Space", ["Pre", "Pre-Wrap", "NoWrap", "Normal"]],
     ["BackGround-Size", ["CoVer", "ConTain"]],
     ["FleX-Direction", ["Row", "Column", "Row-Reverse", "Column-Reverse"]],
-    ["Justify-Content", ["Center", "Flex-Start", "Flex-End", "Space-Between", "Space-Evenly"]]
+    ["Justify-Content", ["Center", "Flex-Start", "Flex-End", "Space-Between", "Space-Evenly"]],
+    ["Line-Height", {B: 1, T: 1.2, C: 1.3}],
+    ["Font-Weight", {N: 400, M: 600, B: 700}]
   ],
   mods: [
     [
