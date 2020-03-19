@@ -17,3 +17,5 @@ mad ideas zone
 
 - range abbreviation strategy
 - using props as spreads for props
+- how do we resolve `a` for props :/
+- css to ainsley

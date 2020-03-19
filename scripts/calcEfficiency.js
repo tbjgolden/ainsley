@@ -1,8 +1,12 @@
 // from https://almanac.httparchive.org/en/2019/compression
 const data = {
   //  [min, gzip, brotli]
-  js: [10467783 + 12186420, 36181787 + 43073318, 8967497 + 10173063],
-  css: [7199054 + 8560550, 24289658 + 28333663, 8313337 + 9908650]
+  js: [
+    10_467_783 + 12_186_420,
+    36_181_787 + 43_073_318,
+    8_967_497 + 10_173_063
+  ],
+  css: [7_199_054 + 8_560_550, 24_289_658 + 28_333_663, 8_313_337 + 9_908_650]
 };
 
 const cssWeightedAverage = ([min, gz, br]) => {
@@ -51,5 +55,7 @@ const calculateEfficiency = (
 // );
 // console.log(calculateEfficiency(8718, 2295, 442, 90, false, "milligram"));
 // console.log(calculateEfficiency(5879, 1630, 356, 84, false, "skeleton"));
+
+// console.log(calculateEfficiency(5292, 2341, 2069, 21720));
 
 module.exports = calculateEfficiency;

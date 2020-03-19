@@ -48,8 +48,8 @@ const ftNum = n =>
     arc: `\`${ftNum(stats.ruleCount)}\``,
     ae: `\`${calcEfficiency(
       stats.baseConfig.bytes.min + stats.compiler.bytes.min,
-      stats.baseConfig.bytes.min + stats.compiler.bytes.min,
-      stats.baseConfig.bytes.min + stats.compiler.bytes.min,
+      stats.baseConfig.bytes.gz + stats.compiler.bytes.gz,
+      stats.baseConfig.bytes.br11 + stats.compiler.bytes.br11,
       stats.ruleCount
     ).toFixed(2)}\``
   };
