@@ -2,34 +2,6 @@ import { empty, extend } from "./tools";
 
 const testArr = [["a", "b"], [[]], [1, false], []];
 
-// export const extend = ainsleys => {
-//   const result = ainsleys.reduce(
-//     (ainsley, next = {}) =>
-//       assign([
-//         ainsley,
-//         next,
-//         {
-//           defs: flat([ainsley.defs, next.defs || []]),
-//           props: flat([ainsley.props, next.props || []]),
-//           raw: flat([ainsley.raw, next.raw || []]),
-//           mods: flat([ainsley.mods, next.mods || []])
-//         }
-//       ]),
-//     {
-//       defs: [],
-//       props: [],
-//       raw: [],
-//       mods: []
-//     }
-//   );
-//
-//   //#if !_LITE
-//   lint(result);
-//   //#endif
-//
-//   return result;
-// };
-
 test("extend", () => {
   const input = [empty];
   const emptyResult = extend(input);

@@ -5,7 +5,7 @@ export default {
     ["bgc&", [["background-color", "{colors}"]]],
     ["fs&", [["font-size", "{typeScale}"], ["line-height", 1.2]]],
     ["&&", [["{scalar}", "{scale}"]]],
-    ["&a&", [["{vector}", "{scale}"]]],
+    ["&&", [["{direction}", "{scale}"]]],
     ["&&&", [["{vector}-{direction}", "{scale}"]]],
     ["m&N&", [["margin-{direction}", "-{scale}"]]],
     ["bgp&&", [["background-position", "{xLoc} {yLoc}"]]],
@@ -16,25 +16,25 @@ export default {
     ["ov&&", [["overflow", "{overflow} {overflow}"]]]
   ],
   props: [
-    ["display", ["Inline", "Block", "FleX", "None", "Inline-Block", "Inline-FleX"]],
-    ["text-decoration", ["Line-through", "Underline", "None"]],
-    ["font-style", ["Italic", "Normal"]],
-    ["text-transform", ["Uppercase", "Lowercase"]],
-    ["overflow-wrap", ["Break-Word", "Anywhere", "Normal"]],
-    ["background-repeat", ["Repeat", "No-repeat"]],
-    ["position", ["Relative", "Absolute", "Fixed", "Sticky"]],
-    ["text-align", ["Left", "Center", "Right", "Justify"]],
-    ["vertical-align", ["Top", "Middle", "Bottom"]],
-    ["cursor", ["Default", "Pointer"]],
-    ["pointer-events", ["None", "All"]],
-    ["line-height", {B: 1, T: 1.2, C: 1.3}],
-    ["z-index", [0, 1, 2, 4, 8, 16, 32, -1]],
-    ["opacity", [0, 10, 20, 40, 80, 100]],
-    ["font-weight", {N: 400, M: 600, B: 700}],
-    ["white-space", ["Pre", "Pre-Wrap", "NoWrap", "Normal"]],
-    ["background-size", ["CoVer", "ConTain"]],
-    ["flex-direction", ["Row", "Column", "Row-Reverse", "Column-Reverse"]],
-    ["justify-content", ["Center", "Flex-Start", "Flex-End", "Space-Between", "Space-Evenly"]]
+    ["Display", ["Inline", "Block", "FleX", "None", "Inline-Block", "Inline-FleX"]],
+    ["Text-Decoration", ["Line-through", "Underline", "None"]],
+    ["Font-STyle", ["Italic", "Normal"]],
+    ["Text-Transform", ["Uppercase", "Lowercase"]],
+    ["Overflow-Wrap", ["Break-Word", "Anywhere", "Normal"]],
+    ["Background-Repeat", ["Repeat", "No-repeat"]],
+    ["Position", ["Relative", "Absolute", "Fixed", "Sticky"]],
+    ["Text-Align", ["Left", "Center", "Right", "Justify"]],
+    ["Vertical-Align", ["Top", "Middle", "Bottom"]],
+    ["Cursor", ["Default", "Pointer"]],
+    ["Pointer-Events", ["None", "All"]],
+    ["Line-Height", {B: 1, T: 1.2, C: 1.3}],
+    ["Z-Index", [0, 1, 2, 4, 8, 16, 32, -1]],
+    ["Opacity", [0, 10, 20, 40, 80, 100]],
+    ["Font-Weight", {N: 400, M: 600, B: 700}],
+    ["White-Space", ["Pre", "Pre-Wrap", "NoWrap", "Normal"]],
+    ["BackGround-Size", ["CoVer", "ConTain"]],
+    ["FleX-Direction", ["Row", "Column", "Row-Reverse", "Column-Reverse"]],
+    ["Justify-Content", ["Center", "Flex-Start", "Flex-End", "Space-Between", "Space-Evenly"]]
   ],
   mods: [
     [
@@ -49,23 +49,16 @@ export default {
       ["x-", "@media(min-width:1536px)"]
     ]
   ],
-  "{overflow}": { H: "hidden", S: "scroll", A: "auto", V: "visible" },
-  "{flexCrossAxes}": {
-    ai: "align-items",
-    as: "align-self",
-    ac: "align-content"
-  },
-  "{flexCrossAxis}": {
-    FS: "flex-start",
-    FE: "flex-end",
-    C: "center",
-    B: "baseline",
-    S: "stretch"
-  },
+  "{overflow}": ["Hidden", "Scroll", "Auto", "Visible"],
+  "{flexCrossAxes}": ["Align-Items", "Align-Self", "Align-Content"],
+  "{flexCrossAxis}": ["Flex-Start", "Flex-End", "Center", "Baseline", "Stretch"],
   "{flexChange}": { "0": "0", "1": "1", "2": "2", X: "11111111" },
   "{flexBasis}": { "0": "0%", A: "auto", P: "100%" },
-  "{xLoc}": { L: "left", R: "right", C: "center" },
-  "{yLoc}": { T: "top", B: "bottom", C: "center" },
+  "{xLoc}": ["Left", "Right", "Center"],
+  "{yLoc}": ["Top", "Bottom", "Center"],
+  "{scalar}": ["Width", "maX-Width", "miN-Width", "Height", "maX-Height", "miN-Height", "Border-Radius"],
+  "{vector}": ["Margin", "Padding"],
+  "{direction}": ["Top", "Left", "Right", "Bottom"],
   "{colors}": {
     W: "white",
     B: "black",
@@ -111,21 +104,6 @@ export default {
     SM: "14px",
     XS: "12px"
   },
-  "{scalar}": {
-    w: "width",
-    xw: "max-width",
-    nw: "min-width",
-    h: "height",
-    xh: "max-height",
-    nh: "min-height",
-    t: "top",
-    l: "left",
-    r: "right",
-    b: "bottom",
-    br: "border-radius"
-  },
-  "{vector}": { m: "margin", p: "padding" },
-  "{direction}": { t: "top", l: "left", r: "right", b: "bottom" },
   "{scale}": {
     "0": "0",
     "1": "1px",

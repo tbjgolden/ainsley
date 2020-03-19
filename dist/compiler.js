@@ -1224,7 +1224,7 @@
   var iteratorRegex = /\{[a-z]+\}/gi; // private constants
 
   var _hyphenOrDigitRegex = /-|[^0-9]/g;
-  var _upperOrDigitRegex = /[^A-Z0-9]/g; // private helpers
+  var _notUpperOrDigitRegex = /[^A-Z0-9]/g; // private helpers
 
   var _abbrev = function _abbrev(w) {
     return propFragMap[w] || w[0];
@@ -1238,21 +1238,24 @@
     return [["", ""]].concat(mod);
   };
 
-  var _toPair = function _toPair(input, isProp) {
+  var _toCase = function _toCase(s, upper) {
+    return s["to" + (upper ? "Upp" : "Low") + "erCase"]();
+  };
+
+  var _toPair = function _toPair(input, isValue) {
     if (typeof input === "number") {
       var str = toString$1(input);
       return [str.replace(_hyphenOrDigitRegex, function (match) {
         return match === "-" ? "N" : "";
       }), str];
     } else {
-      return [input.replace(_upperOrDigitRegex, ""), isProp ? input.toUpperCase() : input.toLowerCase()];
+      return [_toCase(input.replace(_notUpperOrDigitRegex, ""), isValue), _toCase(input, false)];
     }
   };
 
-  var _toPairs = function _toPairs(inputs) {
-    var isProp = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  var _toPairs = function _toPairs(inputs, isValue) {
     return inputs.length ? map$1(inputs, function (input) {
-      return _toPair(input, isProp);
+      return _toPair(input, isValue);
     }) : map$1(Object.keys(inputs), function (key) {
       return [toString$1(key), toString$1(inputs[key])];
     });
@@ -1263,11 +1266,15 @@
     var pair = ruleSet[1].reduce(function (iters, pair) {
       return [iters[0].concat(toString$1(pair[0]).match(iteratorRegex) || []), iters[1].concat(toString$1(pair[1]).match(iteratorRegex) || [])];
     }, [[], []]);
-    return map$1(combinations(map$1(pair[0].concat(pair[1]), function (iter) {
-      return map$1(Object.keys(ainsley[iter]), function (abbr) {
-        return [iter, abbr, ainsley[iter][abbr]];
+    return map$1(combinations(flat([map$1(pair[0], function (iter) {
+      return map$1(_toPairs(ainsley[iter]), function (pair) {
+        return [iter, pair[0], pair[1]];
       });
-    })), function (perm) {
+    }), map$1(pair[1], function (iter) {
+      return map$1(_toPairs(ainsley[iter], true), function (pair) {
+        return [iter, pair[0], pair[1]];
+      });
+    })])), function (perm) {
       var clone = fastClone(ruleSet);
 
       for (var i = 0; clone[0].includes("&"); i++) {
@@ -1298,9 +1305,11 @@
   }; // expand ainsley.props
 
   var expandProps = function expandProps(pair) {
-    var propAbbrev = map$1(pair[0].split("-"), _abbrev).join("");
-    return map$1(_toPairs(pair[1], false), function (subpair) {
-      return ["".concat(propAbbrev).concat(subpair[0]), [[pair[0], subpair[1]]]];
+    var prop = _toPairs([pair[0]])[0];
+
+    map$1(pair[0].split("-"), _abbrev).join("");
+    return map$1(_toPairs(pair[1], true), function (subpair) {
+      return ["".concat(prop[0]).concat(subpair[0]), [[prop[1], subpair[1]]]];
     });
   }; // compile ainsley to a simple stylesheet ast
 

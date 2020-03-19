@@ -235,11 +235,10 @@ property words are mapped to irregular abbreviations.
 | background | bg           | "b" = {"border", "background"}                              |
 |     cursor | cu           | "c" = {"color", "cursor"}                                   |
 |       flex | fx           | "f" = {"float", "flex"}, fw" = {"font-weight", "flex-wrap"} |
-|     margin | ma           | "m" = {"min", "max", "margin"}                              |
 |        max | x            | "m" = {"min", "max", "margin"}                              |
 |        min | n            | "m" = {"min", "max", "margin"}                              |
 |   overflow | ov           | "o" = {"opacity", "overflow"}                               |
-|    padding | pa           | "p" = {"position", "padding"}                               |
+|   position | po           | "p" = {"padding", "position"}                               |
 |      style | st           | "fs" = {"font-size", "font-style"}                          |
 
 (MIT Licence)

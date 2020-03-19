@@ -14,14 +14,15 @@ export const iteratorRegex = /\{[a-z]+\}/gi;
 
 // private constants
 const _hyphenOrDigitRegex = /-|[^0-9]/g;
-const _upperOrDigitRegex = /[^A-Z0-9]/g;
+const _notUpperOrDigitRegex = /[^A-Z0-9]/g;
 
 // private helpers
 const _abbrev = w => propFragMap[w] || w[0];
 const _expandDeclaration = subpair => `${subpair[0]}:${subpair[1]}`;
 const _addEmptyMod = mod => [["", ""]].concat(mod);
 const _abbrevWord = w => w[0].toUpperCase();
-const _toPair = (input, isProp) => {
+const _toCase = (s, upper) => s["to" + (upper ? "Upp" : "Low") + "erCase"]();
+const _toPair = (input, isValue) => {
   if (typeof input === "number") {
     const str = toString(input);
     return [
@@ -30,14 +31,14 @@ const _toPair = (input, isProp) => {
     ];
   } else {
     return [
-      input.replace(_upperOrDigitRegex, ""),
-      isProp ? input.toUpperCase() : input.toLowerCase()
+      _toCase(input.replace(_notUpperOrDigitRegex, ""), isValue),
+      _toCase(input, false)
     ];
   }
 };
-const _toPairs = (inputs, isProp = true) =>
+const _toPairs = (inputs, isValue) =>
   inputs.length
-    ? map(inputs, input => _toPair(input, isProp))
+    ? map(inputs, input => _toPair(input, isValue))
     : map(Object.keys(inputs), key => [toString(key), toString(inputs[key])]);
 
 // expand ainsley.defs
@@ -52,13 +53,14 @@ export const expandDefs = (ainsley, ruleSet) => {
 
   return map(
     combinations(
-      map(pair[0].concat(pair[1]), iter =>
-        map(Object.keys(ainsley[iter]), abbr => [
-          iter,
-          abbr,
-          ainsley[iter][abbr]
-        ])
-      )
+      flat([
+        map(pair[0], iter =>
+          map(_toPairs(ainsley[iter]), pair => [iter, pair[0], pair[1]])
+        ),
+        map(pair[1], iter =>
+          map(_toPairs(ainsley[iter], true), pair => [iter, pair[0], pair[1]])
+        )
+      ])
     ),
     perm => {
       const clone = fastClone(ruleSet);
@@ -86,10 +88,12 @@ export const expandDefs = (ainsley, ruleSet) => {
 
 // expand ainsley.props
 export const expandProps = pair => {
-  const propAbbrev = map(pair[0].split("-"), _abbrev).join("");
-  return map(_toPairs(pair[1], false), subpair => [
-    `${propAbbrev}${subpair[0]}`,
-    [[pair[0], subpair[1]]]
+  const prop = _toPairs([pair[0]])[0];
+
+  map(pair[0].split("-"), _abbrev).join("");
+  return map(_toPairs(pair[1], true), subpair => [
+    `${prop[0]}${subpair[0]}`,
+    [[prop[1], subpair[1]]]
   ]);
 };
 

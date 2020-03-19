@@ -34,13 +34,13 @@ it massively.
 | Base Ainsley | |    JS | JS-to-CSS | Equivalent |
 +==============+ | input |  compiler | CSS output |
 +----------------+-------+-----------+------------+
-| minified bytes | 3,626 |     1,913 |    767,468 |
+| minified bytes | 3,448 |     1,973 |    738,830 |
 ++---------------+-------+-----------+------------+
- | gzipped bytes | 1,498 |       973 |    138,821 |
+ | gzipped bytes | 1,433 |       995 |    132,385 |
  ++--------------+-------+-----------+------------+
-  | brotli bytes | 1,279 |       879 |     23,426 |
+  | brotli bytes | 1,225 |       907 |     22,531 |
   +-+------------+-------+-----------+------------+
-    | TOTAL SENT |             2,158 |     23,426 |
+    | TOTAL SENT |             2,132 |     22,531 |
     +------------+-------------------+------------+
 ```
 
@@ -48,7 +48,7 @@ it massively.
 
 | **Name**      | **Minified** |   **Gzip** | **Brotli** | **CSS Rules** | **Efficiency\*** |  **Load 1** |  **Load 2** | **Load 3** |
 | :------------ | -----------: | ---------: | ---------: | ------------: | ---------------: | ----------: | ----------: | ---------: |
-| **ainsley**   |   **`5,539`** | **`2,471`** | **`2,158`** |   **`22,800`** |       **`4.12`** | **`4,272`** | **`1,263`** |      `115` |
+| **ainsley**   |   **`5,421`** | **`2,428`** | **`2,132`** |   **`21,720`** |       **`4.01`** | **`4,272`** | **`1,263`** |      `115` |
 | tailwindcss   |    `710,997` |   `97,417` |   `10,199` |      `14,445` |           `0.08` |    `18,031` |     `5,075` |      `183` |
 | tachyons      |     `73,497` |   `13,697` |    `2,421` |       `2,113` |           `0.10` |     `5,606` |     `1,621` |   **`71`** |
 | sane-tachyons |     `49,793` |    `9,200` |    `1,957` |       `1,278` |           `0.08` |     `5,345` |     `1,552` |       `75` |
@@ -237,11 +237,10 @@ property words are mapped to irregular abbreviations.
 | background | bg           | "b" = {"border", "background"}                              |
 |     cursor | cu           | "c" = {"color", "cursor"}                                   |
 |       flex | fx           | "f" = {"float", "flex"}, fw" = {"font-weight", "flex-wrap"} |
-|     margin | ma           | "m" = {"min", "max", "margin"}                              |
 |        max | x            | "m" = {"min", "max", "margin"}                              |
 |        min | n            | "m" = {"min", "max", "margin"}                              |
 |   overflow | ov           | "o" = {"opacity", "overflow"}                               |
-|    padding | pa           | "p" = {"position", "padding"}                               |
+|   position | po           | "p" = {"padding", "position"}                               |
 |      style | st           | "fs" = {"font-size", "font-style"}                          |
 
 (MIT Licence)
