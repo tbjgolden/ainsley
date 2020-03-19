@@ -1,6 +1,6 @@
 {
   "name": "ainsley",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-beta.2",
   "private": false,
   "description": "Ainsley is a zero compromise CSS compiler/library/framework/methodology",
   "author": "tbjgolden",
@@ -9,9 +9,13 @@
   "main": "dist/tools.js",
   "module": "dist/tools.js",
   "browser": "dist/compiler.lite.js",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
+    "test": "jest",
     "build": "yarn test && rollup -c && node scripts/postBuild.js",
-    "test": "jest"
+    "deploy": "yarn build && yarn test && node scripts/deploy.js"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
@@ -25,10 +29,12 @@
     "brotli": "^1.3.2",
     "clone-regexp": "^2.2.0",
     "css-tree": "^1.0.0-alpha.39",
+    "fs-extra": "^8.1.0",
     "isomorphic-fetch": "^2.2.1",
     "jest": "^25.1.0",
     "node-gzip": "^1.1.2",
     "prettier": "^1.19.1",
+    "prompt": "^1.0.0",
     "rollup": "^2.0.2",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-jscc": "^1.0.0",

@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs-extra");
 const path = require("path");
 const calcStats = require("./calcStats");
 
@@ -13,7 +13,20 @@ const ftNum = n =>
       ""
     );
 
-calcStats().then(stats => {
+(async () => {
+  const staticFiles = await fs.readdir(path.join(__dirname, "../src/static"));
+
+  await Promise.all(
+    staticFiles.map(file =>
+      fs.copy(
+        path.join(__dirname, "../src/static", file),
+        path.join(__dirname, "../dist", file)
+      )
+    )
+  );
+
+  const stats = await calcStats();
+
   const vars = {
     j: ftNum(stats.baseConfig.bytes.min).padStart(5, " "),
     c: ftNum(stats.compiler.bytes.min).padStart(9, " "),
@@ -45,4 +58,4 @@ calcStats().then(stats => {
         .readFileSync(path.join(__dirname, "../README.md.template"), "utf8")
         .replace(/\{\{([a-zA-Z]+)\}\}/g, (_, arg) => vars[arg])
   );
-});
+})();
