@@ -5,6 +5,7 @@
 ![npm](https://img.shields.io/npm/v/ainsley)
 ![Coveralls github branch](https://img.shields.io/coveralls/github/tbjgolden/ainsley/master)
 ![David](https://img.shields.io/david/tbjgolden/ainsley)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/ainsley)
 [![GitHub issues](https://img.shields.io/github/issues/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/issues)
 [![GitHub stars](https://img.shields.io/github/stars/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/stargazers)
 [![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley)
