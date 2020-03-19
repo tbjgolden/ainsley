@@ -4,6 +4,7 @@
 
 ![npm](https://img.shields.io/npm/v/ainsley)
 ![Coveralls github branch](https://img.shields.io/coveralls/github/tbjgolden/ainsley/master)
+![David](https://img.shields.io/david/tbjgolden/ainsley)
 [![GitHub issues](https://img.shields.io/github/issues/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/issues)
 [![GitHub stars](https://img.shields.io/github/stars/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/stargazers)
 [![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley)
@@ -36,9 +37,9 @@ it massively.
 ++---------------+-------+-----------+------------+
  | gzipped bytes | 1,615 |       849 |    139,001 |
  ++--------------+-------+-----------+------------+
-  | brotli bytes | 1,376 |       762 |     23,386 |
+  | brotli bytes | 1,376 |       764 |     23,386 |
   +-+------------+-------+-----------+------------+
-    | TOTAL SENT |             2,138 |     23,386 |
+    | TOTAL SENT |             2,140 |     23,386 |
     +------------+-------------------+------------+
 ```
 
@@ -46,7 +47,7 @@ it massively.
 
 | **Name**      | **Minified** |   **Gzip** | **Brotli** | **CSS Rules** | **Efficiency\*** |  **Load 1** |  **Load 2** | **Load 3** |
 | :------------ | -----------: | ---------: | ---------: | ------------: | ---------------: | ----------: | ----------: | ---------: |
-| **ainsley**   |   **`5,809`** | **`2,464`** | **`2,138`** |   **`22,800`** |     **`10.66`** | **`4,272`** | **`1,263`** |      `115` |
+| **ainsley**   |   **`5,809`** | **`2,464`** | **`2,140`** |   **`22,800`** |     **`10.65`** | **`4,272`** | **`1,263`** |      `115` |
 | tailwindcss   |    `710,997` |   `97,417` |   `10,199` |      `14,445` |           `1.42` |    `18,031` |     `5,075` |      `183` |
 | tachyons      |     `73,497` |   `13,697` |    `2,421` |       `2,113` |           `0.87` |     `5,606` |     `1,621` |   **`71`** |
 | sane-tachyons |     `49,793` |    `9,200` |    `1,957` |       `1,278` |           `0.65` |     `5,345` |     `1,552` |       `75` |
