@@ -2,13 +2,7 @@
 
 # Ainsley 👨🏾‍🍳
 
-![npm](https://img.shields.io/npm/v/ainsley)
-![Coveralls github branch](https://img.shields.io/coveralls/github/tbjgolden/ainsley/master)
-![David](https://img.shields.io/david/tbjgolden/ainsley)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/ainsley)
-[![GitHub issues](https://img.shields.io/github/issues/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/issues)
-[![GitHub stars](https://img.shields.io/github/stars/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/stargazers)
-[![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley)
+![npm](https://img.shields.io/npm/v/ainsley) ![Coveralls github branch](https://img.shields.io/coveralls/github/tbjgolden/ainsley/master) ![David](https://img.shields.io/david/tbjgolden/ainsley) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/ainsley) [![GitHub issues](https://img.shields.io/github/issues/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/issues) [![GitHub stars](https://img.shields.io/github/stars/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/stargazers) [![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley)
 
 Ainsley is a functional CSS framework and library with no compromises.
 It is the tiny spiritual successor of Tachyons and Tailwind.
@@ -19,7 +13,9 @@ It is comprised of multiple sub-libraries that together make it possible to:
 - use your existing CSS knowledge
 - use the least possible bytes
 - have total flexibility
-- serialize your framework as tiny JSON
+- serialize your framework as tiny, readable JSON
+
+An analogy might be to say that Ainsley is to CSS what Markdown is to HTML.
 
 # Impossibly small
 
