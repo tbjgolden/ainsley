@@ -1278,7 +1278,8 @@
   var expandProps = function expandProps(pair) {
     var propAbbrev = map$1(pair[0].split("-"), _abbrev).join("");
     return map$1(pair[1], function (value) {
-      return ["".concat(propAbbrev).concat(map$1(value.split(" "), _abbrevWord).join("")), [[pair[0], value]]];
+      if (!Array.isArray(value)) value = [value, map$1(value.split(" "), _abbrevWord).join("")];
+      return ["".concat(propAbbrev).concat(value[1]), [[pair[0], value[0]]]];
     });
   }; // compile ainsley to a simple stylesheet ast
 

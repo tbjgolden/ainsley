@@ -3,8 +3,8 @@
 - [x] determine if a recurse fn can be changed to work for both recursions
 - [x] es5 version
 - [x] remove spreads and destructuring from compiler
-- [ ] jest tests
-- [ ] make props more flexible
+- [x] jest tests
+- [x] make props more flexible
 - [ ] lint script which checks the types
 - [ ] formalise/document the api
 - [ ] reset in ainsley

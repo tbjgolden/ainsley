@@ -65,10 +65,11 @@ export const expandDefs = (ainsley, ruleSet) => {
 // expand ainsley.props
 export const expandProps = pair => {
   const propAbbrev = map(pair[0].split("-"), _abbrev).join("");
-  return map(pair[1], value => [
-    `${propAbbrev}${map(value.split(" "), _abbrevWord).join("")}`,
-    [[pair[0], value]]
-  ]);
+  return map(pair[1], value => {
+    if (!Array.isArray(value))
+      value = [value, map(value.split(" "), _abbrevWord).join("")];
+    return [`${propAbbrev}${value[1]}`, [[pair[0], value[0]]]];
+  });
 };
 
 // compile ainsley to a simple stylesheet ast

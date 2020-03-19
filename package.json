@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "yarn test && rollup -c && node scripts/postBuild.js",
+    "build": "rollup -c && node scripts/postBuild.js",
     "deploy": "yarn build && yarn test && node scripts/deploy.js"
   },
   "devDependencies": {

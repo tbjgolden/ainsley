@@ -1,35 +1,22 @@
+// prettier-ignore
 export default {
   defs: [
     ["c&", [["color", "{colors}"]]],
-    ["d&", [["display", "{display}"]]],
     ["bgc&", [["background-color", "{colors}"]]],
-    [
-      "fs&",
-      [
-        ["font-size", "{typeScale}"],
-        ["line-height", "1.2"]
-      ]
-    ],
+    ["fs&", [["font-size", "{typeScale}"], ["line-height", "1.2"]]],
     ["&&", [["{scalar}", "{scale}"]]],
     ["&a&", [["{vector}", "{scale}"]]],
     ["&&&", [["{vector}-{direction}", "{scale}"]]],
     ["m&N&", [["margin-{direction}", "-{scale}"]]],
-    ["fw&", [["font-weight", "{weight}"]]],
-    ["ws&", [["white-space", "{whiteSpace}"]]],
     ["bgp&&", [["background-position", "{xLoc} {yLoc}"]]],
-    ["bgs&", [["background-size", "{bgSize}"]]],
     ["b&w&", [["border-{direction}-width", "{scale}"]]],
     ["b&c&", [["border-{direction}-color", "{colors}"]]],
     ["fx&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]],
-    ["fxd&", [["flex-direction", "{flexDirection}"]]],
     ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]],
-    ["jc&", [["justify-content", "{flexMainAxis}"]]],
-    ["ov&&", [["overflow", "{overflow} {overflow}"]]],
-    ["o&", [["opacity", "{opacity}"]]],
-    ["zi&", [["z-index", "{z}"]]],
-    ["lh&", [["line-height", "{lineHeight}"]]]
+    ["ov&&", [["overflow", "{overflow} {overflow}"]]]
   ],
   props: [
+    ["display", ["inline", "block", "flex", "none", ["inline-block", "IB"], ["inline-flex", "IF"]]],
     ["text-decoration", ["line-through", "underline", "none"]],
     ["font-style", ["italic", "normal"]],
     ["text-transform", ["uppercase", "lowercase"]],
@@ -39,7 +26,15 @@ export default {
     ["text-align", ["left", "center", "right", "justify"]],
     ["vertical-align", ["top", "middle", "bottom"]],
     ["cursor", ["default", "pointer"]],
-    ["pointer-events", ["none", "all"]]
+    ["pointer-events", ["none", "all"]],
+    ["line-height", [["1", "B"], ["1.2", "T"], ["1.3", "C"]]],
+    ["z-index", ["0", "1", "2", "4", "8", ["16", "16"], ["32", "32"], ["-1", "N1"]]],
+    ["opacity", ["0", ["10", "10"], ["20", "20"], ["40", "40"], ["80", "80"], ["100", "100"]]],
+    ["font-weight", [["400", "N"], ["600", "M"], ["700", "B"]]],
+    ["white-space", ["pre", ["pre-wrap", "PW"], ["nowrap", "C"], ["normal", "CW"]]],
+    ["background-size", [["cover", "CV"], ["contain", "CT"]]],
+    ["flex-direction", [["row", "R"], ["column", "C"], ["row-reverse", "RR"], ["column-reverse", "CR"]]],
+    ["justify-content", ["center", ["flex-start", "FS"], ["flex-end", "FE"], ["space-between", "SB"], ["space-evenly", "SE"]]]
   ],
   mods: [
     [
@@ -54,40 +49,7 @@ export default {
       ["x-", "@media(min-width:1536px)"]
     ]
   ],
-  "{display}": {
-    I: "inline",
-    B: "block",
-    IB: "inline-block",
-    F: "flex",
-    IF: "inline-flex",
-    N: "none"
-  },
-  "{z}": {
-    "0": "0",
-    "1": "1",
-    "2": "2",
-    "4": "4",
-    "8": "8",
-    "16": "16",
-    "32": "32",
-    N1: "-1"
-  },
-  "{opacity}": {
-    "0": "0",
-    "10": "10",
-    "20": "20",
-    "40": "40",
-    "80": "80",
-    "100": "100"
-  },
   "{overflow}": { H: "hidden", S: "scroll", A: "auto", V: "visible" },
-  "{flexMainAxis}": {
-    FS: "flex-start",
-    FE: "flex-end",
-    C: "center",
-    SB: "space-between",
-    SE: "space-evenly"
-  },
   "{flexCrossAxes}": {
     ai: "align-items",
     as: "align-self",
@@ -102,22 +64,7 @@ export default {
   },
   "{flexChange}": { "0": "0", "1": "1", "2": "2", X: "11111111" },
   "{flexBasis}": { "0": "0%", A: "auto", P: "100%" },
-  "{flexDirection}": {
-    R: "row",
-    C: "column",
-    RR: "row-reverse",
-    CR: "column-reverse"
-  },
-  "{whiteSpace}": {
-    C: "nowrap",
-    CW: "normal",
-    P: "pre",
-    PW: "pre-wrap"
-  },
-  "{weight}": { N: 400, M: 600, B: 700 },
-  "{lineHeight}": { B: 1, T: 1.2, C: 1.3 },
   "{xLoc}": { L: "left", R: "right", C: "center" },
-  "{bgSize}": { CV: "cover", CT: "contain" },
   "{yLoc}": { T: "top", B: "bottom", C: "center" },
   "{colors}": {
     W: "white",

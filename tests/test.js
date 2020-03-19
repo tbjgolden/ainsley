@@ -1,5 +1,5 @@
-const { ainsleyToCss } = require("../dist/compiler.cjs.js");
-const { base } = require("../dist/tools.cjs.js");
+const { ainsleyToCSS } = require("../dist/compiler.js");
+const { base } = require("../dist/tools.js");
 const csstree = require("css-tree");
 const fs = require("fs");
 const path = require("path");
@@ -19,7 +19,7 @@ const abbrMap = fs
     {}
   );
 
-const css = ainsleyToCss(base);
+const css = ainsleyToCSS(base);
 
 const CHARS = 500;
 console.log("\nOutput:");
@@ -92,7 +92,7 @@ try {
 const cssBuffer = Buffer.from(css);
 const baseConfigBuffer = Buffer.from(JSON.stringify(base));
 const compilerBuffer = fs.readFileSync(
-  path.join(__dirname, "../dist/compiler.lite.web.js")
+  path.join(__dirname, "../dist/compiler.lite.js")
 );
 
 fs.writeFileSync(path.join(__dirname, "output.css"), cssBuffer);
