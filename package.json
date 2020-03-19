@@ -17,6 +17,9 @@
     "build": "yarn test && rollup -c && node scripts/postBuild.js",
     "deploy": "yarn build && yarn test && node scripts/deploy.js"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "devDependencies": {
     "@babel/core": "^7.8.7",
     "@babel/plugin-transform-runtime": "^7.8.3",
