@@ -1,21 +1,11 @@
 //#if !_LITE
 import check from "./libs/checkTypes";
-import lint from "./lint";
+import { lint } from "./lint";
 //#endif
 
-import baseConfig from "./base";
 import { iteratorRegex } from "./compiler";
 import { flat, assign } from "./utils";
-
-export const base = baseConfig;
-
-export const empty = {
-  reset: "",
-  defs: [],
-  props: [],
-  raw: [],
-  mods: []
-};
+import { empty } from "./empty";
 
 export const extend = ainsleys => {
   //#if !_LITE

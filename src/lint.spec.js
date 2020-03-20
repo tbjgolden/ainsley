@@ -1,5 +1,6 @@
-import lint from "./lint";
-import { base, empty } from "./tools";
+import { lint } from "./lint";
+import { base } from "./base";
+import { empty } from "./empty";
 
 test("base produces no errors", () => {
   expect(lint(base)).toEqual(null);

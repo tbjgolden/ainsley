@@ -1,4 +1,4 @@
-import base from "./base";
+import { base } from "./base";
 import { ainsleyToCSS, ainsleyInsert } from "./compiler";
 const csstree = require("css-tree");
 

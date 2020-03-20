@@ -110,7 +110,7 @@ const checkIterator = (errors, iterator, name) => {
   }
 };
 
-const lint = ainsley => {
+export const lint = ainsley => {
   const errors = [];
 
   try {
@@ -151,5 +151,3 @@ const lint = ainsley => {
 
   return errors.length ? errors : null;
 };
-
-export default lint;

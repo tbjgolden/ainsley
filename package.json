@@ -8,7 +8,6 @@
   "repository": "tbjgolden/ainsley",
   "main": "dist/tools.js",
   "module": "dist/tools.js",
-  "browser": "dist/compiler.lite.js",
   "files": [
     "dist/**/*"
   ],

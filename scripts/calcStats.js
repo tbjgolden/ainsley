@@ -1,8 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { ainsleyToCSS } = require("../dist/compiler");
-const { base } = require("../dist/tools");
+const { ainsleyToCSS, base } = require("../dist/ainsley");
 const { gzip } = require("node-gzip");
 const brotli = require("brotli");
 const csstree = require("css-tree");

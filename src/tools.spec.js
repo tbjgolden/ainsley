@@ -1,10 +1,10 @@
-import { empty, extend } from "./tools";
+import { empty } from "./empty";
+import { extend } from "./tools";
 
 const testArr = [["a", "b"], [[]], [1, false], []];
 
 test("extend", () => {
-  const input = [empty];
-  const emptyResult = extend(input);
+  const emptyResult = extend([empty]);
 
   expect(emptyResult).not.toBe(empty);
   expect(emptyResult).toEqual(empty);

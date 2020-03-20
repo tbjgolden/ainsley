@@ -1,5 +1,5 @@
 // prettier-ignore
-export default {
+export const base = {
   defs: [
     ["c&", [["color", "{colors}"]]],
     ["bgc&", [["background-color", "{colors}"]]],

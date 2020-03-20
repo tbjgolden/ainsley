@@ -12,8 +12,7 @@ const config = (() => {
   const sources = [
     ["compiler", ["AinsleyCompiler"]],
     ["compiler.lite", ["AinsleyToCSS"]],
-    ["tools", ["AinsleyTools"]],
-    ["lint", ["es", "cjs"]]
+    ["ainsley", ["Ainsley", "es", "cjs"]]
   ];
 
   const validFormats = ["es", "cjs"];

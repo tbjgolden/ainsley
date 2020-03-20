@@ -5,8 +5,8 @@
 - [x] remove spreads and destructuring from compiler
 - [x] jest tests
 - [x] make props more flexible
-- [ ] reset in ainsley
-- [ ] lint script which checks the types
+- [x] reset in ainsley
+- [x] lint script which checks the types
 - [ ] formalise/document the api
 - [ ] postcss integration for autoprefixer et al?
 - [ ] repl

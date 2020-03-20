@@ -1,4 +1,4 @@
-import base from "./base";
+import { base } from "./base";
 import { ainsleyToCSS } from "./compiler";
 
 test("base produces css", () => {
