@@ -7,20 +7,9 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <script>
-      var ainsley = /*AINSLEY*/;
-      function ACCB(ac) {
-        var styleEl = document.createElement('style');
-        styleEl.appendChild(document.createTextNode(ac(ainsley)));
-        document.head.appendChild(styleEl);
-        document.body.style.display = "block";
-      }
-    </script>
-    <script async="async" src="/compiler.lite.js"></script>
-    <link href="/reset.min.css" rel="stylesheet" type="text/css" />
   </head>
   <body class="bgcB ffSANS cW" style="display:none">
-    <div class="nhH pa40 dF fxdC aiC">
+    <div class="nhH pt40 pr40 pb40 pl40 dFX fxdC aiC">
       <div class="xw85">
         <h1 class="fwB fsH2">
           Example Ainsley
@@ -61,5 +50,16 @@
         </p>
       </div>
     </div>
+
+    <script src="/compiler.lite.js"></script>
+    <script>
+      var styleEl = document.createElement("style");
+      styleEl.appendChild(
+        // your ainsley object goes here
+        document.createTextNode(AinsleyToCSS(/*AINSLEY*/))
+      );
+      document.head.appendChild(styleEl);
+      document.body.style.display = "block";
+    </script>
   </body>
 </html>
