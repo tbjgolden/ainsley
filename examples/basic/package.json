@@ -7,7 +7,7 @@
     "start": "node buildAndServe.js"
   },
   "dependencies": {
-    "ainsley": "file:..",
+    "ainsley": "latest",
     "express": "^4.17.1",
     "fs-extra": "^8.1.0"
   }

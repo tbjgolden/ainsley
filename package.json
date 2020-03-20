@@ -6,8 +6,8 @@
   "author": "tbjgolden",
   "license": "MIT",
   "repository": "tbjgolden/ainsley",
-  "main": "dist/tools.js",
-  "module": "dist/tools.js",
+  "main": "dist/ainsley.js",
+  "module": "dist/ainsley.js",
   "files": [
     "dist/**/*"
   ],
