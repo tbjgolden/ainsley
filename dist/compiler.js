@@ -1,4 +1,4 @@
-/** @license Ainsley v0.0.1-beta.6 (Tom Golden <tom.bio> @tbjgolden) */
+/** @license Ainsley v0.0.1-beta.7 (Tom Golden <tom.bio> @tbjgolden) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
