@@ -72,7 +72,17 @@ test("ainsleyToCSS on base produces css of an expected structure", () => {
     "z-index"
   ]);
 
-  const css = ainsleyToCSS(base);
+  let css = ainsleyToCSS(base);
+  try {
+    csstree.walk(csstree.parse(css), {
+      visit: "Atrule",
+      enter: ({ block }) => {
+        css = csstree.generate(block).slice(1, -1);
+        throw new Error("null");
+      }
+    });
+  } catch (err) {}
+  expect(css).not.toBe("");
 
   const invalidSelectors = [];
   csstree.walk(csstree.parse(css), {
