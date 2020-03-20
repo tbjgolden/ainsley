@@ -1,6 +1,9 @@
 import preval from "preval.macro";
-import x from "ainsley";
+import { ainsleyToCSS } from "ainsley";
 
 const ainsley = preval`module.exports = require("../scripts/ainsley")`;
 
-console.log(ainsley, x);
+var styleEl = document.createElement("style");
+styleEl.appendChild(document.createTextNode(ainsleyToCSS(ainsley)));
+document.head.appendChild(styleEl);
+document.body.style.display = "block";

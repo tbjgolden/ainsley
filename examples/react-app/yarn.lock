@@ -1790,9 +1790,9 @@ aggregate-error@^3.0.0:
     indent-string "^4.0.0"
 
 ainsley@latest:
-  version "0.0.1-beta.7"
-  resolved "https://registry.yarnpkg.com/ainsley/-/ainsley-0.0.1-beta.7.tgz#97a3f1e82d108de87b059e4bda081f34b3ed031c"
-  integrity sha512-eIKOjdsV//SnegqKYonxEArT6c+Ub24FUYsYGMZOu65zG38HeYIZLQsa2zkEsoX6VjLLak3qshYdPduDRYQ9qg==
+  version "0.0.1-beta.8"
+  resolved "https://registry.yarnpkg.com/ainsley/-/ainsley-0.0.1-beta.8.tgz#156735e831ae0481e31408bd7f487520621c5804"
+  integrity sha512-y3AoN4K4EX+rLNVXN4Oj0Nu+2mlTebAG49+wIsa+SZXHvdHr8bYOya2QhoWyTBZcI4n2IaZLH90XFRiTh4fHew==
 
 ajv-errors@^1.0.0:
   version "1.0.1"
