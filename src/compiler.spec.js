@@ -111,3 +111,11 @@ test("ainsleyInsert inserts rules into stylesheet", () => {
 test("empty produces empty string", () => {
   expect(ainsleyToCSS({})).toBe("");
 });
+
+test("numbers lose their decimal points", () => {
+  expect(
+    ainsleyToCSS({
+      props: [["Opacity", [0.1, 0.2]]]
+    })
+  ).toBe(".o01{opacity:0.1}.o02{opacity:0.2}");
+});

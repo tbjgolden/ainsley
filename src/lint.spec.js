@@ -88,6 +88,7 @@ describe("types", () => {
       '"raw" is invalid: expected Array to be non-empty array'
     );
     expect(lint({ ...empty, raw: [["a", [["b", "c"]]]] })).toBe(null);
+    expect(lint({ ...empty, raw: [["a", [["b", 1]]]] })).toBe(null);
   });
 
   test("mods", () => {
@@ -171,6 +172,16 @@ describe("types", () => {
         ]
       })
     ).toContain('"mods" is invalid: expected Array to be non-empty array');
+  });
+
+  test("reset", () => {
+    expect(lint({ ...empty, reset: null })).toBe(null);
+    expect(lint({ ...empty, reset: undefined })).toBe(null);
+    expect(lint({ ...empty, reset: "" })).toBe(null);
+    expect(lint({ ...empty, reset: [] })).toContain(
+      '"reset" is invalid: expected Array maybe to be String'
+    );
+    expect(lint({ ...empty, reset: "html,body{margin:0}" })).toBe(null);
   });
 
   test("iterator", () => {

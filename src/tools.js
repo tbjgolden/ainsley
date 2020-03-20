@@ -10,6 +10,7 @@ import { flat, assign } from "./utils";
 export const base = baseConfig;
 
 export const empty = {
+  reset: "",
   defs: [],
   props: [],
   raw: [],

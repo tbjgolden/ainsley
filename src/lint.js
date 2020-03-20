@@ -87,6 +87,14 @@ const checkMods = (errors, mods) => {
   }
 };
 
+const checkReset = (errors, reset) => {
+  try {
+    check.assert.maybe.string(reset);
+  } catch (err) {
+    errors.push(`"reset" is invalid: ${err.message}`);
+  }
+};
+
 const checkIterator = (errors, iterator, name) => {
   try {
     check.assert(
@@ -131,6 +139,8 @@ const lint = ainsley => {
         checkRaw(errors, ainsley.raw);
       } else if (k === "mods") {
         checkMods(errors, ainsley.mods);
+      } else if (k === "reset") {
+        checkReset(errors, ainsley.reset);
       } else {
         errors.push(`invalid property "${k}" found`);
       }

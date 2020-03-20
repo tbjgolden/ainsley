@@ -16,6 +16,48 @@ function _typeof(obj) {
   return _typeof(obj);
 }
 
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+}
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function _iterableToArrayLimit(arr, i) {
+  if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
+    return;
+  }
+
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+}
+
 var messages = {};
 var predicates = {};
 var collections = ["array", "arrayLike", "iterable", "object"];
@@ -218,7 +260,7 @@ fns.forEach(function (_ref) {
   var n = _ref.n,
       f = _ref.f,
       s = _ref.s;
-  messages[n] = "assert failed: expected {a} to ".concat(s);
+  messages[n] = "expected {a} to ".concat(s);
   predicates[n] = f;
 });
 var functions = mixin({
@@ -1200,14 +1242,23 @@ var checkDefs = function checkDefs(errors, defs) {
   try {
     check.assert.array(defs);
     check.assert.array.of.nonEmptyArray(defs);
-    defs.forEach(function (def) {
-      check.assert.string(def[0]);
-      check.assert.nonEmptyArray(def[1]);
-      check.assert.array.of.nonEmptyArray(def[1]);
-      def[1].forEach(function (decl) {
+    defs.forEach(function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+          sel = _ref2[0],
+          vals = _ref2[1];
+
+      check.assert.nonEmptyString(sel);
+      check.assert.nonEmptyArray(vals);
+      check.assert.array.of.nonEmptyArray(vals);
+      vals.forEach(function (decl) {
         check.assert.hasLength(decl, 2);
-        check.assert.string(decl[0]);
-        check.assert(check.nonEmptyString(decl[1]) || check.number(decl[1]));
+
+        var _decl = _slicedToArray(decl, 2),
+            prop = _decl[0],
+            val = _decl[1];
+
+        check.assert.nonEmptyString(prop);
+        check.assert(check.nonEmptyString(val) || check.number(val));
       });
     });
   } catch (err) {
@@ -1218,6 +1269,15 @@ var checkDefs = function checkDefs(errors, defs) {
 var checkProps = function checkProps(errors, props) {
   try {
     check.assert.array(props);
+    check.assert.array.of.nonEmptyArray(props);
+    props.forEach(function (_ref3) {
+      var _ref4 = _slicedToArray(_ref3, 2),
+          prop = _ref4[0],
+          valsExpr = _ref4[1];
+
+      check.assert.nonEmptyString(prop);
+      checkIterator(errors, valsExpr, "props");
+    });
   } catch (err) {
     errors.push("\"props\" is invalid: ".concat(err.message));
   }
@@ -1226,6 +1286,26 @@ var checkProps = function checkProps(errors, props) {
 var checkRaw = function checkRaw(errors, raw) {
   try {
     check.assert.array(raw);
+    check.assert.array.of.nonEmptyArray(raw);
+    raw.forEach(function (_ref5) {
+      var _ref6 = _slicedToArray(_ref5, 2),
+          sel = _ref6[0],
+          vals = _ref6[1];
+
+      check.assert.nonEmptyString(sel);
+      check.assert.nonEmptyArray(vals);
+      check.assert.array.of.nonEmptyArray(vals);
+      vals.forEach(function (decl) {
+        check.assert.hasLength(decl, 2);
+
+        var _decl2 = _slicedToArray(decl, 2),
+            prop = _decl2[0],
+            val = _decl2[1];
+
+        check.assert.nonEmptyString(prop);
+        check.assert(check.nonEmptyString(val) || check.number(val));
+      });
+    });
   } catch (err) {
     errors.push("\"raw\" is invalid: ".concat(err.message));
   }
@@ -1234,8 +1314,43 @@ var checkRaw = function checkRaw(errors, raw) {
 var checkMods = function checkMods(errors, mods) {
   try {
     check.assert.array(mods);
+    check.assert.array.of.nonEmptyArray(mods);
+    mods.forEach(function (group) {
+      check.assert.nonEmptyArray(group);
+      check.assert.array.of.nonEmptyArray(group);
+      group.forEach(function (pair) {
+        check.assert.hasLength(pair, 2);
+
+        var _pair = _slicedToArray(pair, 2),
+            prefix = _pair[0],
+            mod = _pair[1];
+
+        check.assert.nonEmptyString(prefix);
+        check.assert.nonEmptyString(mod);
+      });
+    });
   } catch (err) {
     errors.push("\"mods\" is invalid: ".concat(err.message));
+  }
+};
+
+var checkReset = function checkReset(errors, reset) {
+  try {
+    check.assert.maybe.string(reset);
+  } catch (err) {
+    errors.push("\"reset\" is invalid: ".concat(err.message));
+  }
+};
+
+var checkIterator = function checkIterator(errors, iterator, name) {
+  try {
+    check.assert(check.nonEmptyObject(iterator) && Object.values(iterator).every(function (val) {
+      return check.nonEmptyString(val) || check.number(val);
+    }) || check.nonEmptyArray(iterator) && iterator.every(function (val) {
+      return check.nonEmptyString(val) || check.number(val);
+    }));
+  } catch (err) {
+    errors.push("\"".concat(name, "\" is invalid: ").concat(err.message));
   }
 };
 
@@ -1247,6 +1362,8 @@ var lint = function lint(ainsley) {
 
     for (var k in ainsley) {
       if (isIterator(k)) {
+        checkIterator(errors, ainsley[k], k);
+
         if (!defsJson.includes(k)) {
           errors.push("iterator ".concat(k, " defined but not used in \"defs\""));
         }
@@ -1267,6 +1384,8 @@ var lint = function lint(ainsley) {
         checkRaw(errors, ainsley.raw);
       } else if (k === "mods") {
         checkMods(errors, ainsley.mods);
+      } else if (k === "reset") {
+        checkReset(errors, ainsley.reset);
       } else {
         errors.push("invalid property \"".concat(k, "\" found"));
       }

@@ -14,6 +14,7 @@ test("extend", () => {
     props: [["font-style", ["italic", "normal"]]],
     raw: [["grayscale", [["filter", "grayscale(100%)"]]]],
     mods: [[["h-", ":hover"]]],
+    reset: "html{margin:0}",
     "{display}": {
       I: "inline",
       B: "block",
@@ -26,6 +27,7 @@ test("extend", () => {
   expect(firstResult).toEqual(firstInput);
 
   const secondInput = {
+    reset: "",
     defs: [["c&", [["color", "{colors}"]]]],
     "{colors}": {
       B: "black",
@@ -40,6 +42,7 @@ test("extend", () => {
       ["d&", [["display", "{display}"]]],
       ["c&", [["color", "{colors}"]]]
     ],
+    reset: "",
     mods: [[["h-", ":hover"]]],
     props: [["font-style", ["italic", "normal"]]],
     raw: [["grayscale", [["filter", "grayscale(100%)"]]]],
@@ -73,6 +76,7 @@ test("extend", () => {
       ["grayscale", [["filter", "grayscale(100%)"]]],
       ["underline", [["text-decoration", "underline"]]]
     ],
+    reset: "",
     "{colors}": { B: "black", PRIMARY: "blue", W: "white" },
     "{display}": { B: "block", I: "inline", IB: "inline-block", N: "none" }
   });

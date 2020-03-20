@@ -224,7 +224,7 @@
     var n = _ref.n,
         f = _ref.f,
         s = _ref.s;
-    messages[n] = "assert failed: expected {a} to ".concat(s);
+    messages[n] = "expected {a} to ".concat(s);
     predicates[n] = f;
   });
   var functions = mixin({
@@ -1226,7 +1226,7 @@
   };
 
   var _toCase = function _toCase(s, upper) {
-    return s["to" + (upper ? "Upp" : "Low") + "erCase"]();
+    return s["to".concat(upper ? "Upp" : "Low", "erCase")]();
   };
 
   var _toPair = function _toPair(input, isValue) {
@@ -1303,7 +1303,7 @@
     var ast = [].concat(flat(map$1(ainsley.defs || [], function (def) {
       return expandDefs(ainsley, def);
     })), flat(map$1(ainsley.props || [], expandProps)), ainsley.raw || []);
-    return flat(map$1(combinations(map$1(ainsley.mods || [], _addEmptyMod)), function (comb) {
+    return [ainsley.reset || ""].concat(flat(map$1(combinations(map$1(ainsley.mods || [], _addEmptyMod)), function (comb) {
       return comb.reduce(function (ast, pair) {
         if (!pair[1]) {
           return ast;
@@ -1317,9 +1317,10 @@
           });
         }
       }, ast);
-    }));
+    })));
   };
   var ruleToCSS = function ruleToCSS(rule) {
+    if (typeof rule === "string") return rule;
     return rule[0][0] === "@" ? "".concat(rule[0], "{").concat(astToCSS(rule[1]), "}") : ".".concat(rule[0], "{").concat(map$1(rule[1], _expandDeclaration).join(";"), "}");
   }; // generate css from simple stylesheet ast
 

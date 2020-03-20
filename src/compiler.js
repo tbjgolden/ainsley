@@ -9,7 +9,7 @@ const _notUpperOrDigitRegex = /[^A-Z0-9]/g;
 // private helpers
 const _expandDeclaration = subpair => `${subpair[0]}:${subpair[1]}`;
 const _addEmptyMod = mod => [["", ""]].concat(mod);
-const _toCase = (s, upper) => s["to" + (upper ? "Upp" : "Low") + "erCase"]();
+const _toCase = (s, upper) => s[`to${upper ? "Upp" : "Low"}erCase`]();
 const _toPair = (input, isValue) => {
   if (typeof input === "number") {
     const str = toString(input);
@@ -90,33 +90,37 @@ export const ainsleyToAST = ainsley => {
     flat(map(ainsley.props || [], expandProps)),
     ainsley.raw || []
   );
-  return flat(
-    map(combinations(map(ainsley.mods || [], _addEmptyMod)), comb =>
-      comb.reduce((ast, pair) => {
-        if (!pair[1]) {
-          return ast;
-        } else if (pair[1][0] === "@") {
-          return [
-            [
-              pair[1],
-              map(ast, subpair => [`${pair[0]}${subpair[0]}`, subpair[1]])
-            ]
-          ];
-        } else {
-          return map(ast, subpair => [
-            `${pair[0]}${subpair[0]}${pair[1]}`,
-            subpair[1]
-          ]);
-        }
-      }, ast)
+  return [ainsley.reset || ""].concat(
+    flat(
+      map(combinations(map(ainsley.mods || [], _addEmptyMod)), comb =>
+        comb.reduce((ast, pair) => {
+          if (!pair[1]) {
+            return ast;
+          } else if (pair[1][0] === "@") {
+            return [
+              [
+                pair[1],
+                map(ast, subpair => [`${pair[0]}${subpair[0]}`, subpair[1]])
+              ]
+            ];
+          } else {
+            return map(ast, subpair => [
+              `${pair[0]}${subpair[0]}${pair[1]}`,
+              subpair[1]
+            ]);
+          }
+        }, ast)
+      )
     )
   );
 };
 
-export const ruleToCSS = rule =>
-  rule[0][0] === "@"
+export const ruleToCSS = rule => {
+  if (typeof rule === "string") return rule;
+  return rule[0][0] === "@"
     ? `${rule[0]}{${astToCSS(rule[1])}}`
     : `.${rule[0]}{${map(rule[1], _expandDeclaration).join(";")}}`;
+};
 
 // generate css from simple stylesheet ast
 export const astToCSS = ast => map(ast, ruleToCSS).join("");
