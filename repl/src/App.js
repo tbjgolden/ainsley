@@ -7,7 +7,7 @@ function App() {
     try {
       const json = JSON.parse(ainsley);
       const lintResults = lint(json);
-      return lintResults ? lintResults.join("\n") : ainsleyToCSS(json);
+      return lintResults ? lintResults.join("\n\n") : ainsleyToCSS(json);
     } catch (err) {
       return err.message;
     }
