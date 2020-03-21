@@ -1,4 +1,4 @@
-/** @license Ainsley v0.0.1-beta.7 (Tom Golden <tom.bio> @tbjgolden) */
+/** @license Ainsley v0.0.1-beta.8 (Tom Golden <tom.bio> @tbjgolden) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -26,8 +26,24 @@
     return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
   }
 
+  function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+  }
+
+  function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+      return arr2;
+    }
+  }
+
   function _arrayWithHoles(arr) {
     if (Array.isArray(arr)) return arr;
+  }
+
+  function _iterableToArray(iter) {
+    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
   }
 
   function _iterableToArrayLimit(arr, i) {
@@ -58,6 +74,10 @@
     }
 
     return _arr;
+  }
+
+  function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance");
   }
 
   function _nonIterableRest() {
@@ -1296,9 +1316,10 @@
     } else {
       return [_toCase(input.replace(_notUpperOrDigitRegex, ""), isValue), _toCase(input, false)];
     }
-  };
+  }; // parse smart map
 
-  var _toPairs = function _toPairs(inputs, isValue) {
+
+  var parseSmartMap = function parseSmartMap(inputs, isValue) {
     return inputs.length ? map$1(inputs, function (input) {
       return _toPair(input, isValue);
     }) : map$1(Object.keys(inputs), function (key) {
@@ -1306,17 +1327,16 @@
     });
   }; // expand ainsley.defs
 
-
   var expandDefs = function expandDefs(ainsley, ruleSet) {
     var pair = ruleSet[1].reduce(function (iters, pair) {
       return [iters[0].concat(toString$1(pair[0]).match(iteratorRegex) || []), iters[1].concat(toString$1(pair[1]).match(iteratorRegex) || [])];
     }, [[], []]);
     return map$1(combinations(flat([map$1(pair[0], function (iter) {
-      return map$1(_toPairs(ainsley[iter]), function (pair) {
+      return map$1(parseSmartMap(ainsley[iter]), function (pair) {
         return [iter, pair[0], pair[1]];
       });
     }), map$1(pair[1], function (iter) {
-      return map$1(_toPairs(ainsley[iter], true), function (pair) {
+      return map$1(parseSmartMap(ainsley[iter], true), function (pair) {
         return [iter, pair[0], pair[1]];
       });
     })])), function (perm) {
@@ -1350,9 +1370,8 @@
   }; // expand ainsley.props
 
   var expandProps = function expandProps(pair) {
-    var prop = _toPairs([pair[0]])[0];
-
-    return map$1(_toPairs(pair[1], true), function (subpair) {
+    var prop = parseSmartMap([pair[0]])[0];
+    return map$1(parseSmartMap(pair[1], true), function (subpair) {
       return ["".concat(prop[0]).concat(subpair[0]), [[prop[1], subpair[1]]]];
     });
   }; // compile ainsley to a simple stylesheet ast
@@ -1426,12 +1445,25 @@
     return clonedRegexp;
   };
 
+  var selectorRegex = /^((?:[a-z]+-)*)([a-z]+)([A-Z0-9]+)(?:\:|$)/;
   var regex = cloneRegexp(iteratorRegex, {
     global: false
   });
 
   var isIterator = function isIterator(str) {
     return regex.test(str);
+  };
+
+  var checkAbbrev = function checkAbbrev(errors, abbrev, prop) {
+    var expectedAbbrev = prop.split("-").map(function (w) {
+      var abbr = propertyWordMap[w];
+      if (typeof abbr === "string") return abbr;
+      return w[0];
+    }).join("");
+
+    if (expectedAbbrev !== abbrev) {
+      errors.push("Incorrect abbreviation for \"".concat(prop, "\", expected \"").concat(expectedAbbrev, "\" but got \"").concat(abbrev, "\""));
+    }
   };
 
   var checkDefs = function checkDefs(errors, defs) {
@@ -1441,12 +1473,12 @@
       defs.forEach(function (_ref) {
         var _ref2 = _slicedToArray(_ref, 2),
             sel = _ref2[0],
-            vals = _ref2[1];
+            decls = _ref2[1];
 
         check.assert.nonEmptyString(sel);
-        check.assert.nonEmptyArray(vals);
-        check.assert.array.of.nonEmptyArray(vals);
-        vals.forEach(function (decl) {
+        check.assert.nonEmptyArray(decls);
+        check.assert.array.of.nonEmptyArray(decls);
+        decls.forEach(function (decl) {
           check.assert.hasLength(decl, 2);
 
           var _decl = _slicedToArray(decl, 2),
@@ -1550,6 +1582,42 @@
     }
   };
 
+  var checkAST = function checkAST(errors, ast) {
+    var blocks = ast.filter(function (block) {
+      return Array.isArray(block);
+    });
+    blocks.forEach(function (block) {
+      var isAtRule = block[0][0] === "@";
+
+      if (isAtRule) {
+        checkAST(errors, block[1]);
+      } else {
+        var _block = _slicedToArray(block, 2),
+            sel = _block[0],
+            decls = _block[1];
+
+        var match = sel.match(selectorRegex);
+
+        if (match) {
+          if (decls.length === 1) {
+            var _match = _slicedToArray(match, 4),
+                m = _match[1],
+                p = _match[2],
+                v = _match[3];
+
+            var _decls$ = _slicedToArray(decls[0], 2),
+                prop = _decls$[0],
+                val = _decls$[1];
+
+            checkAbbrev(errors, p, prop);
+          }
+        } else {
+          errors.push("Invalid ainsley class \"".concat(sel, "\", should match ").concat(selectorRegex.toString()));
+        }
+      }
+    });
+  };
+
   var lint = function lint(ainsley) {
     var errors = [];
 
@@ -1586,11 +1654,60 @@
           errors.push("invalid property \"".concat(k, "\" found"));
         }
       }
+
+      if (!errors.length) {
+        checkAST(errors, ainsleyToAST(ainsley));
+      }
     } catch (err) {
       errors.push("Error during lint: ".concat(err.message));
     }
 
-    return errors.length ? errors : null;
+    return errors.length ? _toConsumableArray(new Set(errors)) : null;
+  };
+  var propertyWordMap = {
+    // short hand properties use first 2 letters
+    animation: "an",
+    background: "ba",
+    border: "bo",
+    columns: "co",
+    flex: "fl",
+    // float
+    font: "fo",
+    grid: "gr",
+    margin: "ma",
+    offset: "of",
+    // object fit
+    outline: "ou",
+    overflow: "ov",
+    padding: "pa",
+    transition: "tr",
+    // prevents object-fit clashing with offset
+    object: "ob",
+    // size and sizing
+    size: "sz",
+    sizing: "sz",
+    // min and max
+    min: "n",
+    max: "x",
+    // sort out the 4 'c's situation - color is "c"
+    cursor: "cu",
+    clear: "cl",
+    clip: "cp",
+    // style fixes two collisions
+    style: "st",
+    // border-collapse collides with border-color
+    collapse: "co",
+    // remaining single word collisions
+    hyphens: "hy",
+    //  height
+    order: "or",
+    // opacity
+    fill: "fi",
+    // float
+    resize: "re",
+    // right
+    transform: "tf" // top, transition
+
   };
 
   var empty = {
@@ -1624,7 +1741,7 @@
 
   // prettier-ignore
   var base = {
-    defs: [["c&", [["color", "{colors}"]]], ["bgc&", [["background-color", "{colors}"]]], ["fs&", [["font-size", "{typeScale}"], ["line-height", 1.2]]], ["&&", [["{scalar}", "{scale}"]]], ["&&", [["{direction}", "{scale}"]]], ["&&&", [["{vector}-{direction}", "{scale}"]]], ["m&N&", [["margin-{direction}", "-{scale}"]]], ["bgp&&", [["background-position", "{xLoc} {yLoc}"]]], ["b&w&", [["border-{direction}-width", "{scale}"]]], ["b&c&", [["border-{direction}-color", "{colors}"]]], ["fx&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]], ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]], ["ov&&", [["overflow", "{overflow} {overflow}"]]]],
+    defs: [["c&", [["color", "{colors}"]]], ["bac&", [["background-color", "{colors}"]]], ["fs&", [["font-size", "{typeScale}"], ["line-height", 1.2]]], ["&&", [["{scalar}", "{scale}"]]], ["&&", [["{direction}", "{scale}"]]], ["&&&", [["{vector}-{direction}", "{scale}"]]], ["m&N&", [["margin-{direction}", "-{scale}"]]], ["bgp&&", [["background-position", "{xLoc} {yLoc}"]]], ["b&w&", [["border-{direction}-width", "{scale}"]]], ["b&c&", [["border-{direction}-color", "{colors}"]]], ["fx&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]], ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]], ["ov&&", [["overflow", "{overflow} {overflow}"]]]],
     props: [["Display", ["Inline", "Block", "FleX", "None", "Inline-Block", "Inline-FleX"]], ["Text-Decoration", ["Line-through", "Underline", "None"]], ["Font-STyle", ["Italic", "Normal"]], ["Text-Transform", ["Uppercase", "Lowercase"]], ["Overflow-Wrap", ["Break-Word", "Anywhere", "Normal"]], ["Background-Repeat", ["Repeat", "No-repeat"]], ["Position", ["Relative", "Absolute", "Fixed", "Sticky"]], ["Text-Align", ["Left", "Center", "Right", "Justify"]], ["Vertical-Align", ["Top", "Middle", "Bottom"]], ["Cursor", ["Default", "Pointer"]], ["Pointer-Events", ["None", "All"]], ["Z-Index", [0, 1, 2, 4, 8, 16, 32, -1]], ["Opacity", [0, 10, 20, 40, 80, 100]], ["White-Space", ["Pre", "Pre-Wrap", "NoWrap", "Normal"]], ["BackGround-Size", ["CoVer", "ConTain"]], ["FleX-Direction", ["Row", "Column", "Row-Reverse", "Column-Reverse"]], ["Justify-Content", ["Center", "Flex-Start", "Flex-End", "Space-Between", "Space-Evenly"]], ["Line-Height", {
       B: 1,
       T: 1.2,
@@ -1651,8 +1768,8 @@
     },
     "{xLoc}": ["Left", "Right", "Center"],
     "{yLoc}": ["Top", "Bottom", "Center"],
-    "{scalar}": ["Width", "maX-Width", "miN-Width", "Height", "maX-Height", "miN-Height", "Border-Radius"],
-    "{vector}": ["Margin", "Padding"],
+    "{scalar}": ["Width", "maX-Width", "miN-Width", "Height", "maX-Height", "miN-Height", "BOrder-Radius"],
+    "{vector}": ["MArgin", "PAdding"],
     "{direction}": ["Top", "Left", "Right", "Bottom"],
     "{colors}": {
       W: "white",
@@ -1741,6 +1858,8 @@
   exports.extend = extend;
   exports.iteratorRegex = iteratorRegex;
   exports.lint = lint;
+  exports.parseSmartMap = parseSmartMap;
+  exports.propertyWordMap = propertyWordMap;
   exports.ruleToCSS = ruleToCSS;
 
   Object.defineProperty(exports, '__esModule', { value: true });

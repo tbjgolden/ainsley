@@ -6,7 +6,7 @@ module.exports = extend([
   {
     defs: [
       ["ff&", [["font-family", "{fontFamily}"]]],
-      ["&a&", [["{vector}", "{scale}"]]]
+      ["&&", [["{vector}", "{scale}"]]]
     ],
     props: [["Resize", ["None", "Both", "Horizontal", "Vertical"]]],
     "{fontFamily}": {

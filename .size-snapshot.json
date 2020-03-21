@@ -1,7 +1,7 @@
 {
   "dist/compiler.lite.js": {
-    "bundled": 4791,
+    "bundled": 4894,
     "minified": 1840,
-    "gzipped": 885
+    "gzipped": 884
   }
 }

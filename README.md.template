@@ -186,7 +186,7 @@ This can be done in many ways! Here's some ideas to start from.
 
 ```js
 const ainsleyClassRegex = /^((?:[a-z]+-)*)([a-z]+)([A-Z0-9]+)$/;
-const [mods, prop, val] = "<anyAinsleyClass>".match(ainsleyClassRegex);
+const [, mods, prop, val] = "<anyAinsleyClass>".match(ainsleyClassRegex);
 ```
 
 ```none

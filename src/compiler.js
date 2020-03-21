@@ -24,7 +24,9 @@ const _toPair = (input, isValue) => {
     ];
   }
 };
-const _toPairs = (inputs, isValue) =>
+
+// parse smart map
+export const parseSmartMap = (inputs, isValue) =>
   inputs.length
     ? map(inputs, input => _toPair(input, isValue))
     : map(Object.keys(inputs), key => [toString(key), toString(inputs[key])]);
@@ -43,10 +45,14 @@ export const expandDefs = (ainsley, ruleSet) => {
     combinations(
       flat([
         map(pair[0], iter =>
-          map(_toPairs(ainsley[iter]), pair => [iter, pair[0], pair[1]])
+          map(parseSmartMap(ainsley[iter]), pair => [iter, pair[0], pair[1]])
         ),
         map(pair[1], iter =>
-          map(_toPairs(ainsley[iter], true), pair => [iter, pair[0], pair[1]])
+          map(parseSmartMap(ainsley[iter], true), pair => [
+            iter,
+            pair[0],
+            pair[1]
+          ])
         )
       ])
     ),
@@ -76,8 +82,8 @@ export const expandDefs = (ainsley, ruleSet) => {
 
 // expand ainsley.props
 export const expandProps = pair => {
-  const prop = _toPairs([pair[0]])[0];
-  return map(_toPairs(pair[1], true), subpair => [
+  const prop = parseSmartMap([pair[0]])[0];
+  return map(parseSmartMap(pair[1], true), subpair => [
     `${prop[0]}${subpair[0]}`,
     [[prop[1], subpair[1]]]
   ]);

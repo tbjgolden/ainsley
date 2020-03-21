@@ -1,4 +1,4 @@
-/** @license Ainsley v0.0.1-beta.7 (Tom Golden <tom.bio> @tbjgolden) */
+/** @license Ainsley v0.0.1-beta.8 (Tom Golden <tom.bio> @tbjgolden) */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -1238,9 +1238,10 @@
     } else {
       return [_toCase(input.replace(_notUpperOrDigitRegex, ""), isValue), _toCase(input, false)];
     }
-  };
+  }; // parse smart map
 
-  var _toPairs = function _toPairs(inputs, isValue) {
+
+  var parseSmartMap = function parseSmartMap(inputs, isValue) {
     return inputs.length ? map$1(inputs, function (input) {
       return _toPair(input, isValue);
     }) : map$1(Object.keys(inputs), function (key) {
@@ -1248,17 +1249,16 @@
     });
   }; // expand ainsley.defs
 
-
   var expandDefs = function expandDefs(ainsley, ruleSet) {
     var pair = ruleSet[1].reduce(function (iters, pair) {
       return [iters[0].concat(toString$1(pair[0]).match(iteratorRegex) || []), iters[1].concat(toString$1(pair[1]).match(iteratorRegex) || [])];
     }, [[], []]);
     return map$1(combinations(flat([map$1(pair[0], function (iter) {
-      return map$1(_toPairs(ainsley[iter]), function (pair) {
+      return map$1(parseSmartMap(ainsley[iter]), function (pair) {
         return [iter, pair[0], pair[1]];
       });
     }), map$1(pair[1], function (iter) {
-      return map$1(_toPairs(ainsley[iter], true), function (pair) {
+      return map$1(parseSmartMap(ainsley[iter], true), function (pair) {
         return [iter, pair[0], pair[1]];
       });
     })])), function (perm) {
@@ -1292,9 +1292,8 @@
   }; // expand ainsley.props
 
   var expandProps = function expandProps(pair) {
-    var prop = _toPairs([pair[0]])[0];
-
-    return map$1(_toPairs(pair[1], true), function (subpair) {
+    var prop = parseSmartMap([pair[0]])[0];
+    return map$1(parseSmartMap(pair[1], true), function (subpair) {
       return ["".concat(prop[0]).concat(subpair[0]), [[prop[1], subpair[1]]]];
     });
   }; // compile ainsley to a simple stylesheet ast
@@ -1347,6 +1346,7 @@
   exports.expandDefs = expandDefs;
   exports.expandProps = expandProps;
   exports.iteratorRegex = iteratorRegex;
+  exports.parseSmartMap = parseSmartMap;
   exports.ruleToCSS = ruleToCSS;
 
   Object.defineProperty(exports, '__esModule', { value: true });

@@ -30,34 +30,34 @@ it massively.
 | Base Ainsley | |    JS | JS-to-CSS | Equivalent |
 +==============+ | input |  compiler | CSS output |
 +----------------+-------+-----------+------------+
-| minified bytes | 4,665 |     1,883 |    740,036 |
+| minified bytes | 4,665 |     1,883 |    744,896 |
 ++---------------+-------+-----------+------------+
- | gzipped bytes | 2,036 |       919 |    133,136 |
+ | gzipped bytes | 2,038 |       919 |    133,465 |
  ++--------------+-------+-----------+------------+
-  | brotli bytes | 1,746 |       847 |     22,952 |
+  | brotli bytes | 1,753 |       846 |     22,821 |
   +-+------------+-------+-----------+------------+
-    | TOTAL SENT |             2,593 |     22,952 |
+    | TOTAL SENT |             2,599 |     22,821 |
     +------------+-------------------+------------+
 ```
 
 # Comparisons to others
 
-| **Name**      | **Minified** |    **Gzip** |  **Brotli** | **CSS Rules** | **Efficiency\*** |  **Load 1** |  **Load 2** | **Load 3** |
-| :------------ | -----------: | ----------: | ----------: | ------------: | ---------------: | ----------: | ----------: | ---------: |
-| **ainsley**   |  **`6,548`** | **`2,955`** | **`2,593`** |  **`21,729`** |       **`6.09`** | **`4,272`** | **`1,263`** |      `115` |
-| tailwindcss   |    `710,997` |    `97,417` |    `10,199` |      `14,445` |           `0.08` |    `18,031` |     `5,075` |      `183` |
-| tachyons      |     `73,497` |    `13,697` |     `2,421` |       `2,113` |           `0.10` |     `5,606` |     `1,621` |   **`71`** |
-| sane-tachyons |     `49,793` |     `9,200` |     `1,957` |       `1,278` |           `0.08` |     `5,345` |     `1,552` |       `75` |
-| turretcss     |     `93,542` |    `17,025` |     `4,311` |       `1,588` |           `0.06` |           - |           - |          - |
-| solid         |     `82,482` |    `12,585` |     `2,497` |       `1,469` |           `0.06` |           - |           - |          - |
-| basscss       |     `11,326` |     `2,477` |       `589` |         `260` |           `0.07` |           - |           - |          - |
-| bootstrap     |    `159,515` |    `23,681` |     `4,762` |       `2,027` |           `0.05` |           - |           - |          - |
-| bulma         |    `194,420` |    `25,511` |     `5,705` |       `2,142` |           `0.04` |           - |           - |          - |
-| materialize   |    `141,841` |    `21,558` |     `5,579` |       `1,609` |           `0.04` |           - |           - |          - |
-| spectre       |     `45,964` |     `9,631` |     `1,992` |         `638` |           `0.04` |           - |           - |          - |
-| foundation    |    `132,474` |    `17,219` |     `3,471` |       `1,420` |           `0.04` |           - |           - |          - |
-| milligram     |      `8,718` |     `2,295` |       `442` |          `90` |           `0.03` |           - |           - |          - |
-| skeleton      |      `5,879` |     `1,630` |       `356` |          `84` |           `0.04` |           - |           - |          - |
+| **Name**      | **Minified** |   **Gzip** | **Brotli** | **CSS Rules** | **Efficiency\*** |  **Load 1** |  **Load 2** | **Load 3** |
+| :------------ | -----------: | ---------: | ---------: | ------------: | ---------------: | ----------: | ----------: | ---------: |
+| **ainsley**   |   **`6,548`** | **`2,957`** | **`2,599`** |   **`21,729`** |       **`6.08`** | **`4,272`** | **`1,263`** |      `115` |
+| tailwindcss   |    `710,997` |   `97,417` |   `10,199` |      `14,445` |           `0.08` |    `18,031` |     `5,075` |      `183` |
+| tachyons      |     `73,497` |   `13,697` |    `2,421` |       `2,113` |           `0.10` |     `5,606` |     `1,621` |   **`71`** |
+| sane-tachyons |     `49,793` |    `9,200` |    `1,957` |       `1,278` |           `0.08` |     `5,345` |     `1,552` |       `75` |
+| turretcss     |     `93,542` |   `17,025` |    `4,311` |       `1,588` |           `0.06` |           - |           - |          - |
+| solid         |     `82,482` |   `12,585` |    `2,497` |       `1,469` |           `0.06` |           - |           - |          - |
+| basscss       |     `11,326` |    `2,477` |      `589` |         `260` |           `0.07` |           - |           - |          - |
+| bootstrap     |    `159,515` |   `23,681` |    `4,762` |       `2,027` |           `0.05` |           - |           - |          - |
+| bulma         |    `194,420` |   `25,511` |    `5,705` |       `2,142` |           `0.04` |           - |           - |          - |
+| materialize   |    `141,841` |   `21,558` |    `5,579` |       `1,609` |           `0.04` |           - |           - |          - |
+| spectre       |     `45,964` |    `9,631` |    `1,992` |         `638` |           `0.04` |           - |           - |          - |
+| foundation    |    `132,474` |   `17,219` |    `3,471` |       `1,420` |           `0.04` |           - |           - |          - |
+| milligram     |      `8,718` |    `2,295` |      `442` |          `90` |           `0.03` |           - |           - |          - |
+| skeleton      |      `5,879` |    `1,630` |      `356` |          `84` |           `0.04` |           - |           - |          - |
 
 > \* Efficiency here can be thought of as real-world rules per byte (it uses a weighted average of real-world compression data).
 >
@@ -139,38 +139,7 @@ This can be done in many ways! Here's some ideas to start from.
 </body>
 ```
 
-##### 👨🏾‍🍳 Recipe 1: create-react-app
-
-```jsx
-// src/index.js
-| ...
-| import "./styles.js";
-| ...
-
-// src/styles.js
-| import preval from "preval.macro";
-| import { ainsleyToCSS } from "ainsley";
-|
-| const ainsley = preval`module.exports = require("../scripts/ainsley")`;
-|
-| var styleEl = document.createElement("style");
-| styleEl.appendChild(document.createTextNode(ainsleyToCSS(ainsley)));
-| document.head.appendChild(styleEl);
-| document.body.style.display = "block";
-
-// scripts/ainsley.js
-| // (write your ainsley here; no dependencies used here are added to the bundle)
-| const { base, extend } = require("ainsley");
-| module.exports = extend([
-|   base,
-|   {
-|     defs: [["ff&", [["font-family", "{fontFamily}"]]]],
-|     "{fontFamily}": ["SANS-serif", "SERIF", "MONOspace"]
-|   }
-| ]);
-```
-
-##### 👨🏾‍🍳 Recipe 2: build at runtime and inject it into the script
+##### 👨🏾‍🍳 Recipe 1: embed it in script
 
 ```html
 <script src="/compiler.lite.js"></script>
@@ -185,7 +154,7 @@ This can be done in many ways! Here's some ideas to start from.
 </script>
 ```
 
-##### 👨🏾‍🍳 Recipe 3: fetch ainsley at runtime
+##### 👨🏾‍🍳 Recipe 2: fetch ainsley at runtime
 
 ```html
 <head>
@@ -198,14 +167,13 @@ This can be done in many ways! Here's some ideas to start from.
 
   <script src="/compiler.lite.js"></script>
   <script>
-    // you could use your own fetch here, using a standard AJAX request instead
     var req = new XMLHttpRequest();
     req.open("GET", "/ainsley.json");
     req.onreadystatechange = function() {
       if (req.readyState === 4 && req.status === 200) {
         var styleEl = document.createElement("style");
         styleEl.appendChild(
-          document.createTextNode(AinsleyToCSS(JSON.parse(req.responseText)))
+          document.createTextNode(AC(JSON.parse(req.responseText)))
         );
         document.head.appendChild(styleEl);
         document.body.style.display = "block";
@@ -220,7 +188,7 @@ This can be done in many ways! Here's some ideas to start from.
 
 ```js
 const ainsleyClassRegex = /^((?:[a-z]+-)*)([a-z]+)([A-Z0-9]+)$/;
-const [mods, prop, val] = "<anyAinsleyClass>".match(ainsleyClassRegex);
+const [, mods, prop, val] = "<anyAinsleyClass>".match(ainsleyClassRegex);
 ```
 
 ```none
