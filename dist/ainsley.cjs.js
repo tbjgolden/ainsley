@@ -1,4 +1,4 @@
-/** @license Ainsley v0.0.1-beta.8 (Tom Golden <tom.bio> @tbjgolden) */
+/** @license Ainsley v0.0.1-beta.9 (Tom Golden <tom.bio> @tbjgolden) */
 
 'use strict';
 
@@ -1739,7 +1739,7 @@ var extend = function extend(ainsleys) {
 
 // prettier-ignore
 var base = {
-  defs: [["c&", [["color", "{colors}"]]], ["bac&", [["background-color", "{colors}"]]], ["fosz&", [["font-size", "{typeScale}"], ["line-height", 1.2]]], ["&&", [["{scalar}", "{scale}"]]], ["&&", [["{direction}", "{scale}"]]], ["&&&", [["{vector}-{direction}", "{scale}"]]], ["ma&N&", [["margin-{direction}", "-{scale}"]]], ["bap&&", [["background-position", "{xLoc} {yLoc}"]]], ["bo&w&", [["border-{direction}-width", "{scale}"]]], ["bo&c&", [["border-{direction}-color", "{colors}"]]], ["fl&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]], ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]], ["ov&&", [["overflow", "{overflow} {overflow}"]]]],
+  defs: [["c&", [["color", "{colors}"]]], ["bac&", [["background-color", "{colors}"]]], ["fosz&", [["font-size", "{typeScale}"], ["line-height", 1.2]]], ["&&", [["{scalar}", "{scale}"]]], ["&&", [["{direction}", "{scale}"]]], ["&&", [["{vector}", "{scale}"]]], ["&&&", [["{vector}-{direction}", "{scale}"]]], ["ma&N&", [["margin-{direction}", "-{scale}"]]], ["bap&&", [["background-position", "{xLoc} {yLoc}"]]], ["bo&w&", [["border-{direction}-width", "{scale}"]]], ["bo&c&", [["border-{direction}-color", "{colors}"]]], ["fl&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]], ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]], ["ov&&", [["overflow", "{overflow} {overflow}"]]]],
   props: [["Display", ["Inline", "Block", "FleX", "None", "Inline-Block", "Inline-FleX"]], ["Text-Decoration", ["Line-through", "Underline", "None"]], ["FOnt-STyle", ["Italic", "Normal"]], ["Text-TransForm", ["Uppercase", "Lowercase"]], ["OVerflow-Wrap", ["Break-Word", "Anywhere", "Normal"]], ["BAckground-Repeat", ["Repeat", "No-repeat"]], ["Position", ["Relative", "Absolute", "Fixed", "Sticky"]], ["Text-Align", ["Left", "Center", "Right", "Justify"]], ["Vertical-Align", ["Top", "Middle", "Bottom"]], ["CUrsor", ["Default", "Pointer"]], ["Pointer-Events", ["None", "All"]], ["Z-Index", [0, 1, 2, 4, 8, 16, 32, -1]], ["Opacity", [0, 10, 20, 40, 80, 100]], ["White-Space", ["Pre", "Pre-Wrap", "NoWrap", "Normal"]], ["BAckground-SiZe", ["CoVer", "ConTain"]], ["FLex-Direction", ["Row", "Column", "Row-Reverse", "Column-Reverse"]], ["Justify-Content", ["Center", "Flex-Start", "Flex-End", "Space-Between", "Space-Evenly"]], ["Line-Height", {
     B: 1,
     T: 1.2,
