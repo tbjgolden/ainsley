@@ -12,6 +12,7 @@
 - [ ] repl
 - [ ] do we need to remove prop abbrev clashes if vals don't clash
 - [ ] mnemonics
+- [ ] check if vertical and horizontal work or not
 
 mad ideas zone
 
