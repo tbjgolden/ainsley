@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
-import { ainsleyToCSS, base, lint } from "ainsley";
+import { ainsleyToCSS, extend, base, lint } from "ainsley";
+
+const empty = extend([{ reset:"" }]);
 
 function App() {
   const [ainsley, setAinsley] = useState(toJSON(base));
@@ -17,11 +19,21 @@ function App() {
     <div className="hH pa40 dFX fxdC aiC">
       <div className="xw95 xhP wP fx110 dFX">
         <Half>
-          <h2 className="fwM pt20 pa25">Input</h2>
+          <div className="pa25 nw55">
+            <h2 className="fwM">Input</h2>
+            <button className="dB mt25 fsXS tdU" onClick={() => setAinsley(toJSON(empty))}>
+              Empty config
+            </button>
+            <button className="dB mt15 fsXS tdU" onClick={() => setAinsley(toJSON(base))}>
+              Base config
+            </button>
+          </div>
           <TextArea value={ainsley} onChange={setAinsley} readOnly />
         </Half>
         <Half r>
-          <h2 className="fwM pt20 pa25">Output</h2>
+          <div className="pa25 nw55">
+            <h2 className="fwM">Output</h2>
+          </div>
           <Output>{css}</Output>
         </Half>
       </div>
@@ -37,7 +49,7 @@ function Half({ className, r, ...props }) {
   );
 }
 
-function TextArea({ className, onChange: onChangeProp, ...props }) {
+function TextArea({ className, onChange: onChangeProp, value, ...props }) {
   const cm = useRef(null);
   const el = useRef(null);
   const debounce = useRef(null);
@@ -74,12 +86,19 @@ function TextArea({ className, onChange: onChangeProp, ...props }) {
     };
   }, []);
 
+  useEffect(() => {
+    if (cm.current && value !== cm.current.getValue()) {
+      cm.current.setValue(value);
+    }
+  }, [value]);
+
   return (
     <>
       <textarea
         key="0"
         ref={el}
         className={`fx110 pa25 ffMONO bgcG20 fsXS cW rN ${className || ""}`}
+        value={value}
         {...props}
       />
       <style>{`.CodeMirror{font-family:'Fira Code',monospace;font-size:12px}`}</style>
