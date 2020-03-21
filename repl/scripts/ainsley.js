@@ -4,10 +4,7 @@ const { base, extend } = require("ainsley");
 module.exports = extend([
   base,
   {
-    defs: [
-      ["ff&", [["font-family", "{fontFamily}"]]],
-      ["&&", [["{vector}", "{scale}"]]]
-    ],
+    defs: [["fof&", [["font-family", "{fontFamily}"]]]],
     props: [["Resize", ["None", "Both", "Horizontal", "Vertical"]]],
     "{fontFamily}": {
       SANS:

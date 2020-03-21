@@ -6,6 +6,7 @@ export const base = {
     ["fosz&", [["font-size", "{typeScale}"], ["line-height", 1.2]]],
     ["&&", [["{scalar}", "{scale}"]]],
     ["&&", [["{direction}", "{scale}"]]],
+    ["&&", [["{vector}", "{scale}"]]],
     ["&&&", [["{vector}-{direction}", "{scale}"]]],
     ["ma&N&", [["margin-{direction}", "-{scale}"]]],
     ["bap&&", [["background-position", "{xLoc} {yLoc}"]]],

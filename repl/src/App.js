@@ -22,13 +22,13 @@ function App() {
           <div className="pa25 nw55">
             <h2 className="fwM">Input</h2>
             <button
-              className="dB mt25 fsXS tdU"
+              className="dB mat25 foszXS tdU"
               onClick={() => setAinsley(toJSON(empty))}
             >
               Empty config
             </button>
             <button
-              className="dB mt15 fsXS tdU"
+              className="dB mat15 foszXS tdU"
               onClick={() => setAinsley(toJSON(base))}
             >
               Base config
@@ -50,7 +50,7 @@ function App() {
 function Half({ className, r, ...props }) {
   return (
     <div
-      className={`xwP50 fx110 dFX ${r ? "pl25" : "pr25"} ${className || ""}`}
+      className={`xwP50 fx110 dFX ${r ? "pal25" : "par25"} ${className || ""}`}
       {...props}
     >
       <div className="bacG10 hP wP dFX" {...props} />
@@ -106,7 +106,7 @@ function TextArea({ className, onChange: onChangeProp, value, ...props }) {
       <textarea
         key="0"
         ref={el}
-        className={`fx110 pa25 ffMONO bacG20 fsXS cW rN ${className || ""}`}
+        className={`fx110 pa25 ffMONO bacG20 foszXS cW rN ${className || ""}`}
         value={value}
         {...props}
       />
@@ -118,7 +118,7 @@ function TextArea({ className, onChange: onChangeProp, value, ...props }) {
 function Output({ className, ...props }) {
   return (
     <pre
-      className={`fx110 xHP xwP pa25 ovAA fsXS ffMONO bacG20 cW rN ${className ||
+      className={`fx110 xHP xwP pa25 ovAA foszXS ffMONO bacG20 cW rN ${className ||
         ""}`}
     >
       <code className="wsPW owBW xwP" {...props} />
