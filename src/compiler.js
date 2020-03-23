@@ -96,7 +96,7 @@ export const ainsleyToAST = ainsley => {
     flat(map(ainsley.props || [], expandProps)),
     ainsley.raw || []
   );
-  return [ainsley.reset || ""].concat(
+  return (ainsley.reset ? [ainsley.reset] : []).concat(
     flat(
       map(combinations(map(ainsley.mods || [], _addEmptyMod)), comb =>
         comb.reduce((ast, pair) => {

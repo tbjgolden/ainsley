@@ -1,5 +1,5 @@
 import { base } from "./base";
-import { ainsleyToCSS, ainsleyInsert } from "./compiler";
+import { ainsleyToCSS, ainsleyToAST, ainsleyInsert } from "./compiler";
 const csstree = require("css-tree");
 
 test("ainsleyToCSS on base produces css of an expected structure", () => {
@@ -130,4 +130,57 @@ test("numbers lose their decimal points", () => {
       props: [["Opacity", [0.1, 0.2]]]
     })
   ).toBe(".o01{opacity:0.1}.o02{opacity:0.2}");
+});
+
+test("vertical and horizontal correctly expand", () => {
+  const ast = ainsleyToAST({
+    defs: [
+      [
+        "&v",
+        [
+          ["{prop}-top", "{val}"],
+          ["{prop}-bottom", "{val}"]
+        ]
+      ],
+      [
+        "&h",
+        [
+          ["{prop}-left", "{val}"],
+          ["{prop}-right", "{val}"]
+        ]
+      ]
+    ],
+    "{prop}": ["MArgin", "PAdding"],
+    "{val}": [0, 1]
+  });
+  expect(ast).toEqual([
+    [
+      "mav",
+      [
+        ["margin-top", "1"],
+        ["padding-bottom", "1"]
+      ]
+    ],
+    [
+      "pav",
+      [
+        ["padding-top", "1"],
+        ["margin-bottom", "1"]
+      ]
+    ],
+    [
+      "mah",
+      [
+        ["margin-left", "1"],
+        ["padding-right", "1"]
+      ]
+    ],
+    [
+      "pah",
+      [
+        ["padding-left", "1"],
+        ["padding-right", "1"]
+      ]
+    ]
+  ]);
 });

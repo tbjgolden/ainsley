@@ -16,8 +16,8 @@ function App() {
   }, [ainsley]);
 
   return (
-    <div className="hH pa40 dFX fxdC aiC">
-      <div className="xw95 xhP wP fx110 dFX">
+    <div className="hH pa40 dFX fldC aiC">
+      <div className="xw95 xhP wP fl110 dFX">
         <Half>
           <div className="pa25 nw55">
             <h2 className="fwM">Input</h2>
@@ -50,7 +50,7 @@ function App() {
 function Half({ className, r, ...props }) {
   return (
     <div
-      className={`xwP50 fx110 dFX ${r ? "pal25" : "par25"} ${className || ""}`}
+      className={`xwP50 fl110 dFX ${r ? "pal25" : "par25"} ${className || ""}`}
       {...props}
     >
       <div className="bacG10 hP wP dFX" {...props} />
@@ -106,7 +106,7 @@ function TextArea({ className, onChange: onChangeProp, value, ...props }) {
       <textarea
         key="0"
         ref={el}
-        className={`fx110 pa25 ffMONO bacG20 foszXS cW rN ${className || ""}`}
+        className={`fl110 pa25 fofMONO bacG20 foszXS cW rN ${className || ""}`}
         value={value}
         {...props}
       />
@@ -118,7 +118,7 @@ function TextArea({ className, onChange: onChangeProp, value, ...props }) {
 function Output({ className, ...props }) {
   return (
     <pre
-      className={`fx110 xHP xwP pa25 ovAA foszXS ffMONO bacG20 cW rN ${className ||
+      className={`fl110 xHP xwP pa25 ovAA foszXS fofMONO bacG20 cW rN ${className ||
         ""}`}
     >
       <code className="wsPW owBW xwP" {...props} />
