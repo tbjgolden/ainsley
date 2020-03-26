@@ -15,8 +15,11 @@ module.exports = {
   },
   output: {
     filename: "[name].js",
-    path: path.join(__dirname, "public")
+    path: path.join(__dirname, "public"),
+    library: "Ainsley",
+    libraryTarget: "umd"
   },
+  devtool: "eval-cheap-source-map",
   module: {
     rules: [
       {
