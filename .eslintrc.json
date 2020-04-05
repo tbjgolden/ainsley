@@ -3,6 +3,7 @@
   "globals": { "Atomics": "readonly", "SharedArrayBuffer": "readonly" },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "project": "./tsconfig.json",
     "ecmaFeatures": { "jsx": true },
     "ecmaVersion": 2020,
     "sourceType": "module"
@@ -10,29 +11,42 @@
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "extends": [
     "plugin:react/recommended",
-    "airbnb",
-    "plugin:prettier/recommended",
+    "standard-with-typescript",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/@typescript-eslint",
+    "prettier/react",
+    "prettier/babel",
+    "prettier/flowtype",
+    "prettier/react",
+    "prettier/standard",
+    "prettier/unicorn",
+    "prettier/vue"
   ],
   "rules": {
-    "react/prop-types": "off",
+    "react/prop-types": 0,
     "import/extensions": [
-      "error",
+      2,
       "ignorePackages",
       { "js": "never", "jsx": "never", "ts": "never", "tsx": "never" }
     ],
-    "import/prefer-default-export": "off",
-    "prettier/prettier": "error",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/no-var-requires": "off",
+    "import/prefer-default-export": 0,
+    "prettier/prettier": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/no-unused-vars": 0,
+    "@typescript-eslint/no-var-requires": 0,
     "react/jsx-filename-extension": [
       1,
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     ]
   },
   "settings": {
+    "react": {
+      "createClass": "createReactClass",
+      "pragma": "React",
+      "version": "detect"
+    },
     "import/resolver": {
       "node": { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     }

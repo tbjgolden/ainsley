@@ -4,12 +4,12 @@ import cloneRegExp from "clone-regexp";
 
 const selectorRegex = /^((?:[a-z]+-)*)([a-z]+)([A-Z0-9]+)(?:\:|$)/;
 const regex = cloneRegExp(iteratorRegex, { global: false });
-const isIterator = str => regex.test(str);
+const isIterator = (str) => regex.test(str);
 
 const checkAbbrev = (errors, abbrev, prop) => {
   const expectedAbbrev = prop
     .split("-")
-    .map(w => {
+    .map((w) => {
       const abbr = propertyWordMap[w];
       if (typeof abbr === "string") return abbr;
       return w[0];
@@ -32,7 +32,7 @@ const checkDefs = (errors, defs) => {
       check.assert.nonEmptyArray(decls);
       check.assert.array.of.nonEmptyArray(decls);
 
-      decls.forEach(decl => {
+      decls.forEach((decl) => {
         check.assert.hasLength(decl, 2);
         const [prop, val] = decl;
         check.assert.nonEmptyString(prop);
@@ -65,7 +65,7 @@ const checkRaw = (errors, raw) => {
       check.assert.nonEmptyString(sel);
       check.assert.nonEmptyArray(vals);
       check.assert.array.of.nonEmptyArray(vals);
-      vals.forEach(decl => {
+      vals.forEach((decl) => {
         check.assert.hasLength(decl, 2);
         const [prop, val] = decl;
         check.assert.nonEmptyString(prop);
@@ -81,10 +81,10 @@ const checkMods = (errors, mods) => {
   try {
     check.assert.array(mods);
     check.assert.array.of.nonEmptyArray(mods);
-    mods.forEach(group => {
+    mods.forEach((group) => {
       check.assert.nonEmptyArray(group);
       check.assert.array.of.nonEmptyArray(group);
-      group.forEach(pair => {
+      group.forEach((pair) => {
         check.assert.hasLength(pair, 2);
         const [prefix, mod] = pair;
         check.assert.nonEmptyString(prefix);
@@ -109,10 +109,12 @@ const checkIterator = (errors, iterator, name) => {
     check.assert(
       (check.nonEmptyObject(iterator) &&
         Object.values(iterator).every(
-          val => check.nonEmptyString(val) || check.number(val)
+          (val) => check.nonEmptyString(val) || check.number(val)
         )) ||
         (check.nonEmptyArray(iterator) &&
-          iterator.every(val => check.nonEmptyString(val) || check.number(val)))
+          iterator.every(
+            (val) => check.nonEmptyString(val) || check.number(val)
+          ))
     );
   } catch (err) {
     errors.push(`"${name}" is invalid: ${err.message}`);
@@ -120,8 +122,8 @@ const checkIterator = (errors, iterator, name) => {
 };
 
 const checkAST = (errors, ast) => {
-  const blocks = ast.filter(block => Array.isArray(block));
-  blocks.forEach(block => {
+  const blocks = ast.filter((block) => Array.isArray(block));
+  blocks.forEach((block) => {
     const isAtRule = block[0][0] === "@";
     if (isAtRule) {
       checkAST(errors, block[1]);
@@ -143,7 +145,7 @@ const checkAST = (errors, ast) => {
   });
 };
 
-export const lint = ainsley => {
+export const lint = (ainsley) => {
   const errors = [];
 
   try {

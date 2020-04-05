@@ -1,4 +1,5 @@
 import React from "react";
 import { render } from "react-dom";
+import Site from "./site/Site";
 
-render(<div>Hello World</div>, document.getElementById("root"));
+render(<Site />, document.getElementById("root"));
