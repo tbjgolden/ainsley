@@ -1,15 +1,10 @@
-type Primitive = string | number;
-
 export interface AinsleyAbbreviationMapObject {
-  [propName: string]: Primitive;
+  [propName: string]: string | number;
 }
-export type AinsleyAbbreviationMapArray = Primitive[];
-export type AinsleyAbbreviationMap =
-  | AinsleyAbbreviationMapArray
-  | AinsleyAbbreviationMapObject;
+export type AinsleyAbbreviationMapArray = Array<string | number | [string | number, string | number]>;
 
-export type AinsleyRule = [string, Array<[string, Primitive]>];
-export type AinsleyPropertyOrPlaceholder = [string, AinsleyAbbreviationMap];
+export type AinsleyRule = [string, Array<[string, string | number]>];
+export type AinsleyPropertyOrPlaceholder = [string, AinsleyAbbreviationMapObject | AinsleyAbbreviationMapArray];
 
 export type AinsleyChild =
   | Ainsley
@@ -18,14 +13,19 @@ export type AinsleyChild =
   | string;
 export type AinsleyVariation = Array<[string, string]>;
 
-type AinsleyVariations = AinsleyVariation[];
-type AinsleyChildren = AinsleyChild[];
-interface AinsleyVariableMap {
-  [propName: string]: AinsleyAbbreviationMap;
+export type AinsleyVariations = AinsleyVariation[];
+export type AinsleyChildren = AinsleyChild[];
+export interface AinsleyVariableMap {
+  [propName: string]: AinsleyAbbreviationMapObject;
 }
 
 export interface Ainsley {
   variables?: AinsleyVariableMap;
   variations?: AinsleyVariations;
   children?: AinsleyChildren;
+}
+
+interface Meta { [propName: string]: any; }
+export interface AinsleyMeta extends Ainsley {
+  _: Meta
 }

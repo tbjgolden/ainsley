@@ -15,10 +15,14 @@ so you can inject it into a <style> tag | embed()
 variables
   overrides
   "x": [...]
-  explicit override
-  "!x": [...] // errors when flattened if not present higher up
   defaults
   "?x": [...]
   appends
-  "+x": [...] // errors when flattened if not present higher up
+  "+x": [...]
 ```
+
+be able to import css files
+
+can you move every variable to it's highest unique scope?
+
+bfs for variables

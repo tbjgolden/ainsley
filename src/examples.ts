@@ -81,30 +81,64 @@ export const baseConfig: Ainsley = {
         ["FOnt-Weight", {N: 400, M: 600, B: 700}]
       ],
       variables: {
-        overflow: ["Hidden", "Scroll", "Auto", "Visible"],
-        flexCrossAxes: ["Align-Items", "Align-Self", "Align-Content"],
-        flexCrossAxis: [
-          "Flex-Start",
-          "Flex-End",
-          "Center",
-          "Baseline",
-          "Stretch"
-        ],
-        flexChange: { "0": "0", "1": "1", "2": "2", X: "11111111" },
-        flexBasis: { "0": "0%", A: "auto", P: "100%" },
-        xLoc: ["Left", "Right", "Center"],
-        yLoc: ["Top", "Bottom", "Center"],
-        scalar: [
-          "Width",
-          "maX-Width",
-          "miN-Width",
-          "Height",
-          "maX-Height",
-          "miN-Height",
-          "BOrder-Radius"
-        ],
-        vector: ["MArgin", "PAdding"],
-        direction: ["Top", "Left", "Right", "Bottom"],
+        overflow: {
+          h: "hidden",
+          s: "scroll",
+          a: "auto",
+          v: "visible"
+        },
+        flexCrossAxes: {
+          ai: "align-items",
+          as: "align-self",
+          ac: "align-content"
+        },
+        flexCrossAxis: {
+          fs: "flex-start",
+          fe: "flex-end",
+          c: "center",
+          b: "baseline",
+          s: "stretch"
+        },
+        flexChange: {
+          0: "0",
+          1: "1",
+          2: "2",
+          x: "11111111"
+        },
+        flexBasis: {
+          0: "0%",
+          a: "auto",
+          p: "100%"
+        },
+        xLoc: {
+          l: "left",
+          r: "right",
+          c: "center"
+        },
+        yLoc: {
+          t: "top",
+          b: "bottom",
+          c: "center"
+        },
+        scalar: {
+          w: "width",
+          xw: "max-width",
+          nw: "min-width",
+          h: "height",
+          xh: "max-height",
+          nh: "min-height",
+          bor: "border-radius"
+        },
+        vector: {
+          ma: "margin",
+          pa: "padding"
+        },
+        direction: {
+          t: "top",
+          l: "left",
+          r: "right",
+          b: "bottom"
+        },
         colors: {
           W: "white",
           B: "black",
@@ -182,15 +216,15 @@ export const baseConfig: Ainsley = {
       },
       variations: [
         [
-          ["o-", ":hover"],
-          ["o-", ":focus"],
-          ["o-", ":active"]
+          ["o", ":hover"],
+          ["o", ":focus"],
+          ["o", ":active"]
         ],
         [
-          ["s-", "@media(min-width:384px)"],
-          ["m-", "@media(min-width:768px)"],
-          ["l-", "@media(min-width:1024px)"],
-          ["x-", "@media(min-width:1536px)"]
+          ["s", "@media(min-width:384px)"],
+          ["m", "@media(min-width:768px)"],
+          ["l", "@media(min-width:1024px)"],
+          ["x", "@media(min-width:1536px)"]
         ]
       ]
     }

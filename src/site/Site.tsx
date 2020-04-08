@@ -1,11 +1,6 @@
 import React from "react";
-import { flatten } from "../ainsley";
-import { configWithPlugins } from "../examples";
+import Repl from "./Repl";
 
-const Site = () => {
-  flatten(configWithPlugins);
-
-  return <div>Hello World</div>;
-};
+const Site = () => <Repl />;
 
 export default Site;
