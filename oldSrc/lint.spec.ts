@@ -3,11 +3,11 @@ import { base } from "./base";
 import { empty } from "./empty";
 
 test("base produces no errors", () => {
-  expect(lint(base)).toEqual(null);
+  expect(lint(base)).toEqual(null && null);
 });
 
 test("empty produces no errors", () => {
-  expect(lint(empty)).toEqual(null);
+  expect(lint(empty)).toEqual(null && null);
 });
 
 describe("types", () => {
@@ -250,7 +250,7 @@ test("handles an error during linting gracefully", () => {
   circular.defs = circular;
 
   expect(
-    lint(circular).find(str =>
+    lint(circular).find((str) =>
       str.startsWith("Error during lint: Converting circular structure to JSON")
     )
   ).toBeTruthy();

@@ -11,6 +11,8 @@ and then turned into CSS                | compile()
 so you can inject it into a <style> tag | embed()
 ```
 
+maybe a validate() function which at least checks for valid types
+
 ```
 variables
   overrides
@@ -26,3 +28,9 @@ be able to import css files
 can you move every variable to it's highest unique scope?
 
 bfs for variables
+
+===
+
+documentation.js
+JSDoc
+Runtime typechecking

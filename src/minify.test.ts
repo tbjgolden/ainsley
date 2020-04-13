@@ -1,4 +1,4 @@
-import { Ainsley, AinsleyChild } from "./types";
+import { Ainsley } from "./types";
 import { minify } from "./minify";
 
 describe("minify tests", () => {
@@ -140,7 +140,7 @@ describe("minify tests", () => {
     });
   });
 
-  test.skip("example three", () => {
+  test("example three", () => {
     // investigate how variations messes with things
     // investigate how variables at top level are different
     const start: Ainsley = {
@@ -166,10 +166,25 @@ describe("minify tests", () => {
       ]
     };
 
-    expect(minify(start)).not.toEqual(start);
+    expect(minify(start)).toEqual({
+      variables: {
+        colors: {
+          b: "black",
+          p: "#313375"
+        }
+      },
+      variations: [[["h-", ":hover"]]],
+      children: [
+        {
+          variations: [[["f-", ":focus"]]],
+          children: [["&", [["color", "{colors}"]]]]
+        },
+        "body{margin:0}"
+      ]
+    });
   });
 
-  test.skip("example four", () => {
+  test("example four", () => {
     // investigate why this doesn't work
     const start: Ainsley = {
       variations: [
@@ -194,7 +209,7 @@ describe("minify tests", () => {
               dg: "#222"
             }
           },
-          children: [["bgc", [["background-color", "bgc"]]]]
+          children: [["bgc", [["background-color", "{colors}"]]]]
         }
       ]
     };
@@ -216,7 +231,7 @@ describe("minify tests", () => {
           dg: "#222"
         }
       },
-      children: [["bgc", [["background-color", "bgc"]]]]
+      children: [["bgc", [["background-color", "{colors}"]]]]
     });
   });
 });

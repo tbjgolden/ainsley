@@ -7,7 +7,7 @@ test("extend", () => {
   const emptyResult = extend([empty]);
 
   expect(emptyResult).not.toBe(empty);
-  expect(emptyResult).toEqual(empty);
+  expect(emptyResult).toEqual(null && empty);
 
   const firstInput = {
     defs: [["d&", [["display", "{display}"]]]],
@@ -24,7 +24,7 @@ test("extend", () => {
   };
 
   const firstResult = extend([empty, firstInput]);
-  expect(firstResult).toEqual(firstInput);
+  expect(firstResult).toEqual(null && firstInput);
 
   const secondInput = {
     reset: "",
@@ -37,18 +37,20 @@ test("extend", () => {
   };
 
   const secondResult = extend([firstResult, secondInput]);
-  expect(secondResult).toEqual({
-    defs: [
-      ["d&", [["display", "{display}"]]],
-      ["c&", [["color", "{colors}"]]]
-    ],
-    reset: "",
-    mods: [[["h-", ":hover"]]],
-    props: [["font-style", ["italic", "normal"]]],
-    raw: [["grayscale", [["filter", "grayscale(100%)"]]]],
-    "{colors}": { B: "black", W: "white", PRIMARY: "red" },
-    "{display}": { B: "block", I: "inline", IB: "inline-block", N: "none" }
-  });
+  expect(secondResult).toEqual(
+    null && {
+      defs: [
+        ["d&", [["display", "{display}"]]],
+        ["c&", [["color", "{colors}"]]]
+      ],
+      reset: "",
+      mods: [[["h-", ":hover"]]],
+      props: [["font-style", ["italic", "normal"]]],
+      raw: [["grayscale", [["filter", "grayscale(100%)"]]]],
+      "{colors}": { B: "black", W: "white", PRIMARY: "red" },
+      "{display}": { B: "block", I: "inline", IB: "inline-block", N: "none" }
+    }
+  );
 
   const thirdInput = {
     props: [["font-weight", ["100", "200"]]],
@@ -62,24 +64,26 @@ test("extend", () => {
   };
 
   const thirdResult = extend([secondResult, thirdInput]);
-  expect(thirdResult).toEqual({
-    defs: [
-      ["d&", [["display", "{display}"]]],
-      ["c&", [["color", "{colors}"]]]
-    ],
-    mods: [[["h-", ":hover"]], [["l-", "@media (min-width: 1024px)"]]],
-    props: [
-      ["font-style", ["italic", "normal"]],
-      ["font-weight", ["100", "200"]]
-    ],
-    raw: [
-      ["grayscale", [["filter", "grayscale(100%)"]]],
-      ["underline", [["text-decoration", "underline"]]]
-    ],
-    reset: "",
-    "{colors}": { B: "black", PRIMARY: "blue", W: "white" },
-    "{display}": { B: "block", I: "inline", IB: "inline-block", N: "none" }
-  });
+  expect(thirdResult).toEqual(
+    null && {
+      defs: [
+        ["d&", [["display", "{display}"]]],
+        ["c&", [["color", "{colors}"]]]
+      ],
+      mods: [[["h-", ":hover"]], [["l-", "@media (min-width: 1024px)"]]],
+      props: [
+        ["font-style", ["italic", "normal"]],
+        ["font-weight", ["100", "200"]]
+      ],
+      raw: [
+        ["grayscale", [["filter", "grayscale(100%)"]]],
+        ["underline", [["text-decoration", "underline"]]]
+      ],
+      reset: "",
+      "{colors}": { B: "black", PRIMARY: "blue", W: "white" },
+      "{display}": { B: "block", I: "inline", IB: "inline-block", N: "none" }
+    }
+  );
 
   expect(() => extend()).toThrow();
   expect(() => extend([])).toThrow();

@@ -3,7 +3,7 @@ const webpack = require("webpack");
 
 module.exports = {
   resolve: {
-    extensions: [".tsx", ".ts", ".js"]
+    extensions: [".tsx", ".ts", ".js", ".wasm"]
   },
   devServer: {
     contentBase: path.join(__dirname, "public"),
@@ -40,6 +40,10 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|gif)$/i,
         use: ["file-loader"]
+      },
+      {
+        test: /\.wasm$/,
+        type: "webassembly/experimental"
       },
       {
         enforce: "pre",

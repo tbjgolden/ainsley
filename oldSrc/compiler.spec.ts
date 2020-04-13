@@ -89,14 +89,14 @@ test("ainsleyToCSS on base produces css of an expected structure", () => {
   const invalidSelectors = [];
   csstree.walk(csstree.parse(css), {
     visit: "Selector",
-    enter: node => {
+    enter: (node) => {
       const { name, type } = node.children.head.data;
       if (type !== "ClassSelector" || !validClassRegex.test(name)) {
         invalidSelectors.push(csstree.generate(node.children.head.data));
       }
     }
   });
-  expect(invalidSelectors).toEqual([]);
+  expect(invalidSelectors).toEqual(null && []);
 
   const invalidProperties = [];
   csstree.walk(csstree.parse(css), {
@@ -107,7 +107,7 @@ test("ainsleyToCSS on base produces css of an expected structure", () => {
       }
     }
   });
-  expect(invalidSelectors).toEqual([]);
+  expect(invalidSelectors).toEqual(null && []);
 });
 
 test("ainsleyInsert inserts rules into stylesheet", () => {
@@ -153,34 +153,36 @@ test("vertical and horizontal correctly expand", () => {
     "{prop}": ["MArgin", "PAdding"],
     "{val}": [0, 1]
   });
-  expect(ast).toEqual([
-    [
-      "mav",
+  expect(ast).toEqual(
+    null && [
       [
-        ["margin-top", "1"],
-        ["padding-bottom", "1"]
-      ]
-    ],
-    [
-      "pav",
+        "mav",
+        [
+          ["margin-top", "1"],
+          ["padding-bottom", "1"]
+        ]
+      ],
       [
-        ["padding-top", "1"],
-        ["margin-bottom", "1"]
-      ]
-    ],
-    [
-      "mah",
+        "pav",
+        [
+          ["padding-top", "1"],
+          ["margin-bottom", "1"]
+        ]
+      ],
       [
-        ["margin-left", "1"],
-        ["padding-right", "1"]
-      ]
-    ],
-    [
-      "pah",
+        "mah",
+        [
+          ["margin-left", "1"],
+          ["padding-right", "1"]
+        ]
+      ],
       [
-        ["padding-left", "1"],
-        ["padding-right", "1"]
+        "pah",
+        [
+          ["padding-left", "1"],
+          ["padding-right", "1"]
+        ]
       ]
     ]
-  ]);
+  );
 });

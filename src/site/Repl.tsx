@@ -1,15 +1,24 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import Editor from "react-simple-code-editor";
 import { flatten, minify } from "../ainsley";
-import { configWithPlugins } from "../examples";
-import { Ainsley } from "../types";
+import "prismjs/themes/prism.css";
+import "prismjs";
+const { highlight, languages } = window.Prism;
+
+const brotli = import("wasm-brotli");
 
 const parse = (str: string) => {
   let result;
   try {
     // eslint-disable-next-line no-eval
-    result = eval(`result = ${str}`);
+    result = eval(str);
   } catch (e) {
-    result = e.message;
+    try {
+      // eslint-disable-next-line no-eval
+      result = eval(`result = ${str}`);
+    } catch (e) {
+      result = e.message;
+    }
   }
   return result;
 };
@@ -28,6 +37,7 @@ const Repl = () => {
     }
   },
   children: [
+    "$base",
     {
       variables: {
         "+colors": {
@@ -37,7 +47,7 @@ const Repl = () => {
         }
       },
       children: [
-        ["bgc", [["background-color", "bgc"]]]
+        ["bgc", [["background-color", "{colors}"]]]
       ]
     }
   ]
@@ -56,55 +66,67 @@ const Repl = () => {
 
   const [minifiedShown, setMinifiedShown] = useState(false);
   const [minified, minifiedStr] = useMemo(() => {
-    const obj = minify(flattened as Ainsley);
-    return [obj, JSON.stringify(obj, null, 2)];
+    if (flattened !== null) {
+      const obj = minify(flattened);
+      return [obj, JSON.stringify(obj)];
+    } else {
+      return [null, flattenedStr];
+    }
   }, [flattened]);
+
+  const [compressedBytes, setCompressedBytes] = useState("");
+
+  useEffect(() => {
+    setCompressedBytes("");
+    if (minified !== null) {
+      brotli
+        .then(({ compress }) => {
+          const result = compress(new TextEncoder().encode(minifiedStr));
+          setCompressedBytes(result.byteLength.toString());
+        })
+        .catch(console.error);
+    }
+  }, [minifiedStr]);
+
+  useEffect(() => {
+    document.body.style.display = "block";
+  }, []);
 
   return (
     <div>
-      <style>
-        {`
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code');
-        * {
-          font-family: 'Fira Code', monospace;
-          font-size: 16px;
-        }
-        textarea, pre {
-          border: 1px solid #000;
-          resize: vertical;
-          overflow: auto;
-          width: 100%;
-          height: 200px;
-        }
-        pre {
-          background-color: #ddd;
-        }
-        button {
-          padding: 0;
-          margin: 0;
-          border: 0;
-          background: none;
-        }
-        `}
-      </style>
-      <label>
-        <h2>Input</h2>
-        <textarea value={input} onChange={ev => setInput(ev.target.value)} />
+      <label htmlFor="input">
+        <h2>Input ({Buffer.from(input).byteLength}B)</h2>
       </label>
-      <label>
-        <h2>
-          <ShowHideButton shown={flattenedShown} setShown={setFlattenedShown} />
-          {" Flattened"}
-        </h2>
-        {flattenedShown ? <pre><code>{flattenedStr}</code></pre> : null}
-      </label>
-      <label>
-        <h2>
-          <ShowHideButton shown={minifiedShown} setShown={setMinifiedShown} />
-          {" Minified"}
-        </h2>
-        {minifiedShown ? <pre><code>{minifiedStr}</code></pre> : null}
-      </label>
+      <div id="editor">
+        <Editor
+          id="input"
+          value={input}
+          onValueChange={setInput}
+          highlight={(code) => highlight(code, languages.js, "json")}
+        />
+      </div>
+
+      <h2>
+        <ShowHideButton shown={flattenedShown} setShown={setFlattenedShown} />
+        {" Flattened"}
+      </h2>
+      {flattenedShown ? (
+        <pre className="output">
+          <code>{flattenedStr}</code>
+        </pre>
+      ) : null}
+
+      <h2>
+        <ShowHideButton shown={minifiedShown} setShown={setMinifiedShown} />
+        {" Minified "}
+        {minified === null ? null : `(${Buffer.from(minifiedStr).byteLength}B)`}
+        {compressedBytes === "" ? null : ` (Brotli: ${compressedBytes}B)`}
+      </h2>
+      {minifiedShown ? (
+        <pre className="output one-line">
+          <code>{minifiedStr}</code>
+        </pre>
+      ) : null}
     </div>
   );
 };
@@ -112,6 +134,9 @@ const Repl = () => {
 const ShowHideButton = ({
   shown,
   setShown
+}: {
+  shown: boolean;
+  setShown: (shown: boolean) => void;
 }) => <button onClick={() => setShown(!shown)}>[{shown ? "-" : "+"}]</button>;
 
 export default Repl;

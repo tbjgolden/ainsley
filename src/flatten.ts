@@ -1,13 +1,17 @@
 import { Ainsley, AinsleyChild } from "./types";
-import { baseConfig } from "./examples";
 
+export const defaultGetConfig = (name: string): Ainsley =>
+  require(`ainsley-config-${name}`).config;
 
-export const defaultGetConfig = (name: string): Ainsley => require(`ainsley-config-${name}`).config;
-
-export const getFlatConfig = (name: string, getConfig: (name: string) => Ainsley): AinsleyChild => {
+export const getFlatConfig = (
+  name: string,
+  getConfig: (name: string) => Ainsley
+): AinsleyChild => {
   try {
     return flatten(getConfig(name), getConfig);
-  } catch (e) {/**/}
+  } catch (e) {
+    /**/
+  }
   return `/* $${name} */`;
 };
 

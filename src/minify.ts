@@ -1,16 +1,32 @@
-import { Ainsley, AinsleyMeta, AinsleyVariableMap, AinsleyChildren } from "./types";
-import { Children } from "react";
+import copy from "fast-copy";
 
-const isObj = (x: any): boolean => !!(x && typeof x === "object" && !Array.isArray(x));
+import { Ainsley, AinsleyChildren, AinsleyVariableMap } from "./types";
+
+const MODIFIERS = "?+";
+
+const parseVariable = (variable: string): [number, string] => {
+  const mod = MODIFIERS.indexOf(variable[0]) + 1;
+  const base = mod > 0 ? variable.slice(1) : variable;
+  return [mod, base];
+};
+
+const buildVariable = (mod: number, base: string): string =>
+  `${["", "?", "+"][mod]}${base}`;
+
+const isObject = (x: any): boolean =>
+  !!(x !== null && typeof x === "object" && !Array.isArray(x));
 
 const iteratorRegex = /\{[a-z]+\}/gi;
-const searchForUsages = (arr: any[], set: Set<string> = new Set()): Set<string> => {
-  arr.forEach(val => {
+const searchForUsages = (
+  arr: Array<unknown | string | object>,
+  set: Set<string> = new Set()
+): Set<string> => {
+  arr.forEach((val) => {
     if (Array.isArray(val)) {
       searchForUsages(val, set);
     } else if (typeof val === "string") {
       const match = val.match(iteratorRegex);
-      for (let i = 0; i < (match || []).length; i++) {
+      for (let i = 0; i < (match ?? []).length; i++) {
         set.add((match as string[])[i].slice(1, -1));
       }
     }
@@ -18,164 +34,59 @@ const searchForUsages = (arr: any[], set: Set<string> = new Set()): Set<string> 
   return set;
 };
 
-const addMetadata = (ainsley: Ainsley): AinsleyMeta => {
-  const ainsleyMeta = ainsley as AinsleyMeta
-  if (!ainsleyMeta._) ainsleyMeta._ = {};
-  return _addMetadata(ainsleyMeta);
-};
+interface ASTNode {
+  parent: ASTNode | undefined;
+  ainsley: Ainsley;
+  usageCounts: Map<string, number>;
+  definedVariables: Set<string>;
+}
 
-const _addMetadata = (ainsleyMeta: AinsleyMeta): AinsleyMeta => {
-  const usages: Map<string, number> = new Map();
-  if (ainsleyMeta.children) {
-    ainsleyMeta.children.forEach(child => {
-      if (isObj(child)) {
-        child = addMetadata(child as Ainsley);
-        Array.from((child as AinsleyMeta)._.usages.keys()).forEach(childUsage => {
-          usages.set(childUsage as string, (usages.get(childUsage as string) || 0) + 1);
-        });
-      } else if (Array.isArray(child)) {
-        searchForUsages(child).forEach(childUsage => {
-          usages.set(childUsage, (usages.get(childUsage) || 0) + 1);
-        });
-      }
-    });
-  }
-  ainsleyMeta._.usages = usages;
-  return ainsleyMeta;
-};
+export const toAST = (
+  ainsley: Ainsley,
+  definedVariables: Set<string>,
+  parent?: ASTNode
+): ASTNode[] => {
+  const children = ainsley.children ?? [];
+  const usageCounts: Map<string, number> = new Map();
+  const node = { ainsley, parent, usageCounts, definedVariables };
 
-const fix = (ainsley: AinsleyMeta) => {
-  const computedVariables = {} as AinsleyVariableMap;
-  if (ainsley.variables) {
-    Object.entries(ainsley.variables).forEach(([variable, value]) => {
-      if (variable !== "") {
-        const modifier = "?+".indexOf(variable[0]) + 1;
-        if (modifier) variable = variable.slice(1);
-        (computedVariables as AinsleyVariableMap)[variable] = value;
-      }
-    });
-  };
-  return _fix(ainsley, computedVariables);
-};
+  const topologicalList = [node];
 
-const _fix = (ainsley: AinsleyMeta, computedVariables: AinsleyVariableMap) => {
-  if (!computedVariables) {
-    // initialize computedVariables
-    computedVariables = {} as AinsleyVariableMap;
-    if (ainsley.variables) {
-      Object.entries(ainsley.variables).forEach(([variable, value]) => {
-        if (variable !== "") {
-          const modifier = "?+".indexOf(variable[0]) + 1;
-          if (modifier) variable = variable.slice(1);
-          (computedVariables as AinsleyVariableMap)[variable] = value;
-        }
+  for (let i = 0; i < children.length; i++) {
+    const next = children[i];
+    if (isObject(next)) {
+      const ainsley = next as Ainsley;
+      const variables = ainsley.variables ?? {};
+
+      const childNodes = toAST(
+        ainsley,
+        new Set([
+          ...definedVariables,
+          ...Object.keys(variables).map(
+            (variable: string) => parseVariable(variable)[1]
+          )
+        ]),
+        node
+      );
+
+      new Set(
+        childNodes
+          .map((node) => [...node.usageCounts.keys()])
+          .reduce((arr, keys) => [...arr, ...keys], [])
+      ).forEach((variable) => {
+        usageCounts.set(variable, (usageCounts.get(variable) ?? 0) + 1);
+      });
+
+      topologicalList.push(...childNodes);
+    } else if (Array.isArray(next)) {
+      const usages = searchForUsages(next);
+      usages.forEach((variable) => {
+        usageCounts.set(variable, (usageCounts.get(variable) ?? 0) + 1);
       });
     }
   }
 
-  // traverse ainsley's children
-  const parentAinsley = ainsley as AinsleyMeta;
-  const children = parentAinsley.children || [];
-  for (let i = 0; i < children.length; i++) {
-    const child = children[i];
-    if (isObj(child)) {
-      const childAinsley = child as AinsleyMeta;
-      // compute these variables here
-
-      if (childAinsley.children) {
-        if (childAinsley.variables) {
-          computedVariables = Object.entries(childAinsley.variables as object)
-            .reduce((cvs, [variable, value]) => {
-              if (variable === "") {
-                delete (childAinsley.variables as any)[""];
-              } else {
-                const modifier = "?+".indexOf(variable[0]) + 1;
-                if (modifier) variable = variable.slice(1);
-                cvs[variable] = ([
-                  value,
-                  cvs[variable],
-                  { ...cvs[variable], ...value }
-                ])[modifier];
-              }
-
-              return cvs;
-            }, JSON.parse(JSON.stringify(computedVariables)));
-
-          _fix(childAinsley, computedVariables);
-
-          const parentVarMap: Map<string, [number, any]> = new Map();
-          Object.entries(parentAinsley.variables || {})
-            .forEach(([variable, value]) => {
-              let rootVariable = variable;
-              const modifier = "?+".indexOf(variable[0]) + 1;
-              if (modifier) rootVariable = variable.slice(1);
-              // could check here for clashes
-              parentVarMap.set(rootVariable, [modifier, value]);
-            });
-
-          Object.entries(childAinsley.variables as object)
-            .forEach(([variable, value]) => {
-              let rootVariable = variable;
-              const modifier = "?+".indexOf(variable[0]) + 1;
-              if (modifier) rootVariable = variable.slice(1);
-
-              const childVars = childAinsley.variables as AinsleyVariableMap;
-              const compVars = computedVariables as AinsleyVariableMap;
-
-              // if it has 0 usages, or it's a ? is inside an already declared variable, remove it
-              const timesUsedInChildren = childAinsley._.usages.get(rootVariable) || 0;
-              const isUnnecessaryDefault = modifier === 1 && compVars[rootVariable];
-              if ((timesUsedInChildren === 0) || isUnnecessaryDefault) {
-                delete childVars[variable];
-              } else if ((parentAinsley._.usages.get(rootVariable) || 1) < 2) {
-                // else check if it can be lifted up
-                // if it can, replace/merge the child value into the parent
-                const [parentVarMod, parentVarValue] = parentVarMap.get(rootVariable) || [0, {}];
-                const toLift = modifier === 2
-                  ? [`${(["", "?", "+"])[parentVarMod]}${rootVariable}`, { ...parentVarValue, ...value }]
-                  : [rootVariable, value];
-
-                delete childVars[variable];
-                if (parentVarMap.size === 0) parentAinsley.variables = {};
-                parentVarMap.set(rootVariable, [3, toLift[1]]);
-
-                const parentVars = parentAinsley.variables as AinsleyVariableMap;
-                parentVars[toLift[0]] = toLift[1];
-              }
-
-              // remove empty variables objects
-              if (Object.keys(childVars).length === 0) {
-                delete childAinsley.variables;
-              }
-
-              // remove empty variations objects
-              if (childAinsley.variations && Object.keys(childAinsley.variations).length === 0) {
-                delete childAinsley.variations;
-              }
-
-              if (!childAinsley.variables && !childAinsley.variations) {
-                children.splice(i, 1, ...(childAinsley.children as AinsleyChildren));
-              }
-            });
-        }
-      } else {
-        // if no child has no children, remove it
-        children.splice(i--, 1);
-      }
-    }
-  }
-
-  return ainsley;
-};
-
-const removeMetadata = (metaAinsley: AinsleyMeta): Ainsley => {
-  if (metaAinsley.children) {
-    metaAinsley.children.forEach(child => {
-      if (isObj(child)) removeMetadata(child as AinsleyMeta);
-    });
-  }
-  delete metaAinsley._;
-  return metaAinsley;
+  return topologicalList as ASTNode[];
 };
 
 /*
@@ -183,6 +94,115 @@ const removeMetadata = (metaAinsley: AinsleyMeta): Ainsley => {
 which is minified into a                | minify()
 [ minified config ]                     |
 */
-export const minify = (
-  flatConfig: Ainsley
-): Ainsley => removeMetadata(fix(addMetadata(JSON.parse(JSON.stringify(flatConfig)))));
+export const minify = (ainsley: Ainsley): Ainsley => {
+  // build ast list
+  const list = toAST(copy(ainsley), new Set());
+
+  // collapse ast from bottom up
+  for (let i = list.length - 1; i >= 0; i--) {
+    const node = list[i];
+
+    // if no children
+    if (node.ainsley.children?.length === 0) {
+      // remove it from its parent
+      if (node.parent !== undefined) {
+        const parentChildren = node.parent.ainsley.children ?? [];
+        parentChildren.splice(
+          parentChildren.findIndex((child) => child === node.ainsley),
+          1
+        );
+      }
+      // skip rest of the checks
+      continue;
+    }
+
+    // lift variables up if possible
+    const thisVars = node.ainsley.variables ?? {};
+    Object.keys(thisVars).forEach((variable) => {
+      const [mod, base] = parseVariable(variable);
+
+      if (node.usageCounts.has(base)) {
+        // used, see if we can lift it
+
+        if (node.parent !== undefined) {
+          // remove default variables that are already defined
+          if (mod === 1 && node.parent.definedVariables.has(base)) {
+            delete thisVars[variable];
+            return;
+          }
+
+          // check how many siblings use this variable
+          // 1 implies that this is the only child that uses it
+          // so it can be lifted
+          if ((node.parent.usageCounts.get(base) ?? 0) < 2) {
+            if (!("variables" in node.parent.ainsley)) {
+              node.parent.ainsley.variables = {};
+            }
+
+            const parentVars = node.parent.ainsley
+              .variables as AinsleyVariableMap;
+            const parentVariable =
+              Object.keys(parentVars).find((variable) =>
+                variable.endsWith(base)
+              ) ?? buildVariable(mod, "");
+            const [parentMod] = parseVariable(parentVariable);
+            const parentValue = parentVars[parentVariable] ?? {};
+            const childValue = thisVars[variable];
+
+            // remove old parent variable
+            if (parentVars[parentVariable] !== undefined) {
+              delete parentVars[parentVariable];
+            }
+
+            // remove old child variable
+            delete thisVars[variable];
+
+            // add new variable to parent
+            parentVars[buildVariable(mod === 2 ? parentMod : 0, base)] = {
+              ...(mod === 2 ? parentValue : {}),
+              ...childValue
+            };
+          }
+        }
+      } else {
+        // Remove unused variable
+        delete thisVars[variable];
+      }
+    });
+
+    // delete variables object if empty
+    if (Object.keys(thisVars).length === 0) {
+      delete node.ainsley.variables;
+    }
+
+    // delete any empty variation
+    if (Array.isArray(node.ainsley.variations)) {
+      node.ainsley.variations = node.ainsley.variations.filter(
+        (variation) => variation.length !== 0
+      );
+    }
+
+    // delete variations array if empty
+    if (Array.isArray(node.ainsley.variations)) {
+      if (node.ainsley.variations.length === 0) delete node.ainsley.variations;
+    }
+
+    // if node does nothing, merge it into its parent
+    // (this only works with variables because by now each variable is at its
+    // highest scope)
+    if (!("variations" in node.ainsley || "variables" in node.ainsley)) {
+      if (node.parent !== undefined) {
+        const parentChildren = node.parent.ainsley.children as AinsleyChildren;
+        const indexInParent = parentChildren.findIndex(
+          (child) => child === node.ainsley
+        );
+
+        if (indexInParent !== -1) {
+          parentChildren.splice(indexInParent, 1, ...node.ainsley.children);
+        }
+      }
+    }
+  }
+
+  return list[0].ainsley;
+};
