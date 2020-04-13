@@ -2,7 +2,7 @@
 
 # Ainsley 👨🏾‍🍳
 
-![npm](https://img.shields.io/npm/v/ainsley) ![Coveralls github branch](https://img.shields.io/coveralls/github/tbjgolden/ainsley/master) ![David](https://img.shields.io/david/tbjgolden/ainsley) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/ainsley) [![GitHub issues](https://img.shields.io/github/issues/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/issues) [![GitHub stars](https://img.shields.io/github/stars/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/stargazers) [![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley)
+[![Financial Contributors on Open Collective](https://opencollective.com/ainsley/all/badge.svg?label=financial+contributors)](https://opencollective.com/ainsley) ![npm](https://img.shields.io/npm/v/ainsley) ![Coveralls github branch](https://img.shields.io/coveralls/github/tbjgolden/ainsley/master) ![David](https://img.shields.io/david/tbjgolden/ainsley) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/ainsley) [![GitHub issues](https://img.shields.io/github/issues/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/issues) [![GitHub stars](https://img.shields.io/github/stars/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/stargazers) [![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley)
 
 Ainsley is a functional CSS framework and library with no compromises.
 It is the tiny spiritual successor of Tachyons and Tailwind.
@@ -240,3 +240,33 @@ property words are mapped to irregular abbreviations.
 |      style | st           | "fs" = {"font-size", "font-style"}                          |
 
 (MIT Licence)
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/tbjgolden/ainsley/graphs/contributors"><img src="https://opencollective.com/ainsley/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/ainsley/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/ainsley"><img src="https://opencollective.com/ainsley/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/ainsley/contribute)]
+
+<a href="https://opencollective.com/ainsley/organization/0/website"><img src="https://opencollective.com/ainsley/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/1/website"><img src="https://opencollective.com/ainsley/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/2/website"><img src="https://opencollective.com/ainsley/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/3/website"><img src="https://opencollective.com/ainsley/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/4/website"><img src="https://opencollective.com/ainsley/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/5/website"><img src="https://opencollective.com/ainsley/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/6/website"><img src="https://opencollective.com/ainsley/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/7/website"><img src="https://opencollective.com/ainsley/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/8/website"><img src="https://opencollective.com/ainsley/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/9/website"><img src="https://opencollective.com/ainsley/organization/9/avatar.svg"></a>
