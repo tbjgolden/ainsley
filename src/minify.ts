@@ -1,8 +1,17 @@
 import copy from "fast-copy";
-
+import csso from "csso";
 import { Ainsley, AinsleyChildren, AinsleyVariableMap } from "./types";
 
 const MODIFIERS = "?+";
+
+const minifyRaw = (rawCSS: string) => {
+  try {
+    return csso.minify(rawCSS).css;
+  } catch (error) {
+    console.error(error);
+    return rawCSS;
+  }
+};
 
 const parseVariable = (variable: string): [number, string] => {
   const mod = MODIFIERS.indexOf(variable[0]) + 1;
@@ -83,6 +92,13 @@ export const toAST = (
       usages.forEach((variable) => {
         usageCounts.set(variable, (usageCounts.get(variable) ?? 0) + 1);
       });
+    } else {
+      const rawCSS = minifyRaw(next as string);
+      if (rawCSS === "") {
+        children.splice(i--, 1);
+      } else {
+        children.splice(i, 1, rawCSS);
+      }
     }
   }
 

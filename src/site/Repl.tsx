@@ -1,21 +1,27 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Editor from "react-simple-code-editor";
 import { flatten, minify } from "../ainsley";
-import "prismjs/themes/prism.css";
+
 import "prismjs";
 const { highlight, languages } = window.Prism;
 
 const brotli = import("wasm-brotli");
 
+const isObject = (x: any) =>
+  typeof x === "object" &&
+  x !== null &&
+  !Array.isArray(x) &&
+  x instanceof Object;
+
 const parse = (str: string) => {
   let result;
   try {
     // eslint-disable-next-line no-eval
-    result = eval(str);
+    result = eval(`(${str})`);
   } catch (e) {
     try {
-      // eslint-disable-next-line no-eval
-      result = eval(`result = ${str}`);
+      // eslint-disable-next-line no-new-func, @typescript-eslint/no-implied-eval
+      result = new Function(str)();
     } catch (e) {
       result = e.message;
     }
@@ -24,12 +30,71 @@ const parse = (str: string) => {
 };
 
 const Repl = () => {
-  const [input, setInput] = useState(`{
-  variations: [[
-    ["s", "@media(min-width:384px)"],
-    ["m", "@media(min-width:768px)"],
-    ["l", "@media(min-width:1024px)"]
-  ]],
+  const [
+    input,
+    setInput
+  ] = useState(`const reset = \`/* http://meyerweb.com/eric/tools/css/reset/ 
+  v2.0 | 20110126
+  License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}\`;
+
+const breakpoints = {
+  s: 384,
+  m: 768,
+  l: 1024
+};
+
+return {
+  variations: [
+    Object.entries(breakpoints)
+      .map(([prefix, pixels]) =>
+        [prefix, \`@media(min-width:\${pixels}px)\`]
+      )
+  ],
   variables: {
     colors: {
       b: "black",
@@ -37,7 +102,7 @@ const Repl = () => {
     }
   },
   children: [
-    "$base",
+    reset,
     {
       variables: {
         "+colors": {
@@ -56,11 +121,13 @@ const Repl = () => {
   const [flattenedShown, setFlattenedShown] = useState(false);
   const [flattened, flattenedStr] = useMemo(() => {
     const parsedInput = parse(input);
-    if (typeof parsedInput !== "string") {
+    if (isObject(parsedInput)) {
       const obj = flatten(parsedInput);
       return [obj, JSON.stringify(obj, null, 2)];
-    } else {
+    } else if (typeof parsedInput === "string") {
       return [null, `Error while parsing:\n\n${parsedInput}`];
+    } else {
+      return [null, "Error while parsing"];
     }
   }, [input]);
 

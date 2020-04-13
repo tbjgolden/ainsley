@@ -1,7 +1,7 @@
 import { Ainsley } from "./types";
 import { minify } from "./minify";
 
-describe("minify tests", () => {
+describe("minify", () => {
   test("example one", () => {
     const start: Ainsley = {
       children: [
