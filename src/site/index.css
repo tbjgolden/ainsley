@@ -15,6 +15,7 @@
 
 #editor {
   height: 480px;
+  font-weight: 450;
 }
 
 .output {
@@ -50,7 +51,7 @@ button {
   word-break: normal;
   word-wrap: normal;
   line-height: 1.5;
-  tab-size: 4;
+  tab-size: 2;
   hyphens: none;
   position: relative;
   margin: 0.5em 0;

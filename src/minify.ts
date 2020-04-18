@@ -93,12 +93,7 @@ export const toAST = (
         usageCounts.set(variable, (usageCounts.get(variable) ?? 0) + 1);
       });
     } else {
-      const rawCSS = minifyRaw(next as string);
-      if (rawCSS === "") {
-        children.splice(i--, 1);
-      } else {
-        children.splice(i, 1, rawCSS);
-      }
+      children.splice(i, 1, minifyRaw(next as string));
     }
   }
 
@@ -119,7 +114,10 @@ export const minify = (ainsley: Ainsley): Ainsley => {
     const node = list[i];
 
     // if no children
-    if (node.ainsley.children?.length === 0) {
+    if (
+      node.ainsley.children === undefined ||
+      node.ainsley.children.length === 0
+    ) {
       // remove it from its parent
       if (node.parent !== undefined) {
         const parentChildren = node.parent.ainsley.children ?? [];
@@ -130,6 +128,23 @@ export const minify = (ainsley: Ainsley): Ainsley => {
       }
       // skip rest of the checks
       continue;
+    }
+
+    // merge strings, and delete any empty ones
+    for (let i = 0; i < node.ainsley.children.length; i++) {
+      const child = node.ainsley.children[i];
+      if (typeof child === "string") {
+        if (child.length === 0) {
+          // remove empty string
+          node.ainsley.children.splice(i--, 1);
+        } else if (i > 0) {
+          const prevSibling = node.ainsley.children[i - 1];
+          if (typeof prevSibling === "string") {
+            // merge non-empty strings
+            node.ainsley.children.splice(--i, 2, `${prevSibling}${child}`);
+          }
+        }
+      }
     }
 
     // lift variables up if possible

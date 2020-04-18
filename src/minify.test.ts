@@ -60,8 +60,7 @@ describe("minify", () => {
         ["&", [["color", "{colors}"]]],
         "*{outline-offset:0}",
         ["b&", [["border-color", "{colors}"]]],
-        ".h1{font-size:69px}",
-        "body{margin:0}"
+        ".h1{font-size:69px}body{margin:0}"
       ]
     });
   });
@@ -141,8 +140,6 @@ describe("minify", () => {
   });
 
   test("example three", () => {
-    // investigate how variations messes with things
-    // investigate how variables at top level are different
     const start: Ainsley = {
       variables: {
         colors: {
@@ -185,7 +182,6 @@ describe("minify", () => {
   });
 
   test("example four", () => {
-    // investigate why this doesn't work
     const start: Ainsley = {
       variations: [
         [
@@ -232,6 +228,43 @@ describe("minify", () => {
         }
       },
       children: [["bgc", [["background-color", "{colors}"]]]]
+    });
+  });
+
+  test("example five", () => {
+    const start: Ainsley = {
+      variables: {
+        colors: {
+          b: "black"
+        }
+      },
+      children: [
+        {
+          children: [
+            {
+              variables: {
+                "+colors": { p: "#313375" }
+              },
+              children: [["&", [["color", "{colors}"]]], "html{padding:0}"]
+            }
+          ]
+        },
+        "",
+        "body{margin:0}"
+      ]
+    };
+
+    expect(minify(start)).toEqual({
+      variables: {
+        colors: {
+          b: "black",
+          p: "#313375"
+        }
+      },
+      children: [
+        ["&", [["color", "{colors}"]]],
+        "html{padding:0}body{margin:0}"
+      ]
     });
   });
 });

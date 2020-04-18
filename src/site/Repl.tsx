@@ -3,6 +3,7 @@ import Editor from "react-simple-code-editor";
 import { flatten, minify } from "../ainsley";
 
 import "prismjs";
+import { Ainsley } from "../types";
 const { highlight, languages } = window.Prism;
 
 const brotli = import("wasm-brotli");
@@ -29,105 +30,99 @@ const parse = (str: string) => {
   return result;
 };
 
+const formatBytes = (bytes: number) => {
+  if (bytes < 1e3) return `${bytes}B`;
+  else if (bytes < 1e4) return `${(bytes / 1e3).toFixed(1)}kB`;
+  else return `${Math.round(bytes / 1e3)}kB`;
+};
+
 const Repl = () => {
   const [
     input,
     setInput
-  ] = useState(`const reset = \`/* http://meyerweb.com/eric/tools/css/reset/ 
-  v2.0 | 20110126
-  License: none (public domain)
-*/
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-  display: block;
-}
-body {
-  line-height: 1;
-}
-ol, ul {
-  list-style: none;
-}
-blockquote, q {
-  quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-  content: '';
-  content: none;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}\`;
-
-const breakpoints = {
-  s: 384,
-  m: 768,
-  l: 1024
-};
-
-return {
-  variations: [
-    Object.entries(breakpoints)
-      .map(([prefix, pixels]) =>
-        [prefix, \`@media(min-width:\${pixels}px)\`]
-      )
-  ],
-  variables: {
-    colors: {
-      b: "black",
-      w: "white"
-    }
-  },
-  children: [
-    reset,
-    {
-      variables: {
-        "+colors": {
-          lg: "#eee",
-          g: "#888",
-          dg: "#222"
-        }
-      },
-      children: [
-        ["bgc", [["background-color", "{colors}"]]]
-      ]
-    }
-  ]
-}`);
+  ] = useState(`// Define your stylesheet using JavaScript, or JSON
+  const breakpoints = Object.entries({ s: 384, m: 768, l: 1024 })
+    .map(([prefix, pixels]) => [prefix, \`@media(min-width:\${pixels}px)\`]);
+  
+  // This tiny object contains all the instructions to assemble a stylesheet
+  const ainsley = {
+    // \`variations\` allow you to add modifiers to children
+    // e.g. breakpoints, or hover styles
+    variations: [breakpoints],
+    // \`variables\` allow you to reuse groups of properties and values
+    variables: {
+      color: { b: "black", w: "white" }
+    },
+    children: [
+      // You may use \`"$..."\` syntax to import plugins and remote urls;
+      // it is able to import CSS and JSON.
+      "$https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css",
+      // You may also use it to import configs installed by npm (or yarn);
+      // this one would import the npm package "ainsley-config-example".
+      "$example",
+      // You may nest ainsley objects;
+      // this allows you to scope variables, variations and configs.
+      {
+        variables: {
+          // \`variables\` prefixed with a \`+\` will merge with any
+          // definition higher up (otherwise, it behaves like normal).
+          "+color": {
+            lg: "#eee",
+            g: "#888",
+            dg: "#222"
+          },
+          // \`variables\` prefixed with a \`?\` will only be defined
+          // if they have not been already been defined higher up.
+          "?length": {
+            0: 0,
+            1: "1px",
+            2: "2px"
+          }
+        },
+        children: [
+          // This is a "utility rule" - it looks like a typical CSS rule.
+          // It uses a variable, which will output every possible permutation!
+          ["bg", [
+            ["background-color", "{color}"]
+          ]],
+          // This string is the prefix of the "utility class".
+          // ↙ Abbreviations of \`variable\` values will be appended to it.
+          ["b", [
+            // "Utility rules" support multiple declarations.
+            // "Utility declarations" may use any number of variables.
+            ["border", "{length} {color}"],
+            ["border-style", "solid"]
+          ]]
+        ]
+      }
+    ]
+  }
+  
+  // in this REPL, use \`return\`
+  return ainsley;
+  
+`);
 
   const [flattenedShown, setFlattenedShown] = useState(false);
-  const [flattened, flattenedStr] = useMemo(() => {
+  const [[flattened, flattenedStr], setFlattened] = useState([
+    null as Ainsley | null,
+    ""
+  ]);
+
+  useEffect(() => {
     const parsedInput = parse(input);
     if (isObject(parsedInput)) {
-      const obj = flatten(parsedInput);
-      return [obj, JSON.stringify(obj, null, 2)];
+      flatten(parsedInput)
+        .then((flatAinsley) => {
+          setFlattened([flatAinsley, JSON.stringify(flatAinsley, null, 2)]);
+        })
+        .catch((error: Error) => {
+          setFlattened([null, `Error while parsing:\n\n${error.message}`]);
+        });
     } else if (typeof parsedInput === "string") {
-      return [null, `Error while parsing:\n\n${parsedInput}`];
+      setFlattened([null, `Error while parsing:\n\n${parsedInput}`]);
     } else {
-      return [null, "Error while parsing"];
+      setFlattened([null, "Error while parsing"]);
     }
   }, [input]);
 
@@ -141,15 +136,15 @@ return {
     }
   }, [flattened]);
 
-  const [compressedBytes, setCompressedBytes] = useState("");
+  const [compressedBytes, setCompressedBytes] = useState(0);
 
   useEffect(() => {
-    setCompressedBytes("");
+    setCompressedBytes(0);
     if (minified !== null) {
       brotli
         .then(({ compress }) => {
           const result = compress(new TextEncoder().encode(minifiedStr));
-          setCompressedBytes(result.byteLength.toString());
+          setCompressedBytes(result.byteLength);
         })
         .catch(console.error);
     }
@@ -162,7 +157,7 @@ return {
   return (
     <div>
       <label htmlFor="input">
-        <h2>Input ({Buffer.from(input).byteLength}B)</h2>
+        <h2>Input</h2>
       </label>
       <div id="editor">
         <Editor
@@ -176,6 +171,9 @@ return {
       <h2>
         <ShowHideButton shown={flattenedShown} setShown={setFlattenedShown} />
         {" Flattened"}
+        {flattened === null
+          ? null
+          : ` (${formatBytes(Buffer.from(flattenedStr).byteLength)})`}
       </h2>
       {flattenedShown ? (
         <pre className="output">
@@ -185,9 +183,13 @@ return {
 
       <h2>
         <ShowHideButton shown={minifiedShown} setShown={setMinifiedShown} />
-        {" Minified "}
-        {minified === null ? null : `(${Buffer.from(minifiedStr).byteLength}B)`}
-        {compressedBytes === "" ? null : ` (Brotli: ${compressedBytes}B)`}
+        {" Minified"}
+        {minified === null
+          ? null
+          : ` (${formatBytes(Buffer.from(minifiedStr).byteLength)})`}
+        {compressedBytes === 0
+          ? null
+          : ` (Brotli: ${formatBytes(compressedBytes)})`}
       </h2>
       {minifiedShown ? (
         <pre className="output one-line">
