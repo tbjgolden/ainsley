@@ -54,7 +54,7 @@ const Repl = () => {
       color: { b: "black", w: "white" }
     },
     children: [
-      // You may use \`"$..."\` syntax to import plugins and remote urls;
+      // You may use \`"$..."\` syntax to import configs and remote urls;
       // it is able to import CSS and JSON.
       "$https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css",
       // You may also use it to import configs installed by npm (or yarn);
