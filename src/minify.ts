@@ -1,112 +1,17 @@
 import copy from "fast-copy";
 import csso from "csso";
 import { Ainsley, AinsleyChildren, AinsleyVariableMap } from "./types";
+import { validate } from "./validate";
 
-const MODIFIERS = "?+";
-
-const minifyRaw = (rawCSS: string) => {
-  try {
-    return csso.minify(rawCSS).css;
-  } catch (error) {
-    console.error(error);
-    return rawCSS;
-  }
-};
-
-const parseVariable = (variable: string): [number, string] => {
-  const mod = MODIFIERS.indexOf(variable[0]) + 1;
-  const base = mod > 0 ? variable.slice(1) : variable;
-  return [mod, base];
-};
-
-const buildVariable = (mod: number, base: string): string =>
-  `${["", "?", "+"][mod]}${base}`;
-
-const isObject = (x: any): boolean =>
-  !!(x !== null && typeof x === "object" && !Array.isArray(x));
-
-const iteratorRegex = /\{[a-z]+\}/gi;
-const searchForUsages = (
-  arr: Array<unknown | string | object>,
-  set: Set<string> = new Set()
-): Set<string> => {
-  arr.forEach((val) => {
-    if (Array.isArray(val)) {
-      searchForUsages(val, set);
-    } else if (typeof val === "string") {
-      const match = val.match(iteratorRegex);
-      for (let i = 0; i < (match ?? []).length; i++) {
-        set.add((match as string[])[i].slice(1, -1));
-      }
-    }
-  });
-  return set;
-};
-
-interface ASTNode {
-  parent: ASTNode | undefined;
-  ainsley: Ainsley;
-  usageCounts: Map<string, number>;
-  definedVariables: Set<string>;
-}
-
-export const toAST = (
-  ainsley: Ainsley,
-  definedVariables: Set<string>,
-  parent?: ASTNode
-): ASTNode[] => {
-  const children = ainsley.children ?? [];
-  const usageCounts: Map<string, number> = new Map();
-  const node = { ainsley, parent, usageCounts, definedVariables };
-
-  const topologicalList = [node];
-
-  for (let i = 0; i < children.length; i++) {
-    const next = children[i];
-    if (isObject(next)) {
-      const ainsley = next as Ainsley;
-      const variables = ainsley.variables ?? {};
-
-      const childNodes = toAST(
-        ainsley,
-        new Set([
-          ...definedVariables,
-          ...Object.keys(variables).map(
-            (variable: string) => parseVariable(variable)[1]
-          )
-        ]),
-        node
-      );
-
-      new Set(
-        childNodes
-          .map((node) => [...node.usageCounts.keys()])
-          .reduce((arr, keys) => [...arr, ...keys], [])
-      ).forEach((variable) => {
-        usageCounts.set(variable, (usageCounts.get(variable) ?? 0) + 1);
-      });
-
-      topologicalList.push(...childNodes);
-    } else if (Array.isArray(next)) {
-      const usages = searchForUsages(next);
-      usages.forEach((variable) => {
-        usageCounts.set(variable, (usageCounts.get(variable) ?? 0) + 1);
-      });
-    } else {
-      children.splice(i, 1, minifyRaw(next as string));
-    }
-  }
-
-  return topologicalList as ASTNode[];
-};
-
-/*
-[ flat config (no plugins) ]            |
-which is minified into a                | minify()
-[ minified config ]                     |
-*/
+/* flat config => minified (and still flat) config */
 export const minify = (ainsley: Ainsley): Ainsley => {
-  // build ast list
+  // validate input
+  const errors = validate(ainsley);
+  if (errors.length > 0) {
+    throw new Error(`Invalid input Ainsley:\n${errors.join("\n")}`);
+  }
+
+  // clone and build ast list (mutates input)
   const list = toAST(copy(ainsley), new Set());
 
   // collapse ast from bottom up
@@ -236,4 +141,102 @@ export const minify = (ainsley: Ainsley): Ainsley => {
   }
 
   return list[0].ainsley;
+};
+
+const MODIFIERS = "?+";
+
+const minifyRaw = (rawCSS: string) => {
+  try {
+    return csso.minify(rawCSS).css;
+  } catch (error) {
+    console.error(error);
+    return rawCSS;
+  }
+};
+
+const parseVariable = (variable: string): [number, string] => {
+  const mod = MODIFIERS.indexOf(variable[0]) + 1;
+  const base = mod > 0 ? variable.slice(1) : variable;
+  return [mod, base];
+};
+
+const buildVariable = (mod: number, base: string): string =>
+  `${["", "?", "+"][mod]}${base}`;
+
+const isObject = (x: any): boolean =>
+  !!(x !== null && typeof x === "object" && !Array.isArray(x));
+
+const iteratorRegex = /\{[a-z]+\}/gi;
+const searchForUsages = (
+  arr: Array<unknown | string | object>,
+  set: Set<string> = new Set()
+): Set<string> => {
+  arr.forEach((val) => {
+    if (Array.isArray(val)) {
+      searchForUsages(val, set);
+    } else if (typeof val === "string") {
+      const match = val.match(iteratorRegex);
+      for (let i = 0; i < (match ?? []).length; i++) {
+        set.add((match as string[])[i].slice(1, -1));
+      }
+    }
+  });
+  return set;
+};
+
+interface ASTNode {
+  parent: ASTNode | undefined;
+  ainsley: Ainsley;
+  usageCounts: Map<string, number>;
+  definedVariables: Set<string>;
+}
+
+const toAST = (
+  ainsley: Ainsley,
+  definedVariables: Set<string>,
+  parent?: ASTNode
+): ASTNode[] => {
+  const children = ainsley.children ?? [];
+  const usageCounts: Map<string, number> = new Map();
+  const node = { ainsley, parent, usageCounts, definedVariables };
+
+  const topologicalList = [node];
+
+  for (let i = 0; i < children.length; i++) {
+    const next = children[i];
+    if (isObject(next)) {
+      const ainsley = next as Ainsley;
+      const variables = ainsley.variables ?? {};
+
+      const childNodes = toAST(
+        ainsley,
+        new Set([
+          ...definedVariables,
+          ...Object.keys(variables).map(
+            (variable: string) => parseVariable(variable)[1]
+          )
+        ]),
+        node
+      );
+
+      new Set(
+        childNodes
+          .map((node) => [...node.usageCounts.keys()])
+          .reduce((arr, keys) => [...arr, ...keys], [])
+      ).forEach((variable) => {
+        usageCounts.set(variable, (usageCounts.get(variable) ?? 0) + 1);
+      });
+
+      topologicalList.push(...childNodes);
+    } else if (Array.isArray(next)) {
+      const usages = searchForUsages(next);
+      usages.forEach((variable) => {
+        usageCounts.set(variable, (usageCounts.get(variable) ?? 0) + 1);
+      });
+    } else {
+      children.splice(i, 1, minifyRaw(next as string));
+    }
+  }
+
+  return topologicalList as ASTNode[];
 };

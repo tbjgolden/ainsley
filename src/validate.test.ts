@@ -1,7 +1,7 @@
 import { validate } from "./validate";
 
 describe("validate", () => {
-  test("example one", async () => {
+  test("basic example", async () => {
     const result = await validate({
       children: [69]
     });

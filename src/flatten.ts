@@ -1,6 +1,41 @@
 import "isomorphic-fetch";
 import copy from "fast-copy";
 import { Ainsley, AinsleyChild, AinsleyChildren } from "./types";
+import { validate } from "./validate";
+
+/* config with external dependencies => flat config */
+export const flatten = async (
+  configWithPlugins: Ainsley,
+  getConfig = defaultGetConfig
+): Promise<Ainsley> => {
+  // validate
+  const errors = validate(configWithPlugins);
+  if (errors.length > 0) {
+    throw new Error(`Invalid input Ainsley:\n${errors.join("\n")}`);
+  }
+
+  // deep clone as we'll be mutating
+  const flatAinsley = copy(configWithPlugins);
+
+  // check for configs and inject them
+  if (Array.isArray(flatAinsley.children)) {
+    await Promise.all(
+      flatAinsley.children.map(
+        async (child: AinsleyChild, i: number): Promise<AinsleyChild> => {
+          if (typeof child === "string") {
+            if (child.startsWith("$")) {
+              const flatConfig = await getFlatConfig(child.slice(1), getConfig);
+              (flatAinsley.children as AinsleyChildren)[i] = flatConfig;
+            }
+          }
+          return child;
+        }
+      )
+    );
+  }
+
+  return flatAinsley;
+};
 
 const isObject = (x: any): boolean =>
   !!(x !== null && typeof x === "object" && !Array.isArray(x));
@@ -39,35 +74,4 @@ export const getFlatConfig = async (
   } catch (e) {
     return `/* $${ref} */`;
   }
-};
-
-/*
-[ config with plugins ]                 |
-which is flattened into                 | flatten()
-[ flat config (no plugins) ]            |
-*/
-export const flatten = async (
-  configWithPlugins: Ainsley,
-  getConfig = defaultGetConfig
-): Promise<Ainsley> => {
-  const flatAinsley = copy(configWithPlugins);
-
-  // check for configs and inject them
-  if (Array.isArray(flatAinsley.children)) {
-    await Promise.all(
-      flatAinsley.children.map(
-        async (child: AinsleyChild, i: number): Promise<AinsleyChild> => {
-          if (typeof child === "string") {
-            if (child.startsWith("$")) {
-              const flatConfig = await getFlatConfig(child.slice(1), getConfig);
-              (flatAinsley.children as AinsleyChildren)[i] = flatConfig;
-            }
-          }
-          return child;
-        }
-      )
-    );
-  }
-
-  return flatAinsley;
 };
