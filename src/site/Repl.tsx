@@ -60,7 +60,7 @@ const Repl = () => {
       // You may also use it to import configs installed by npm (or yarn);
       // this one would import the npm package "ainsley-config-example".
       "$example",
-      // You may nest ainsley objects;
+      // You may nest Ainsley objects;
       // this allows you to scope variables, variations and configs.
       {
         variables: {

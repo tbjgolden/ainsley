@@ -15,9 +15,11 @@
     "@babel/plugin-transform-typescript": "^7.9.4",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
+    "@types/codegen.macro": "^3.0.0",
     "@types/csso": "^3.5.1",
     "@types/jest": "^25.1.4",
     "@types/node": "^12.12.31",
+    "@types/preval.macro": "^3.0.0",
     "@types/prismjs": "^1.16.0",
     "@types/react": "^16.9.25",
     "@types/react-dom": "^16.9.5",
@@ -59,5 +61,9 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "ajv": "^6.12.1",
+    "typescript-json-schema": "^0.42.0"
   }
 }

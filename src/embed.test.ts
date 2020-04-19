@@ -1,12 +1,11 @@
+/**
+ * @jest-environment jsdom
+ */
 import { embed } from "./embed";
-
-const cleanup = () => {
-  document.head.innerHTML = "<title>Page</title>";
-};
 
 describe("embed", () => {
   beforeEach(() => {
-    cleanup();
+    document.head.innerHTML = "<title>Page</title>";
   });
 
   test("embeds css", () => {
