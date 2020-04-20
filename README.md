@@ -74,9 +74,9 @@ const configWithoutDependencies = flatten(ainsley);
 // ❤️ ➡ 💌
 const minifiedConfig = minify(configWithoutDependencies);
 
-// ON THE CLIENT, this can be compiled to CSS, and embedded into the page
+// (ON THE CLIENT) to generate CSS, and embed it into the page
 // 💌 ➡ ❤️🧡💛💚💙💜
-embed(compile(minifiedConfig));
+embed(generate(minifiedConfig));
 ```
 
 maybe a validate() function which at least checks for valid types

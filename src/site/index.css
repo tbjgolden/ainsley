@@ -1,8 +1,13 @@
 /* Main REPL Styles */
-* {
+html,
+body {
   font-family: "Fira Code", monospace;
   font-size: 16px;
   line-height: 1.35;
+}
+
+* {
+  font: inherit;
 }
 
 #editor,
@@ -35,14 +40,10 @@ pre.one-line {
   overflow-wrap: anywhere;
   white-space: pre-line;
   resize: none;
-  line-height: 14px;
-}
-
-.one-line code {
   font-size: 14px;
 }
 
-#input > pre .token {
+#root pre .token {
   background: none;
 }
 

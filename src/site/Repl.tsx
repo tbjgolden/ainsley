@@ -1,18 +1,15 @@
 import React, { useState, useMemo, useEffect } from "react";
+
 import Editor from "react-simple-code-editor";
-import { flatten, minify } from "../ainsley";
-
+import stringify from "json-stringify-pretty-compact";
 import "prismjs";
+
+import { flatten, minify } from "../ainsley";
 import { Ainsley } from "../types";
+import { isObject } from "../utils";
+
 const { highlight, languages } = window.Prism;
-
 const brotli = import("wasm-brotli");
-
-const isObject = (x: any) =>
-  typeof x === "object" &&
-  x !== null &&
-  !Array.isArray(x) &&
-  x instanceof Object;
 
 const parse = (str: string) => {
   let result;
@@ -113,7 +110,7 @@ return ainsley;
     if (isObject(parsedInput)) {
       flatten(parsedInput)
         .then((flatAinsley) => {
-          setFlattened([flatAinsley, JSON.stringify(flatAinsley, null, 2)]);
+          setFlattened([flatAinsley, stringify(flatAinsley)]);
         })
         .catch((error: Error) => {
           setFlattened([null, `Error while parsing:\n\n${error.message}`]);
@@ -163,7 +160,7 @@ return ainsley;
           id="input"
           value={input}
           onValueChange={setInput}
-          highlight={(code) => highlight(code, languages.js, "json")}
+          highlight={(code) => highlight(code, languages.js, "js")}
         />
       </div>
 
@@ -176,7 +173,11 @@ return ainsley;
       </h2>
       {flattenedShown ? (
         <pre className="output">
-          <code>{flattenedStr}</code>
+          <code
+            dangerouslySetInnerHTML={{
+              __html: highlight(flattenedStr, languages.js, "json")
+            }}
+          />
         </pre>
       ) : null}
 
@@ -192,7 +193,11 @@ return ainsley;
       </h2>
       {minifiedShown ? (
         <pre className="output one-line">
-          <code>{minifiedStr}</code>
+          <code
+            dangerouslySetInnerHTML={{
+              __html: highlight(minifiedStr, languages.js, "json")
+            }}
+          />
         </pre>
       ) : null}
     </div>

@@ -1,3 +1,6 @@
+export const isObject = (x: any): boolean =>
+  !!(x !== null && typeof x === "object" && !Array.isArray(x));
+
 export const map = (arr: any[], fn: (value: any) => any): any[] => {
   const out = [];
   const len = arr.length;
@@ -25,9 +28,9 @@ export const assign = (objects: Array<Record<string, any>>) => {
   const len = objects.length;
   for (let i = 0; i < len; i++) {
     const obj = objects[i];
-    for (const nextKey in obj) {
-      out[nextKey] = obj[nextKey];
-    }
+    map(Object.keys(obj), (key) => {
+      out[key] = obj[key];
+    });
   }
   return out;
 };

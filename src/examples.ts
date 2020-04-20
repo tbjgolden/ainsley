@@ -1,7 +1,7 @@
 import { Ainsley } from "./types";
 
 export const configWithPlugins: Ainsley = {
-  children: ["$base", ["c&", [["color", "{colors}"]]]],
+  children: ["$base", ["c$", [["color", "{colors}"]]]],
   variables: {
     colors: {
       W: "white",
@@ -44,41 +44,175 @@ export const baseConfig: Ainsley = {
   children: [
     "*,::after,::before{box-sizing:border-box;outline-offset:0;border:0 solid}[type=button],[type=date],[type=datetime-local],[type=email],[type=file],[type=image],[type=month],[type=number],[type=password],[type=reset],[type=search],[type=submit],[type=tel],[type=text],[type=time],[type=url],[type=week],a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,button,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,time,tt,u,ul,var,video{margin:0;padding:0;border:0 solid;background:0 0;font:inherit;color:inherit;text-align:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}html{overflow-y:scroll;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote::after,blockquote::before,q::after,q::before{content:none}textarea{resize:vertical;overflow:auto}applet,canvas,img,object,svg,video{max-width:100%;height:auto}",
     {
-      // prettier-ignore
       children: [
-        ["c&", [["color", "{colors}"]]],
-        ["bac&", [["background-color", "{colors}"]]],
-        ["fosz&", [["font-size", "{typeScale}"], ["line-height", 1.2]]],
-        ["&&", [["{scalar}", "{scale}"]]],
-        ["&&", [["{direction}", "{scale}"]]],
-        ["&&", [["{vector}", "{scale}"]]],
-        ["&&&", [["{vector}-{direction}", "{scale}"]]],
-        ["ma&N&", [["margin-{direction}", "-{scale}"]]],
-        ["bap&&", [["background-position", "{xLoc} {yLoc}"]]],
-        ["bo&w&", [["border-{direction}-width", "{scale}"]]],
-        ["bo&c&", [["border-{direction}-color", "{colors}"]]],
-        ["fl&&&", [["flex", "{flexChange} {flexChange} {flexBasis}"]]],
-        ["&&", [["{flexCrossAxes}", "{flexCrossAxis}"]]],
-        ["ov&&", [["overflow", "{overflow} {overflow}"]]],
-        ["Display", ["Inline", "Block", "FleX", "None", "Inline-Block", "Inline-FleX"]],
-        ["Text-Decoration", ["Line-through", "Underline", "None"]],
-        ["FOnt-STyle", ["Italic", "Normal"]],
-        ["Text-TransForm", ["Uppercase", "Lowercase"]],
-        ["OVerflow-Wrap", ["Break-Word", "Anywhere", "Normal"]],
-        ["BAckground-Repeat", ["Repeat", "No-repeat"]],
-        ["Position", ["Relative", "Absolute", "Fixed", "Sticky"]],
-        ["Text-Align", ["Left", "Center", "Right", "Justify"]],
-        ["Vertical-Align", ["Top", "Middle", "Bottom"]],
-        ["CUrsor", ["Default", "Pointer"]],
-        ["Pointer-Events", ["None", "All"]],
-        ["Z-Index", [0, 1, 2, 4, 8, 16, 32, -1]],
-        ["Opacity", [0, 10, 20, 40, 80, 100]],
-        ["White-Space", ["Pre", "Pre-Wrap", "NoWrap", "Normal"]],
-        ["BAckground-SiZe", ["CoVer", "ConTain"]],
-        ["FLex-Direction", ["Row", "Column", "Row-Reverse", "Column-Reverse"]],
-        ["Justify-Content", ["Center", "Flex-Start", "Flex-End", "Space-Between", "Space-Evenly"]],
-        ["Line-Height", {B: 1, T: 1.2, C: 1.3}],
-        ["FOnt-Weight", {N: 400, M: 600, B: 700}]
+        ["c", [["color", "{colors}"]]],
+        ["bac", [["background-color", "{colors}"]]],
+        [
+          "fosz",
+          [
+            ["font-size", "{typeScale}"],
+            ["line-height", 1.2]
+          ]
+        ],
+        ["", [["{scalar}", "{scale}"]]],
+        ["", [["{direction}", "{scale}"]]],
+        ["", [["{vector}", "{scale}"]]],
+        ["", [["{vector}-{direction}", "{scale}"]]],
+        ["ma$N", [["margin-{direction}", "-{scale}"]]],
+        ["bap", [["background-position", "{xLoc} {yLoc}"]]],
+        ["bo$w", [["border-{direction}-width", "{scale}"]]],
+        ["bo$c", [["border-{direction}-color", "{colors}"]]],
+        ["fl", [["flex", "{flexChange} {flexChange} {flexBasis}"]]],
+        ["", [["{flexCrossAxes}", "{flexCrossAxis}"]]],
+        ["ov", [["overflow", "{overflow} {overflow}"]]],
+        [
+          "Display",
+          {
+            i: "inline",
+            b: "block",
+            fx: "flex",
+            n: "none",
+            ib: "inline-block",
+            ifx: "inline-flex"
+          }
+        ],
+        [
+          "Text-Decoration",
+          {
+            l: "line-through",
+            u: "underline",
+            n: "none"
+          }
+        ],
+        [
+          "FOnt-STyle",
+          {
+            i: "italic",
+            n: "normal"
+          }
+        ],
+        [
+          "Text-TransForm",
+          {
+            u: "uppercase",
+            l: "lowercase"
+          }
+        ],
+        [
+          "OVerflow-Wrap",
+          {
+            bw: "break-word",
+            a: "anywhere",
+            n: "normal"
+          }
+        ],
+        [
+          "BAckground-Repeat",
+          {
+            r: "repeat",
+            n: "no-repeat"
+          }
+        ],
+        [
+          "Position",
+          {
+            r: "relative",
+            a: "absolute",
+            f: "fixed",
+            s: "sticky"
+          }
+        ],
+        [
+          "Text-Align",
+          {
+            l: "left",
+            c: "center",
+            r: "right",
+            j: "justify"
+          }
+        ],
+        [
+          "Vertical-Align",
+          {
+            t: "top",
+            m: "middle",
+            b: "bottom"
+          }
+        ],
+        [
+          "CUrsor",
+          {
+            d: "default",
+            p: "pointer"
+          }
+        ],
+        [
+          "Pointer-Events",
+          {
+            n: "none",
+            a: "all"
+          }
+        ],
+        [
+          "Z-Index",
+          {
+            "0": "0",
+            "1": "-1",
+            "2": "2",
+            "4": "4",
+            "8": "8",
+            "16": "16",
+            "32": "32"
+          }
+        ],
+        [
+          "Opacity",
+          {
+            "0": "0",
+            "10": "10",
+            "20": "20",
+            "40": "40",
+            "80": "80",
+            "100": "100"
+          }
+        ],
+        [
+          "White-Space",
+          {
+            p: "pre",
+            pw: "pre-wrap",
+            nw: "nowrap",
+            n: "normal"
+          }
+        ],
+        [
+          "BAckground-SiZe",
+          {
+            cv: "cover",
+            ct: "contain"
+          }
+        ],
+        [
+          "FLex-Direction",
+          {
+            r: "row",
+            c: "column",
+            rr: "row-reverse",
+            cr: "column-reverse"
+          }
+        ],
+        [
+          "Justify-Content",
+          {
+            c: "center",
+            fs: "flex-start",
+            fe: "flex-end",
+            sb: "space-between",
+            se: "space-evenly"
+          }
+        ],
+        ["Line-Height", { B: 1, T: 1.2, C: 1.3 }],
+        ["FOnt-Weight", { N: 400, M: 600, B: 700 }]
       ],
       variables: {
         overflow: {

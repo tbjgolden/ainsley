@@ -2,6 +2,12 @@ import copy from "fast-copy";
 import csso from "csso";
 import { Ainsley, AinsleyChildren, AinsleyVariableMap } from "./types";
 import { validate } from "./validate";
+import { isObject } from "./utils";
+
+/*
+TODOs:
+- check if strings can be turnt into numbers
+*/
 
 /* flat config => minified (and still flat) config */
 export const minify = (ainsley: Ainsley): Ainsley => {
@@ -162,9 +168,6 @@ const parseVariable = (variable: string): [number, string] => {
 
 const buildVariable = (mod: number, base: string): string =>
   `${["", "?", "+"][mod]}${base}`;
-
-const isObject = (x: any): boolean =>
-  !!(x !== null && typeof x === "object" && !Array.isArray(x));
 
 const iteratorRegex = /\{[a-z]+\}/gi;
 const searchForUsages = (

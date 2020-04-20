@@ -1,14 +1,11 @@
 export interface AinsleyAbbreviationMapObject {
   [propName: string]: string | number;
 }
-export type AinsleyAbbreviationMapArray = Array<
-  string | number | [string | number, string | number]
->;
 
 export type AinsleyRule = [string, Array<[string, string | number]>];
 export type AinsleyPropertyOrPlaceholder = [
   string,
-  AinsleyAbbreviationMapObject | AinsleyAbbreviationMapArray
+  AinsleyAbbreviationMapObject
 ];
 
 export type AinsleyLeaf = AinsleyRule | AinsleyPropertyOrPlaceholder | string;
@@ -33,3 +30,5 @@ interface Meta {
 export interface AinsleyMeta extends Ainsley {
   _: Meta;
 }
+
+export type AinsleyAST = Array<string | AinsleyRule | [string, AinsleyAST]>;
