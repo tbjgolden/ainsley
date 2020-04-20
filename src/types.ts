@@ -32,3 +32,16 @@ export interface AinsleyMeta extends Ainsley {
 }
 
 export type AinsleyAST = Array<string | AinsleyRule | [string, AinsleyAST]>;
+
+export interface AinsleyGenerateOptions {
+  addVariationToSelector: (
+    selector: string,
+    variationAbbreviation: string
+  ) => string;
+  addPropertyToSelector: (
+    selector: string,
+    propertyAbbreviation: string
+  ) => string;
+  addValueToSelector: (selector: string, valueAbbreviation: string) => string;
+  abbreviateProperty: (property: string) => [string, string];
+}
