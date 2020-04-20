@@ -16,6 +16,7 @@ export const ITERATOR_REGEX = iteratorRegex;
 /*
 TODO:
 replace OPINION sections with options
+fix variable modifiers
 */
 
 export const generate = (ainsley: Ainsley): string =>
