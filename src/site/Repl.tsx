@@ -4,7 +4,7 @@ import Editor from "react-simple-code-editor";
 import stringify from "json-stringify-pretty-compact";
 import "prismjs";
 
-import { flatten, minify } from "../ainsley";
+import { flatten, minify, generate } from "../ainsley";
 import { Ainsley } from "../types";
 import { isObject } from "../utils";
 
@@ -146,6 +146,30 @@ return ainsley;
     }
   }, [minifiedStr]);
 
+  const [generatedShown, setGeneratedShown] = useState(true);
+  const [generated, generatedStr] = useMemo(() => {
+    if (minified !== null) {
+      const obj = generate(minified);
+      return [obj, obj];
+    } else {
+      return [null, minifiedStr];
+    }
+  }, [flattenedStr]);
+
+  const [compressedCSSBytes, setCompressedCSSBytes] = useState(0);
+
+  useEffect(() => {
+    setCompressedCSSBytes(0);
+    if (generated !== null) {
+      brotli
+        .then(({ compress }) => {
+          const result = compress(new TextEncoder().encode(generatedStr));
+          setCompressedCSSBytes(result.byteLength);
+        })
+        .catch(console.error);
+    }
+  }, [generatedStr]);
+
   useEffect(() => {
     document.body.style.display = "block";
   }, []);
@@ -192,12 +216,28 @@ return ainsley;
           : ` (Brotli: ${formatBytes(compressedBytes)})`}
       </h2>
       {minifiedShown ? (
-        <pre className="output one-line">
+        <pre className="output one-line show-all">
           <code
             dangerouslySetInnerHTML={{
               __html: highlight(minifiedStr, languages.js, "json")
             }}
           />
+        </pre>
+      ) : null}
+
+      <h2>
+        <ShowHideButton shown={generatedShown} setShown={setGeneratedShown} />
+        {" Generated CSS"}
+        {generated === null
+          ? null
+          : ` (${formatBytes(Buffer.from(generatedStr).byteLength)})`}
+        {compressedBytes === 0
+          ? null
+          : ` (Brotli: ${formatBytes(compressedCSSBytes)})`}
+      </h2>
+      {generatedShown ? (
+        <pre className="output one-line">
+          <code>{generatedStr}</code>
         </pre>
       ) : null}
     </div>

@@ -58,27 +58,22 @@ export const generateFromAst = (ainsleyRules: AinsleyAST): string =>
     (ainsleyRule: string | AinsleyRule | [string, AinsleyAST]) => {
       if (typeof ainsleyRule === "string") {
         return ainsleyRule;
+      } else if (ainsleyRule[0].charAt(0) === "@") {
+        return (
+          ainsleyRule[0] + "{" + generateFromAst(ainsleyRule[1] as any) + "}"
+        );
       } else {
-        if (ainsleyRule[0].charAt(0) === "@") {
-          return (
-            ainsleyRule[0] +
-            "{" +
-            generateFromAst(ainsleyRule[1] as AinsleyAST) +
-            "}"
-          );
-        } else {
-          return (
-            "." +
-            ainsleyRule[0] +
-            "{" +
-            map(
-              ainsleyRule[1],
-              (declaration: [string, string]) =>
-                declaration[0] + ":" + declaration[1]
-            ).join(";") +
-            "}"
-          );
-        }
+        return (
+          "." +
+          ainsleyRule[0] +
+          "{" +
+          map(
+            ainsleyRule[1],
+            (declaration: [string, string]) =>
+              declaration[0] + ":" + declaration[1]
+          ).join(";") +
+          "}"
+        );
       }
     }
   ).join("");
@@ -178,7 +173,7 @@ const ainsleyChildrenToAst = (
       if (typeof child === "string") {
         return [child];
       } else if (isObject(child)) {
-        return [ainsleyToAst(child as Ainsley, options, variables)];
+        return ainsleyToAst(child as Ainsley, options, variables);
       } else {
         child = child as AinsleyRule | AinsleyPropertyOrPlaceholder;
         if (Array.isArray(child[1])) {
