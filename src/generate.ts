@@ -10,9 +10,7 @@ import {
 } from "./types";
 import { isObject, assign, flat, map, combinations } from "./utils";
 
-const iteratorRegex = "\\{[a-zA-Z0-9_-]+\\}";
-const iteratorSearch = new RegExp(iteratorRegex, "g");
-export const ITERATOR_REGEX = iteratorRegex;
+export const ITERATOR_REGEX = "\\{[a-zA-Z0-9_-]+\\}";
 export const DEFAULT_OPTIONS: AinsleyGenerateOptions = {
   addVariationToSelector: (selector, variationAbbreviation) =>
     variationAbbreviation + "-" + selector,
@@ -30,14 +28,11 @@ export const DEFAULT_OPTIONS: AinsleyGenerateOptions = {
   ]
 };
 
-/*
-TODO:
-fix variable modifiers
-*/
+const ITERATOR_SEARCH = new RegExp(ITERATOR_REGEX, "g");
 
 export const generate = (
   ainsley: Ainsley,
-  options: Partial<AinsleyGenerateOptions>
+  options: Partial<AinsleyGenerateOptions> = {}
 ): string =>
   generateFromAst(
     ainsleyToAst(
@@ -53,25 +48,27 @@ export const generateFromAst = (ainsleyRules: AinsleyAST): string =>
     (ainsleyRule: string | AinsleyRule | [string, AinsleyAST]) => {
       if (typeof ainsleyRule === "string") {
         return ainsleyRule;
-      } else if (ainsleyRule[0].charAt(0) === "@") {
-        return (
-          ainsleyRule[0] +
-          "{" +
-          generateFromAst(ainsleyRule as AinsleyAST) +
-          "}"
-        );
       } else {
-        return (
-          "." +
-          ainsleyRule[0] +
-          "{" +
-          map(
-            ainsleyRule[1],
-            (declaration: [string, string]) =>
-              declaration[0] + ":" + declaration[1]
-          ).join(";") +
-          "}"
-        );
+        if (ainsleyRule[0].charAt(0) === "@") {
+          return (
+            ainsleyRule[0] +
+            "{" +
+            generateFromAst(ainsleyRule[1] as AinsleyAST) +
+            "}"
+          );
+        } else {
+          return (
+            "." +
+            ainsleyRule[0] +
+            "{" +
+            map(
+              ainsleyRule[1],
+              (declaration: [string, string]) =>
+                declaration[0] + ":" + declaration[1]
+            ).join(";") +
+            "}"
+          );
+        }
       }
     }
   ).join("");
@@ -82,15 +79,29 @@ const ainsleyToAst = (
   inheritedVariables: AinsleyVariableMap
 ): AinsleyAST => {
   // first, compute variables
-  // WAIT! need to fix for modifiers
-  const newVariables = assign([inheritedVariables, ainsley.variables ?? {}]);
+  const newVariables = assign([inheritedVariables]);
+  if (isObject(ainsley.variables)) {
+    const variables = ainsley.variables as AinsleyVariableMap;
+    map(Object.keys(variables), (variable: string) => {
+      const modAndBase = parseVariable(variable);
+      const mod = modAndBase[0];
+      const base = modAndBase[1];
+      if (mod === 0) {
+        newVariables[base] = variables[variable];
+      } else if (mod === 2) {
+        newVariables[base] = assign([
+          inheritedVariables[base],
+          variables[variable]
+        ]);
+      }
+    });
+  }
 
   // then, flatten children into ast
-  const rulesListWithoutVariants = ainsleyChildrenToAst(
-    ainsley.children ?? [],
-    options,
-    newVariables
-  );
+  const rulesListWithoutVariants =
+    ainsley.children === undefined
+      ? []
+      : ainsleyChildrenToAst(ainsley.children, options, newVariables);
 
   // lastly, multiply ast with variations
   const rulesList: AinsleyAST = flat(
@@ -112,21 +123,31 @@ const ainsleyToAst = (
               return [
                 [
                   variationInstruction,
-                  map(prevAst, (rule: AinsleyRule) => [
-                    options.addVariationToSelector(
-                      rule[0],
-                      variationAbbreviation
-                    ),
-                    rule[1]
-                  ])
+                  map(prevAst, (rule: AinsleyRule) =>
+                    typeof rule === "string"
+                      ? rule
+                      : [
+                          options.addVariationToSelector(
+                            rule[0],
+                            variationAbbreviation
+                          ),
+                          rule[1]
+                        ]
+                  )
                 ]
               ];
             } else {
-              return map(prevAst, (rule: AinsleyRule) => [
-                options.addVariationToSelector(rule[0], variationAbbreviation) +
-                  variationInstruction,
-                rule[1]
-              ]);
+              return map(prevAst, (rule: AinsleyRule) =>
+                typeof rule === "string"
+                  ? rule
+                  : [
+                      options.addVariationToSelector(
+                        rule[0],
+                        variationAbbreviation
+                      ) + variationInstruction,
+                      rule[1]
+                    ]
+              );
             }
           },
           rulesListWithoutVariants
@@ -172,9 +193,9 @@ const ainsleyRuleToAst = (
   const variablesFound: Array<[string, number]> = [];
   map(declarations, (declaration) => {
     const propertyMatches =
-      ((declaration[0] as string) + "").match(iteratorSearch) ?? [];
+      ((declaration[0] as string) + "").match(ITERATOR_SEARCH) ?? [];
     const valueMatches =
-      ((declaration[1] as string) + "").match(iteratorSearch) ?? [];
+      ((declaration[1] as string) + "").match(ITERATOR_SEARCH) ?? [];
     map(propertyMatches, (match) => variablesFound.push([match, 0]));
     map(valueMatches, (match) => variablesFound.push([match, 1]));
   });
@@ -249,4 +270,10 @@ const ainsleyPropertyToAst = (
     ),
     [[propertyName, propertyValues[valueAbbreviation]]]
   ]);
+};
+
+const parseVariable = (variable: string): [number, string] => {
+  const mod = "?+".indexOf(variable[0]) + 1;
+  const base = mod > 0 ? variable.slice(1) : variable;
+  return [mod, base];
 };

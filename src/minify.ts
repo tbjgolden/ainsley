@@ -151,15 +151,6 @@ export const minify = (ainsley: Ainsley): Ainsley => {
 
 const MODIFIERS = "?+";
 
-const minifyRaw = (rawCSS: string) => {
-  try {
-    return csso.minify(rawCSS).css;
-  } catch (error) {
-    console.error(error);
-    return rawCSS;
-  }
-};
-
 const parseVariable = (variable: string): [number, string] => {
   const mod = MODIFIERS.indexOf(variable[0]) + 1;
   const base = mod > 0 ? variable.slice(1) : variable;
@@ -168,6 +159,15 @@ const parseVariable = (variable: string): [number, string] => {
 
 const buildVariable = (mod: number, base: string): string =>
   `${["", "?", "+"][mod]}${base}`;
+
+const minifyRaw = (rawCSS: string) => {
+  try {
+    return csso.minify(rawCSS).css;
+  } catch (error) {
+    console.error(error);
+    return rawCSS;
+  }
+};
 
 const iteratorRegex = /\{[a-z]+\}/gi;
 const searchForUsages = (
