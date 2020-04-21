@@ -8,7 +8,7 @@ import {
   AinsleyAST,
   AinsleyGenerateOptions
 } from "./types";
-import { isObject, assign, flat, map, combinations } from "./utils";
+import { isObject, assign, flat, map, combinations, memoize } from "./utils";
 
 export const ITERATOR_REGEX = "\\{[a-zA-Z0-9_-]+\\}";
 export const DEFAULT_OPTIONS: AinsleyGenerateOptions = {
@@ -33,14 +33,24 @@ const ITERATOR_SEARCH = new RegExp(ITERATOR_REGEX, "g");
 export const generate = (
   ainsley: Ainsley,
   options: Partial<AinsleyGenerateOptions> = {}
-): string =>
-  generateFromAst(
-    ainsleyToAst(
-      ainsley,
-      assign([DEFAULT_OPTIONS, options]) as AinsleyGenerateOptions,
-      {}
-    )
+): string => {
+  const mergedOptions = assign([
+    DEFAULT_OPTIONS,
+    options
+  ]) as AinsleyGenerateOptions;
+  const memoizedOptions: Partial<AinsleyGenerateOptions> = {};
+  map(Object.keys(mergedOptions), (key) => {
+    memoizedOptions[key as keyof AinsleyGenerateOptions] = memoize(
+      mergedOptions[key as keyof AinsleyGenerateOptions] as (
+        arg1: string,
+        arg2?: string
+      ) => any
+    );
+  });
+  return generateFromAst(
+    ainsleyToAst(ainsley, memoizedOptions as AinsleyGenerateOptions, {})
   );
+};
 
 export const generateFromAst = (ainsleyRules: AinsleyAST): string =>
   map(
