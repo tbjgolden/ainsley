@@ -1,4 +1,4 @@
-import { Ainsley } from "./types";
+import { Ainsley } from "../types";
 import { generate } from "./generate";
 
 const basicInput: Ainsley = {

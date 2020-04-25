@@ -1,4 +1,4 @@
-import { Ainsley, AinsleyChild } from "./types";
+import { Ainsley, AinsleyChild } from "../types";
 import { flatten } from "./flatten";
 
 describe("flatten", () => {

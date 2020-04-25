@@ -4,9 +4,9 @@ import Editor from "react-simple-code-editor";
 import stringify from "json-stringify-pretty-compact";
 import "prismjs";
 
-import { flatten, minify, generate } from "../ainsley";
+import { flatten, minify, generate } from "../entrypoints/ainsley";
 import { Ainsley } from "../types";
-import { isObject } from "../utils";
+import { isObject } from "../lib/utils";
 
 const { highlight, languages } = window.Prism;
 const brotli = import("wasm-brotli");

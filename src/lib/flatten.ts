@@ -1,6 +1,6 @@
 import "isomorphic-fetch";
 import copy from "fast-copy";
-import { Ainsley, AinsleyChild, AinsleyChildren } from "./types";
+import { Ainsley, AinsleyChild, AinsleyChildren } from "../types";
 import { validate } from "./validate";
 import { isObject } from "./utils";
 

@@ -1,4 +1,4 @@
-import { Ainsley } from "./types";
+import { Ainsley } from "../types";
 import { minify } from "./minify";
 
 describe("minify", () => {

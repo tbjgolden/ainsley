@@ -1,12 +1,16 @@
 {
-  "name": "babel-article",
+  "name": "ainsley",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --mode production",
-    "dev": "webpack-dev-server --mode development",
-    "test": "jest"
+    "build": "yarn build:web && yarn build:repl",
+    "build:web": "webpack --config deploy/webpack.web.js --mode production",
+    "build:repl": "webpack --config deploy/webpack.repl.js --mode production",
+    "repl": "webpack-dev-server --config deploy/webpack.repl.js --mode development",
+    "test": "jest",
+    "source": "source-map-explorer dist/ainsley.client.js",
+    "source:full": "source-map-explorer dist/ainsley.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -33,9 +37,10 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-prettier": "^6.10.1",
+    "eslint-config-standard": "^14.1.1",
     "eslint-config-standard-with-typescript": "^15.0.1",
     "eslint-loader": "^3.0.3",
-    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.2",
@@ -45,6 +50,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "fast-copy": "^2.0.5",
     "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^4.2.0",
     "isomorphic-fetch": "^2.2.1",
     "jest": "^25.2.7",
     "json-stringify-pretty-compact": "^2.0.0",
@@ -53,6 +59,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-simple-code-editor": "^0.11.0",
+    "source-map-explorer": "^2.4.2",
     "source-map-loader": "^0.2.4",
     "standard": "^14.3.3",
     "style-loader": "^1.1.3",
@@ -65,5 +72,22 @@
   },
   "dependencies": {
     "ajv": "^6.12.1"
+  },
+  "jest": {
+    "coverageDirectory": "coverage",
+    "rootDir": "src",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/__tests__/**/*.[jt]s?(x)",
+      "**/?(*.)+(spec|test).[tj]s?(x)"
+    ],
+    "transform": {
+      "\\.ts$": [
+        "babel-jest",
+        {
+          "configFile": "./deploy/babel.config.js"
+        }
+      ]
+    }
   }
 }

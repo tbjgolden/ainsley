@@ -7,7 +7,7 @@ import {
   AinsleyChildren,
   AinsleyAST,
   AinsleyGenerateOptions
-} from "./types";
+} from "../types";
 import { isObject, assign, flat, map, combinations, memoize } from "./utils";
 
 export const ITERATOR_REGEX = "\\{[a-zA-Z0-9_-]+\\}";

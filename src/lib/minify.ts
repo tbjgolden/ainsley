@@ -1,6 +1,6 @@
 import copy from "fast-copy";
 import csso from "csso";
-import { Ainsley, AinsleyChildren, AinsleyVariableMap } from "./types";
+import { Ainsley, AinsleyChildren, AinsleyVariableMap } from "../types";
 import { validate } from "./validate";
 import { isObject } from "./utils";
 

@@ -1,4 +1,4 @@
-import { Ainsley } from "./types";
+import { Ainsley } from "../types";
 
 export const configWithPlugins: Ainsley = {
   children: ["$base", ["c$", [["color", "{colors}"]]]],

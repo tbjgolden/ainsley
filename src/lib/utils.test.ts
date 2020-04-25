@@ -1,5 +1,5 @@
 import copy from "fast-copy";
-import { map, flat, combinations, assign, toString } from "./utils";
+import { map, flat, combinations, toString } from "./utils";
 
 const testArr = [["a", "b"], [[]], [1, false], []];
 
@@ -50,25 +50,6 @@ test("combinations", () => {
   ]);
   expect(combinations([])).toEqual([[]]);
   expect(combinations([[1], [2], [3]])).toEqual([[1, 2, 3]]);
-});
-
-test("assign", () => {
-  const a = { x: 1 };
-  const b = { y: 2, z: 3 };
-  const c = { z: 4 };
-  const d = [a, b, c];
-  const e = [a];
-
-  const result = assign(d);
-  const result2 = assign(e);
-
-  expect(result).not.toBe(a);
-  expect(result).not.toBe(b);
-  expect(result).not.toBe(c);
-  expect(result).not.toBe(d);
-  expect(result).toEqual({ x: 1, y: 2, z: 4 });
-  expect(result2).not.toBe(e);
-  expect(result2).toEqual(a);
 });
 
 test("toString", () => {

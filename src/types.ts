@@ -24,13 +24,6 @@ export interface Ainsley {
   children?: AinsleyChildren;
 }
 
-interface Meta {
-  [propName: string]: any;
-}
-export interface AinsleyMeta extends Ainsley {
-  _: Meta;
-}
-
 export type AinsleyAST = Array<string | AinsleyRule | [string, AinsleyAST]>;
 
 export interface AinsleyGenerateOptions {
