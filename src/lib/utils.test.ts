@@ -1,29 +1,4 @@
-import copy from "fast-copy";
-import { map, flat, combinations, toString } from "./utils";
-
-const testArr = [["a", "b"], [[]], [1, false], []];
-
-test("flat", () => {
-  const ogTestArr = copy(testArr);
-  const result = flat(testArr);
-
-  expect(result).not.toBe(ogTestArr);
-  expect(result).toEqual(["a", "b", [], 1, false]);
-  expect(testArr).toEqual(ogTestArr);
-});
-
-test("map", () => {
-  const ogTestArr = copy(testArr);
-  const result = map(ogTestArr, (el) => [...el, "sup"]);
-
-  expect(result).not.toBe(ogTestArr);
-  expect(result).toEqual([
-    ["a", "b", "sup"],
-    [[], "sup"],
-    [1, false, "sup"],
-    ["sup"]
-  ]);
-});
+import { combinations } from "./utils";
 
 test("combinations", () => {
   const ogTestArr = [
@@ -50,9 +25,4 @@ test("combinations", () => {
   ]);
   expect(combinations([])).toEqual([[]]);
   expect(combinations([[1], [2], [3]])).toEqual([[1, 2, 3]]);
-});
-
-test("toString", () => {
-  expect(toString(1)).toBe("1");
-  expect(toString("1")).toBe("1");
 });

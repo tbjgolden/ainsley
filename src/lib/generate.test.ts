@@ -420,4 +420,22 @@ describe("compiler", () => {
     ).not.toThrow();
     expect(Date.now() - startTime).toBeLessThan(100);
   });
+
+  test("compiles ainsley with nested at rules", () => {
+    const css = generate({
+      children: [["c", [["color", "{color}"]]]],
+      variables: {
+        color: {
+          b: "black",
+          w: "white"
+        }
+      },
+      variations: [
+        [["n", "@supports(-webkit-box-orient:vertical)"]],
+        [["l", "@media(min-width:1024px)"]]
+      ]
+    });
+
+    expect(css).toEqual("");
+  });
 });

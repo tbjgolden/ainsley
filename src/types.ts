@@ -24,8 +24,6 @@ export interface Ainsley {
   children?: AinsleyChildren;
 }
 
-export type AinsleyAST = Array<string | AinsleyRule | [string, AinsleyAST]>;
-
 export interface AinsleyGenerateOptions {
   addVariationToSelector: (
     selector: string,
