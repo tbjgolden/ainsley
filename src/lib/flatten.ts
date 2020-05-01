@@ -44,11 +44,14 @@ export const defaultGetConfig = async (ref: string): Promise<AinsleyChild> => {
   } catch (err) {
     try {
       const url = new URL(ref);
-      return await fetch(url.href).then(async (response) => {
-        if ((response.headers.get("Content-Type") ?? "").endsWith("/json")) {
-          return await response.json();
+      return fetch(url.href).then((response) => {
+        if (
+          (response.headers.get("Content-Type") ?? "").endsWith("/json") ===
+          true
+        ) {
+          return response.json();
         } else {
-          return await response.text();
+          return response.text();
         }
       });
     } catch (err) {
