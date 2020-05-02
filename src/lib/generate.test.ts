@@ -2,7 +2,12 @@ import { Ainsley } from "../types";
 import { generate } from "./generate";
 
 const basicInput: Ainsley = {
-  variations: [[["s", "@media(min-width:384px)"]]],
+  variations: [
+    [
+      ["s", "@media(min-width:384px)"],
+      ["m", "@media(min-width:768px)"]
+    ]
+  ],
   variables: {
     length: {
       0: 0,
@@ -27,12 +32,20 @@ const basicInput: Ainsley = {
         n: "none",
         b: "block"
       }
-    ]
+    ],
+    {
+      variables: {
+        "+colors": {
+          t: "#aabbcc"
+        }
+      },
+      children: [["bc", [["background-color", "{colors}"]]]]
+    }
   ]
 };
 
 describe("compiler", () => {
-  test("compiles ainsley as expected", () => {
+  test.only("compiles ainsley as expected", () => {
     expect(generate(basicInput)).toEqual(
       "*{box-sizing:border-box}.cB{color:black}.cW{color:white}.cP{color:#313375}.cS{color:#b4d455}*{outline-offset:0}.b0B{border:0 solid black}.b1B{border:1px solid black}.b0W{border:0 solid white}.b1W{border:1px solid white}.b0P{border:0 solid #313375}.b1P{border:1px solid #313375}.b0S{border:0 solid #b4d455}.b1S{border:1px solid #b4d455}.h1{font-size:69px}body{margin:0}.dN{display:none}.dB{display:block}@media(min-width:384px){*{box-sizing:border-box}.s-cB{color:black}.s-cW{color:white}.s-cP{color:#313375}.s-cS{color:#b4d455}*{outline-offset:0}.s-b0B{border:0 solid black}.s-b1B{border:1px solid black}.s-b0W{border:0 solid white}.s-b1W{border:1px solid white}.s-b0P{border:0 solid #313375}.s-b1P{border:1px solid #313375}.s-b0S{border:0 solid #b4d455}.s-b1S{border:1px solid #b4d455}.h1{font-size:69px}body{margin:0}.s-dN{display:none}.s-dB{display:block}}"
     );
