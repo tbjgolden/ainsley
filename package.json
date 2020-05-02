@@ -4,8 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "yarn build:web && yarn build:repl",
+    "build": "yarn build:web && yarn build:cjs && yarn build:repl",
     "build:web": "webpack --config deploy/webpack.web.js --mode production",
+    "build:cjs": "webpack --config deploy/webpack.cjs.js --mode production",
     "build:repl": "webpack --config deploy/webpack.repl.js --mode production",
     "repl": "webpack-dev-server --config deploy/webpack.repl.js --mode development",
     "test": "jest",

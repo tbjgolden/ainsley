@@ -17,10 +17,9 @@ module.exports = {
     'ainsley.client': path.join(projectDir, 'src/entrypoints/ainsley.client.ts')
   },
   output: {
-    filename: '[name].web.js',
+    filename: '[name].cjs.js',
     path: path.join(projectDir, 'dist'),
-    libraryTarget: 'var',
-    library: 'Ainsley'
+    libraryTarget: 'commonjs2'
   },
   optimization: {
     minimize: true
