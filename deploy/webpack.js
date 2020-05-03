@@ -17,10 +17,8 @@ module.exports = {
     'ainsley.client': path.join(projectDir, 'src/entrypoints/ainsley.client.ts')
   },
   output: {
-    filename: '[name].web.js',
-    path: path.join(projectDir, 'dist'),
-    libraryTarget: 'var',
-    library: 'Ainsley'
+    filename: '[name].js',
+    path: path.join(projectDir, 'dist/webpack')
   },
   optimization: {
     minimize: true
@@ -34,7 +32,7 @@ module.exports = {
         loader: [
           {
             loader: 'babel-loader',
-            options: { extends: './babel.config.js' }
+            options: { extends: '../babel.config.js' }
           },
           'eslint-loader'
         ]

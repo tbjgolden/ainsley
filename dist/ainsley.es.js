@@ -1,15 +1,9 @@
 /** @license Ainsley v1.0.0 (Tom Golden <tom.bio> @tbjgolden) */
 
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var http = _interopDefault(require('http'));
-var https = _interopDefault(require('https'));
-var zlib = _interopDefault(require('zlib'));
-var stream = _interopDefault(require('stream'));
+import http from 'http';
+import https from 'https';
+import zlib from 'zlib';
+import stream from 'stream';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -50476,14 +50470,5 @@ const embed = (css, id) => {
     styleEl.innerHTML = css;
 };
 
-exports.DEFAULT_OPTIONS = DEFAULT_OPTIONS;
-exports.ITERATOR_REGEX = ITERATOR_REGEX;
-exports.defaultGetConfig = defaultGetConfig;
-exports.embed = embed;
-exports.flatten = flatten;
-exports.generate = generate$7;
-exports.getFlatConfig = getFlatConfig;
-exports.minify = minify$1;
-exports.schema = schema;
-exports.validate = validate$2;
-//# sourceMappingURL=ainsley.cjs.js.map
+export { DEFAULT_OPTIONS, ITERATOR_REGEX, defaultGetConfig, embed, flatten, generate$7 as generate, getFlatConfig, minify$1 as minify, schema, validate$2 as validate };
+//# sourceMappingURL=ainsley.es.js.map

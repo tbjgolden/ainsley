@@ -11,5 +11,11 @@
     "prettier/standard",
     "prettier/unicorn",
     "prettier/vue"
-  ]
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "babelOptions": {
+      "configFile": "babel.config.js"
+    }
+  }
 }

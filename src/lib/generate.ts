@@ -10,13 +10,13 @@ import {
 import { combinations } from "./utils";
 
 interface AinsleyFlatASTNode {
-  variations: Array<[string, string]>;
-  content: string | AinsleyRule;
+  $variations: Array<[string, string]>;
+  $content: string | AinsleyRule;
 }
 type AinsleyFlatAST = AinsleyFlatASTNode[];
 interface AinsleyASTNode {
-  variations: Array<[string, string]>;
-  content: string | AinsleyRule | AinsleyFlatASTNode;
+  $variations: Array<[string, string]>;
+  $content: string | AinsleyRule | AinsleyFlatASTNode;
 }
 type AinsleyAST = AinsleyASTNode[];
 
@@ -73,7 +73,7 @@ const generateFromAst = (
     let firstChange = 0;
     while (
       firstChange < lastVariations.length &&
-      lastVariations[firstChange] === ainsleyRule.variations[firstChange]
+      lastVariations[firstChange] === ainsleyRule.$variations[firstChange]
     ) {
       firstChange += 1;
     }
@@ -83,22 +83,22 @@ const generateFromAst = (
       const variationInstruction = variationToClose[1];
       if (variationInstruction.startsWith("@")) css += "}";
     }
-    const variationsToOpen = ainsleyRule.variations.slice(firstChange);
+    const variationsToOpen = ainsleyRule.$variations.slice(firstChange);
     for (const variationToOpen of variationsToOpen) {
       const variationInstruction = variationToOpen[1];
       if (variationInstruction.startsWith("@"))
         css += `${variationInstruction}{`;
     }
 
-    if (typeof ainsleyRule.content === "string") {
-      css += ainsleyRule.content;
+    if (typeof ainsleyRule.$content === "string") {
+      css += ainsleyRule.$content;
     } else {
-      let selector = ainsleyRule.content[0];
+      let selector = ainsleyRule.$content[0];
       let selectorSuffix = "";
 
-      for (let i = 0; i < ainsleyRule.variations.length; i++) {
-        const variationAbbreviation = ainsleyRule.variations[i][0];
-        const variationInstruction = ainsleyRule.variations[i][1];
+      for (let i = 0; i < ainsleyRule.$variations.length; i++) {
+        const variationAbbreviation = ainsleyRule.$variations[i][0];
+        const variationInstruction = ainsleyRule.$variations[i][1];
         if (variationInstruction === "") continue;
         if (!variationInstruction.startsWith("@")) {
           selectorSuffix += `${variationInstruction}`;
@@ -108,11 +108,11 @@ const generateFromAst = (
           variationAbbreviation
         );
       }
-      css += `.${selector}${selectorSuffix}{${ainsleyRule.content[1]
+      css += `.${selector}${selectorSuffix}{${ainsleyRule.$content[1]
         .map((declaration) => `${declaration[0]}:${declaration[1]}`)
         .join(";")}}`;
     }
-    lastVariations = ainsleyRule.variations;
+    lastVariations = ainsleyRule.$variations;
   }
   for (const variationToClose of lastVariations) {
     const variationInstruction = variationToClose[1];
@@ -159,22 +159,22 @@ const ainsleyToAst = (
   ).flatMap((variations) => {
     return rulesListWithoutVariations.map((ainsleyASTNode) => {
       if (
-        typeof ainsleyASTNode.content === "string" ||
-        Array.isArray(ainsleyASTNode.content)
+        typeof ainsleyASTNode.$content === "string" ||
+        Array.isArray(ainsleyASTNode.$content)
       ) {
         const ainsleyFlatASTNode = ainsleyASTNode as AinsleyFlatASTNode;
         return {
-          variations,
-          content: ainsleyFlatASTNode.content
+          $variations: variations,
+          $content: ainsleyFlatASTNode.$content
         };
       } else {
         const ainsleyNestedASTNode = ainsleyASTNode as {
-          variations: Array<[string, string]>;
-          content: AinsleyFlatASTNode;
+          $variations: Array<[string, string]>;
+          $content: AinsleyFlatASTNode;
         };
         return {
-          variations: [...variations, ...ainsleyNestedASTNode.variations],
-          content: ainsleyNestedASTNode.content.content
+          $variations: [...variations, ...ainsleyNestedASTNode.$variations],
+          $content: ainsleyNestedASTNode.$content.$content
         };
       }
     });
@@ -192,8 +192,8 @@ const ainsleyChildrenToAst = (
     if (typeof child === "string") {
       return [
         {
-          variations: [],
-          content: child
+          $variations: [],
+          $content: child
         }
       ];
     } else if (Array.isArray(child)) {
@@ -246,8 +246,8 @@ const ainsleyRuleToAst = (
     let current: AinsleyGenerateIteratorContext = combination[combinationIndex];
 
     return {
-      variations: [],
-      content: [
+      $variations: [],
+      $content: [
         combination.reduce(
           (selector: string, part: AinsleyGenerateIteratorContext) => {
             if (part[3] === 0) {
@@ -296,8 +296,8 @@ const ainsleyPropertyToAst = (
   const propertyName = propertyData[1];
 
   return Object.keys(propertyValues).map((valueAbbreviation: string) => ({
-    variations: [],
-    content: [
+    $variations: [],
+    $content: [
       options.addValueToSelector(
         options.addPropertyToSelector("", propertyAbbreviation),
         valueAbbreviation

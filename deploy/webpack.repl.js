@@ -31,7 +31,7 @@ module.exports = {
         loader: [
           {
             loader: 'babel-loader',
-            options: { extends: './babel.config.js' }
+            options: { extends: '../babel.config.js' }
           },
           'eslint-loader'
         ]
