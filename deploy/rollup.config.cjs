@@ -18,23 +18,23 @@ const config = (() => {
 
   const validFormats = ['es', 'cjs']
 
-  return sources.flatMap(([fileName, formats]) =>
-    formats.flatMap((format) => {
-      const vars = {
-        lite: fileName.endsWith('.client'),
-        ext: '',
-        global: false
-      }
+  const configs = [
+    ...sources.flatMap(([fileName, formats]) =>
+      formats.flatMap((format) => {
+        const vars = {
+          lite: fileName.endsWith('.client'),
+          ext: '',
+          global: false
+        }
 
-      if (validFormats.includes(format)) {
-        vars.ext = `.${format}`
-      } else {
-        vars.global = format
-        format = vars.lite ? 'iife' : 'umd'
-      }
+        if (validFormats.includes(format)) {
+          vars.ext = `.${format}`
+        } else {
+          vars.global = format
+          format = vars.lite ? 'iife' : 'umd'
+        }
 
-      const config = [
-        {
+        const config = {
           input: path.join(projectRootDir, `src/entrypoints/${fileName}.ts`),
           output: {
             format,
@@ -63,11 +63,34 @@ const config = (() => {
           ],
           onwarn: (warning, warn) => warn(warning)
         }
-      ]
 
-      return config
-    })
-  )
+        return config
+      })
+    ),
+    {
+      input: path.join(projectRootDir, `src/entrypoints/ainsley.ts`),
+      output: {
+        dir: path.join(projectRootDir, 'dist'),
+        banner: `/** @license Ainsley v${pkgJson.version} (Tom Golden <tom.bio> @tbjgolden) */\n`,
+        sourcemap: true
+      },
+      plugins: [
+        typescript({
+          tsconfig: path.join(projectRootDir, 'tsconfig.json'),
+          declaration: true,
+          declarationDir: 'dist'
+        }),
+        json(),
+        resolve(),
+        commonjs()
+      ],
+      onwarn: (warning, warn) => warn(warning)
+    }
+  ]
+
+  console.log(configs)
+
+  return configs
 })()
 
 module.exports = config
