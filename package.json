@@ -9,9 +9,7 @@
   "repository": "tbjgolden/ainsley",
   "main": "dist/ainsley.js",
   "module": "dist/ainsley.js",
-  "files": [
-    "dist/**/*"
-  ],
+  "types": "src/types.d.ts",
   "scripts": {
     "build": "yarn build:rollup && yarn build:repl",
     "build:rollup": "rollup -c deploy/rollup.config.cjs",
