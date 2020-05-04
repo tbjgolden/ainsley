@@ -453,4 +453,29 @@ describe("compiler", () => {
       ".cB{color:black}.cW{color:white}@supports(-webkit-box-orient:vertical){.n-cB{color:black}.n-cW{color:white}}@media(min-width:1024px){.l-cB{color:black}.l-cW{color:white}}@supports(-webkit-box-orient:vertical){@media(min-width:1024px){.l-n-cB{color:black}.l-n-cW{color:white}}}"
     );
   });
+
+  test("compiles ainsley with nested ainsley with variations", () => {
+    const css = generate({
+      children: [
+        ["c", [["color", "{color}"]]],
+        {
+          variations: [
+            [["n", "@supports(-webkit-box-orient:vertical)"]],
+            [["l", "@media(min-width:1024px)"]]
+          ],
+          children: [["bg", [["background-color", "{color}"]]]]
+        }
+      ],
+      variables: {
+        color: {
+          b: "black",
+          w: "white"
+        }
+      }
+    });
+
+    expect(css).toEqual(
+      ".cB{color:black}.cW{color:white}.bgB{background-color:black}.bgW{background-color:white}@supports(-webkit-box-orient:vertical){.n-bgB{background-color:black}.n-bgW{background-color:white}}@media(min-width:1024px){.l-bgB{background-color:black}.l-bgW{background-color:white}}@supports(-webkit-box-orient:vertical){@media(min-width:1024px){.l-n-bgB{background-color:black}.l-n-bgW{background-color:white}}}"
+    );
+  });
 });

@@ -6,6 +6,7 @@ import { isObject } from "./utils";
 
 /*
 TODOs:
+- mangle variable names
 - check if strings can be turnt into numbers
 */
 

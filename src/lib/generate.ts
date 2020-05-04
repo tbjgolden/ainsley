@@ -164,7 +164,7 @@ const ainsleyToAst = (
       ) {
         const ainsleyFlatASTNode = ainsleyASTNode as AinsleyFlatASTNode;
         return {
-          $variations: variations,
+          $variations: [...variations, ...ainsleyFlatASTNode.$variations],
           $content: ainsleyFlatASTNode.$content
         };
       } else {

@@ -2,25 +2,6 @@
 
 Ainsley is a better(maintainable, self documenting more efficient) way to define your stylesheet.
 
-### TODOs
-
-- [ ] improve typescript types with next level stuff like keyof, unknown etc
-- [ ] fix it so order of variants doesn't break it
-- [ ] make it possible to use variables in properties
-- [ ] make it possible to use properties as variables
-  - [ ] circular dependency problem
-
-!==
-
-- [ ] determine if auto flattening variation groups is worth it
-- [ ] get wasm working in repl builds
-- [ ] offer way of inputting options into repl
-- [ ] define the below code snippet in somewhere it can be reused
-- [ ] setup gh-pages logic
-- [ ] jsdoc all the things, with examples
-- [ ] provide a cli for documentation generation
-- [ ] determine worth of client side autoprefixer solution
-
 ```js
 // Define your stylesheet using JavaScript, or JSON
 const breakpoints = Object.entries({
@@ -95,22 +76,8 @@ const minifiedConfig = minify(configWithoutDependencies)
 
 // (ON THE CLIENT) to generate CSS, and embed it into the page
 // 💌 ➡ ❤️🧡💛💚💙💜
-embed(generate(minifiedConfig))
+Ainsley.embed(Ainsley.generate(minifiedConfig /* , options */))
 ```
-
-maybe a validate() function which at least checks for valid types
-and duplicate variables on same object :/
-
-source
-
-===
-
-- [ ] all except compiler
-- [ ] documentation.js, JSDoc, Runtime typechecking
-- [ ] compiler inversion of control
-- [ ] compiler
-
-===
 
 ### Use cases
 

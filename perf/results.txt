@@ -1,0 +1,16 @@
+before (beta 10)
+
+Testing ../dist/ainsley.client.web.js
+Duration: 38ms
+Bytes: 4169
+Gzip Bytes: 1783
+Brotli Bytes: 1578
+
+
+after
+
+Testing ../dist/ainsley.client.js
+Duration: 44ms
+Bytes: 2822
+Gzip Bytes: 1377
+Brotli Bytes: 1212

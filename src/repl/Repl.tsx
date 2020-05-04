@@ -1,10 +1,15 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 
 import Editor from "react-simple-code-editor";
 import stringify from "json-stringify-pretty-compact";
 import "prismjs";
 
-import { flatten, minify, generate } from "../entrypoints/ainsley";
+import {
+  flatten,
+  minify,
+  generate,
+  DEFAULT_OPTIONS
+} from "../entrypoints/ainsley";
 import { Ainsley } from "../types";
 import { isObject } from "../lib/utils";
 
@@ -99,6 +104,20 @@ const ainsley = {
 return ainsley;
 `);
 
+  const [optionsShown, setOptionsShown] = useState(false);
+  const [options, setOptions] = useState(`{
+  ${Object.entries(DEFAULT_OPTIONS)
+    .map(
+      ([key, value]) =>
+        `${JSON.stringify(key)}: ${
+          typeof value === "function" ? value.toString() : JSON.stringify(value)
+        }`
+    )
+    .join(",\n  ")}
+}`);
+
+  const generateDuration = useRef(0);
+
   const [flattenedShown, setFlattenedShown] = useState(false);
   const [[flattened, flattenedStr], setFlattened] = useState([
     null as Ainsley | null,
@@ -116,7 +135,7 @@ return ainsley;
           setFlattened([null, `Error while parsing:\n\n${error.message}`]);
         });
     } else if (typeof parsedInput === "string") {
-      setFlattened([null, `Error while parsing:\n\n${parsedInput}`]);
+      setFlattened([null, `Error while parsing input:\n\n${parsedInput}`]);
     } else {
       setFlattened([null, "Error while parsing"]);
     }
@@ -149,12 +168,19 @@ return ainsley;
   const [generatedShown, setGeneratedShown] = useState(true);
   const [generated, generatedStr] = useMemo(() => {
     if (minified !== null) {
-      const obj = generate(minified);
-      return [obj, obj];
+      const parsedOptions = parse(options);
+      if (typeof parsedOptions === "string") {
+        return [null, `Error while parsing options:\n\n${parsedOptions}`];
+      } else {
+        const startTime = Date.now();
+        const obj = generate(minified, parsedOptions);
+        generateDuration.current = Date.now() - startTime;
+        return [obj, obj];
+      }
     } else {
       return [null, minifiedStr];
     }
-  }, [flattenedStr]);
+  }, [flattenedStr, options]);
 
   const [compressedCSSBytes, setCompressedCSSBytes] = useState(0);
 
@@ -187,6 +213,21 @@ return ainsley;
           highlight={(code) => highlight(code, languages.js, "js")}
         />
       </div>
+
+      <h2>
+        <ShowHideButton shown={optionsShown} setShown={setOptionsShown} />
+        {" Options"}
+      </h2>
+      {optionsShown ? (
+        <div id="editor">
+          <Editor
+            id="options"
+            value={options}
+            onValueChange={setOptions}
+            highlight={(code) => highlight(code, languages.js, "js")}
+          />
+        </div>
+      ) : null}
 
       <h2>
         <ShowHideButton shown={flattenedShown} setShown={setFlattenedShown} />
@@ -234,6 +275,7 @@ return ainsley;
         {compressedBytes === 0
           ? null
           : ` (Brotli: ${formatBytes(compressedCSSBytes)})`}
+        {generated === null ? null : ` (${generateDuration.current}ms)`}
       </h2>
       {generatedShown ? (
         <pre className="output one-line">
