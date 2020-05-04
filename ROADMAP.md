@@ -7,3 +7,10 @@
 - [ ] make it possible to use properties as variables
   - [ ] circular dependency problem
 - [ ] better array nesting in rules?
+
+---
+
+Improve compression ratio
+
+- [ ] mangle variables in minify
+- [ ] variable maps special syntax for same val as key
