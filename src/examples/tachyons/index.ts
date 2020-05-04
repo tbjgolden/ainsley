@@ -1,4 +1,3 @@
-import "./index.css";
 import { embed } from "../../entrypoints/ainsley.client";
 import { tachyonsAinsley } from "./ainsley";
 
