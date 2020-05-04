@@ -92,7 +92,7 @@ describe("tachyons ainsley", () => {
           if (
             !isInSelectorWhitelist(selector) &&
             !["abbr[title]"].includes(selector) &&
-            !["_", "-webkit-", "backface-visibility"].some((prefix) =>
+            !["_", "-webkit-", "-moz-", "backface-visibility"].some((prefix) =>
               declaration.startsWith(prefix)
             ) &&
             declaration.indexOf("-webkit-") === -1

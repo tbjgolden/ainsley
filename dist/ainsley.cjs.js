@@ -1,4 +1,4 @@
-/** @license Ainsley v1.0.0 (Tom Golden <tom.bio> @tbjgolden) */
+/** @license Ainsley v0.0.1-beta.11 (Tom Golden <tom.bio> @tbjgolden) */
 
 'use strict';
 
@@ -50058,6 +50058,7 @@ var lib$2 = {
 
 /*
 TODOs:
+- mangle variable names
 - check if strings can be turnt into numbers
 */
 /* flat config => minified (and still flat) config */
@@ -50352,7 +50353,7 @@ const ainsleyToAst = (ainsley, options, inheritedVariables) => {
                 Array.isArray(ainsleyASTNode.$content)) {
                 const ainsleyFlatASTNode = ainsleyASTNode;
                 return {
-                    $variations: variations,
+                    $variations: [...variations, ...ainsleyFlatASTNode.$variations],
                     $content: ainsleyFlatASTNode.$content
                 };
             }

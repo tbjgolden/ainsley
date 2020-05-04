@@ -93,8 +93,7 @@ describe("compiler", () => {
   });
 
   test("compiles complex ainsley successfully and under 100ms", () => {
-    const startTime = Date.now();
-    expect(() =>
+    const gen = () =>
       generate(
         {
           children: [
@@ -429,9 +428,12 @@ describe("compiler", () => {
             a.toLowerCase()
           ]
         }
-      )
-    ).not.toThrow();
-    expect(Date.now() - startTime).toBeLessThan(100);
+      );
+
+    const runs = 5;
+    const startTime = Date.now();
+    for (let i = 0; i < 5; i++) gen();
+    expect(Date.now() - startTime).toBeLessThan(runs * 100);
   });
 
   test("compiles ainsley with nested at rules", () => {

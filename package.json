@@ -1,17 +1,27 @@
 {
   "name": "ainsley",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.0.1-beta.11",
+  "private": false,
+  "sideEffects": false,
+  "description": "Ainsley is to CSS what Markdown is to HTML",
+  "author": "tbjgolden",
   "license": "MIT",
+  "repository": "tbjgolden/ainsley",
+  "main": "dist/ainsley.js",
+  "module": "dist/ainsley.js",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
-    "build": "yarn build:rollup && build:webpack && yarn build:repl",
-    "build:webpack": "webpack --config deploy/webpack.js --mode production",
+    "build": "yarn build:rollup && yarn build:repl",
     "build:rollup": "rollup -c deploy/rollup.config.cjs",
     "build:repl": "webpack --config deploy/webpack.repl.js --mode production",
+    "build:webpack": "webpack --config deploy/webpack.js --mode production",
     "repl": "webpack-dev-server --config deploy/webpack.repl.js --mode development",
     "test": "jest",
     "source": "source-map-explorer dist/ainsley.client.js",
-    "source:full": "source-map-explorer dist/ainsley.js"
+    "source:full": "source-map-explorer dist/ainsley.js",
+    "deploy": "yarn build && yarn test && node deploy/deploy.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -57,6 +67,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "fast-copy": "^2.0.5",
     "file-loader": "^6.0.0",
+    "fs-extra": "^9.0.0",
     "html-webpack-plugin": "^4.3.0",
     "isomorphic-fetch": "^2.2.1",
     "jest": "^25.5.4",
@@ -65,6 +76,7 @@
     "prettier": "^2.0.5",
     "preval.macro": "^5.0.0",
     "prismjs": "^1.20.0",
+    "prompt": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-simple-code-editor": "^0.11.0",
@@ -105,7 +117,6 @@
       ]
     }
   },
-  "sideEffects": false,
   "browserslist": [
     "last 3 chrome versions and last 1 year",
     "last 2 and_chr versions",
