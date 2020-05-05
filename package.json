@@ -1,6 +1,6 @@
 {
   "name": "ainsley",
-  "version": "0.0.1-beta.12",
+  "version": "0.0.1-beta.13",
   "private": false,
   "sideEffects": false,
   "description": "Ainsley is to CSS what Markdown is to HTML",
@@ -9,9 +9,9 @@
   "repository": "tbjgolden/ainsley",
   "main": "dist/ainsley.js",
   "module": "dist/ainsley.js",
-  "types": "dist/types.d.ts",
+  "types": "dist/ainsley.d.ts",
   "scripts": {
-    "build": "yarn build:rollup && yarn build:repl",
+    "build": "yarn build:rollup && node deploy/postBuild.js",
     "build:rollup": "rollup -c deploy/rollup.config.cjs",
     "build:repl": "webpack --config deploy/webpack.repl.js --mode production",
     "build:webpack": "webpack --config deploy/webpack.js --mode production",

@@ -88,8 +88,6 @@ const config = (() => {
     }
   ]
 
-  console.log(configs)
-
   return configs
 })()
 
