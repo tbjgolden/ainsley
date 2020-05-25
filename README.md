@@ -1,5 +1,3 @@
-<!-- DO NOT EDIT DIRECTLY! -->
-
 # Ainsley 👨🏾‍🍳
 
 [![Financial Contributors on Open Collective](https://opencollective.com/ainsley/all/badge.svg?label=financial+contributors)](https://opencollective.com/ainsley) ![npm](https://img.shields.io/npm/v/ainsley) ![Coveralls github branch](https://img.shields.io/coveralls/github/tbjgolden/ainsley/master) ![David](https://img.shields.io/david/tbjgolden/ainsley) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/ainsley) [![GitHub issues](https://img.shields.io/github/issues/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/issues) [![GitHub stars](https://img.shields.io/github/stars/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/stargazers) [![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley)
@@ -17,7 +15,7 @@ It is comprised of multiple sub-libraries that together make it possible to:
 
 An analogy might be to say that Ainsley is to CSS what Markdown is to HTML.
 
-# Impossibly small
+## Impossibly small
 
 Instead of writing a stylesheet in CSS, you write it in a small JavaScript
 object, which can be optionally serialized as JSON.
@@ -40,7 +38,7 @@ it massively.
     +------------+-------------------+------------+
 ```
 
-# Comparisons to others
+## Comparisons to others
 
 | **Name**      | **Minified** |   **Gzip** | **Brotli** | **CSS Rules** | **Efficiency\*** |  **Load 1** |  **Load 2** | **Load 3** |
 | :------------ | -----------: | ---------: | ---------: | ------------: | ---------------: | ----------: | ----------: | ---------: |
@@ -82,7 +80,7 @@ The reason this is so much more efficient than sending CSS because:
 5. The compiler is tiny, and minifies and compresses well, because JS minifies
    and compresses well
 
-# Getting started
+## Getting started
 
 ### Server
 
@@ -91,155 +89,81 @@ yarn add ainsley # or `npm install ainsley`
 ```
 
 ```js
-// server, only needed if you are going to modify the config
-const { extend, base } = require("ainsley");
+// Define your stylesheet using JavaScript, or JSON
+const breakpoints = Object.entries({
+  s: 384,
+  m: 768,
+  l: 1024
+}).map(([prefix, pixels]) => [prefix, `@media(min-width:${pixels}px)`])
 
-// extend is only needed if you want to merge two ainsleys
-const ainsley = extend([
-  base,
-  // your custom ainsley extension
-  {
-    defs: [[".ls&", [["list-style", "{listStyleType} {listStylePosition}"]]]],
-    props: [["letter-spacing", ["0", "1px", "2px", "3px"]]],
-    "{listStyleType}": {
-      D: "disc",
-      C: "circle",
-      S: "square"
-    },
-    "{listStylePosition}": {
-      I: "inside",
-      O: "outside"
+// This tiny object contains all the instructions to assemble a stylesheet
+const ainsley = {
+  // `variations` allow you to add modifiers to children
+  // e.g. breakpoints, or hover styles
+  variations: [breakpoints],
+  // `variables` allow you to reuse groups of properties and values
+  variables: {
+    color: { b: 'black', w: 'white' }
+  },
+  children: [
+    // You may use `"$..."` syntax to import configs and remote urls;
+    // it is able to import CSS and JSON.
+    '$https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css',
+    // You may also use it to import configs installed by npm (or yarn);
+    // this one would import the npm package "ainsley-config-example".
+    '$example',
+    // You may nest ainsley objects;
+    // this allows you to scope variables, variations and configs.
+    {
+      variables: {
+        // `variables` prefixed with a `+` will merge with any
+        // definition higher up (otherwise, it behaves like normal).
+        '+color': {
+          lg: '#eee',
+          g: '#888',
+          dg: '#222'
+        },
+        // `variables` prefixed with a `?` will only be defined
+        // if they have not been already been defined higher up.
+        '?length': {
+          0: 0,
+          1: '1px',
+          2: '2px'
+        }
+      },
+      children: [
+        // This is a "utility rule" - it looks like a typical CSS rule.
+        // It uses a variable, which will output every possible permutation!
+        ['bg', [['background-color', '{color}']]],
+        // This string is the prefix of the "utility class".
+        // ↙ Abbreviations of `variable` values will be appended to it.
+        [
+          'b',
+          [
+            // "Utility rules" support multiple declarations.
+            // "Utility declarations" may use any number of variables.
+            ['border', '{length} {color}'],
+            ['border-style', 'solid']
+          ]
+        ]
+      ]
     }
-  }
-]);
-
-// send your custom ainsley object to client as JS/JSON
-// different ways of doing this are covered below in Client
-```
-
-### Client
-
-This can be done in many ways! Here's some ideas to start from.
-
-##### Common core concepts
-
-```html
-<head>
-  <!-- your head html here -->
-
-  <!-- you will want a reset (normalize makes less sense with functional css)
-       this project includes one which is suitable for ainsley -->
-  <link href="/reset.min.css" rel="stylesheet" type="text/css" />
-</head>
-<!-- Hide body while loading to prevent flash of unstyled content -->
-<body style="display: none">
-  <!-- your body html here -->
-
-  <!-- 👨🏾‍🍳 insert ainsley logic here! -->
-</body>
-```
-
-##### 👨🏾‍🍳 Recipe 1: embed it in script
-
-```html
-<script src="/compiler.lite.js"></script>
-<script>
-  var styleEl = document.createElement("style");
-  styleEl.appendChild(
-    // your ainsley object goes here
-    document.createTextNode(AinsleyToCSS(/*AINSLEY*/))
-  );
-  document.head.appendChild(styleEl);
-  document.body.style.display = "block";
-</script>
-```
-
-##### 👨🏾‍🍳 Recipe 2: fetch ainsley at runtime
-
-```html
-<head>
-  <!-- your html here -->
-
-  <link href="/reset.min.css" rel="stylesheet" type="text/css" />
-</head>
-<body style="display: none">
-  <!-- your html here -->
-
-  <script src="/compiler.lite.js"></script>
-  <script>
-    var req = new XMLHttpRequest();
-    req.open("GET", "/ainsley.json");
-    req.onreadystatechange = function() {
-      if (req.readyState === 4 && req.status === 200) {
-        var styleEl = document.createElement("style");
-        styleEl.appendChild(
-          document.createTextNode(AC(JSON.parse(req.responseText)))
-        );
-        document.head.appendChild(styleEl);
-        document.body.style.display = "block";
-      }
-    };
-    req.send();
-  </script>
-</body>
-```
-
-# All classes are regular
-
-```js
-const ainsleyClassRegex = /^((?:[a-z]+-)*)([a-z]+)([A-Z0-9]+)$/;
-const [, mods, prop, val] = "<anyAinsleyClass>".match(ainsleyClassRegex);
-```
-
-```none
-A Complex Example: "s-o-bgcTR"
-                ____\__/\_/\/
-(optional)     /         \  \
-modifier prefixes        /   \
-(lowercase then a -)    /     \
-                       /       \
-          Property abbrev     Value abbrev
-         (always lowercase)  (always uppercase or digits)
-
-Meaning:
-  "s-" => "[s]mall screens (384px) and bigger"
-  "o-" => "[o]n any pseudo class (:hover, :focus or :active)"
-  "bgc" => "[b]ack[g]round-[c]olor"
-  "TR" => "[tr]ansparent"
-
-Equivalent CSS:
-@media (min-width: 384px) {
-  .s-o-bgcTR:hover, .s-o-bgcTR:focus, .s-o-bgcTR:active {
-    background-color: transparent;
-  }
+  ]
 }
+
+// flatten replaces external dependencies with their contents
+// (i.e. CSS/JSON urls, configs)
+// 💞 ➡ ❤️
+const configWithoutDependencies = flatten(ainsley)
+// minify generates a config which is designed to use less bytes
+// after it has been compressed; this is how it should be sent to the client
+// ❤️ ➡ 💌
+const minifiedConfig = minify(configWithoutDependencies)
+
+// (ON THE CLIENT) to generate CSS, and embed it into the page
+// 💌 ➡ ❤️🧡💛💚💙💜
+Ainsley.embed(Ainsley.generate(minifiedConfig /* , options */))
 ```
-
-This makes it easier for both humans and computers to parse them, making them
-easier to learn than other utility class libraries and also allow for better
-implementation specific generated documentation.
-
-# Irregular property word abbreviations
-
-Property prefixes are the first letters of each (hyphen delimited) word in the
-full property. For instance "white-space" becomes "ws", and "color" becomes "c".
-
-With this strategy alone, most abbreviations are unique to the property they
-come from, which avoids properties clashing. To fully prevent clashes, some
-property words are mapped to irregular abbreviations.
-
-|       Word | Abbreviation | Reason                                                      |
-| ---------: | :----------- | :---------------------------------------------------------- |
-| background | bg           | "b" = {"border", "background"}                              |
-|     cursor | cu           | "c" = {"color", "cursor"}                                   |
-|       flex | fx           | "f" = {"float", "flex"}, fw" = {"font-weight", "flex-wrap"} |
-|        max | x            | "m" = {"min", "max", "margin"}                              |
-|        min | n            | "m" = {"min", "max", "margin"}                              |
-|   overflow | ov           | "o" = {"opacity", "overflow"}                               |
-|   position | po           | "p" = {"padding", "position"}                               |
-|      style | st           | "fs" = {"font-size", "font-style"}                          |
-
-(MIT Licence)
 
 ## Contributors
 
@@ -270,3 +194,16 @@ Support this project with your organization. Your logo will show up here with a 
 <a href="https://opencollective.com/ainsley/organization/7/website"><img src="https://opencollective.com/ainsley/organization/7/avatar.svg"></a>
 <a href="https://opencollective.com/ainsley/organization/8/website"><img src="https://opencollective.com/ainsley/organization/8/avatar.svg"></a>
 <a href="https://opencollective.com/ainsley/organization/9/website"><img src="https://opencollective.com/ainsley/organization/9/avatar.svg"></a>
+
+## Use cases
+- Write it, translate it using repl, use it as css - easy
+- Webpack config - validate + flatten + minify + embed
+- CRA/SSG (locked Webpack config) - use babel macros
+- Babel macros - // @preval file comment
+- Using a framework without babel macros - use embed directly
+- CSS and wants to migrate - embed as string, and gradually migrate
+- SASS and wants to migrate - compile to CSS and gradually migrate
+- Explain why no webpack plugin / autoprefixer
+
+(MIT Licence)
+

@@ -1,4 +1,2 @@
+node_modules
 dist
-src/reset.css
-research/**/*.css
-**/*.min.*
