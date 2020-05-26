@@ -1,7 +1,7 @@
-export const isObject = (x: any): boolean =>
-  !!(x !== null && typeof x === 'object' && !Array.isArray(x))
+export const isObject = (val: unknown): boolean =>
+  !!(val !== null && typeof val === 'object' && !Array.isArray(val))
 
-export const combinations = <T>(mods: T[][]) => {
+export const combinations = <T>(mods: T[][]): T[][] => {
   let list: T[][] = [[]]
   let index = 0
   while (index < mods.length) {

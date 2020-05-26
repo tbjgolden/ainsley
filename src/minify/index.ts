@@ -1,8 +1,8 @@
 import copy from 'fast-copy'
 import csso from 'csso'
 import { Ainsley, AinsleyChildren, AinsleyVariableMap } from '../types'
-import { validate } from './validate'
-import { isObject } from './utils'
+import { validate } from '../validate'
+import { isObject } from '../utils'
 
 /*
 TODOs:
@@ -172,7 +172,7 @@ const minifyRaw = (rawCSS: string) => {
 
 const iteratorRegex = /\{[a-z]+\}/gi
 const searchForUsages = (
-  arr: Array<unknown | string | object>,
+  arr: Array<unknown | string | Record<string, unknown>>,
   set: Set<string> = new Set()
 ): Set<string> => {
   arr.forEach((val) => {

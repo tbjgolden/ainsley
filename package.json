@@ -58,11 +58,14 @@
   },
   "homepage": "github:tbjgolden/ainsley",
   "peerDependencies": {
+    "csso": "^4.0.3",
+    "isomorphic-fetch": "^2.2.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.7"
+    "@babel/runtime": "^7.7.7",
+    "fast-copy": "^2.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
@@ -77,6 +80,7 @@
     "@storybook/react": "^5.3.19",
     "@testing-library/jest-dom": "^5.8.0",
     "@testing-library/react": "^10.0.4",
+    "@types/csso": "^3.5.1",
     "@types/jest": "25.2.3",
     "@types/react": "16.9.35",
     "@types/react-dom": "16.9.8",
@@ -90,6 +94,7 @@
     "commitizen": "^4.1.2",
     "cp-cli": "2.0.0",
     "cross-env": "7.0.2",
+    "csso": "^4.0.3",
     "dedent": "^0.7.0",
     "del-cli": "3.0.1",
     "eslint": "7.1.0",
@@ -100,6 +105,7 @@
     "fork-ts-checker-webpack-plugin": "^4.1.4",
     "fs-extra": "^9.0.0",
     "husky": "^4.2.5",
+    "isomorphic-fetch": "^2.2.1",
     "jest": "26.0.1",
     "npm-run-all": "4.1.5",
     "patch-package": "^6.2.2",

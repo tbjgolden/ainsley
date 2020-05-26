@@ -7,7 +7,7 @@ import {
   AinsleyChildren,
   AinsleyGenerateOptions
 } from '../types'
-import { combinations } from './utils'
+import { combinations } from '../utils'
 
 interface AinsleyFlatASTNode {
   $variations: Array<[string, string]>

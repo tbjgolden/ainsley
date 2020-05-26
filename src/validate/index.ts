@@ -4,7 +4,7 @@ import Ajv, { ErrorObject } from 'ajv'
 
 export const validate = (maybeAinsley: unknown): string[] => {
   const ajv = new Ajv({ allErrors: true })
-  const _valid = ajv.validate(schema, maybeAinsley) as boolean
+  ajv.validate(schema, maybeAinsley)
 
   if (ajv.errors !== null && ajv.errors !== undefined) {
     // find lowest error and show that

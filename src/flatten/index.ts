@@ -1,8 +1,8 @@
 import 'isomorphic-fetch'
 import copy from 'fast-copy'
 import { Ainsley, AinsleyChild, AinsleyChildren } from '../types'
-import { validate } from './validate'
-import { isObject } from './utils'
+import { validate } from '../validate'
+import { isObject } from '../utils'
 
 /* config with external dependencies => flat config */
 export const flatten = async (
