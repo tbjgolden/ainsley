@@ -1,0 +1,39 @@
+name: Deploy Site
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/site.yml'
+      - 'website/**'
+      - 'src/**'
+
+jobs:
+  site:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - run: yarn install --frozen-lockfile
+
+      - run:
+          npx typedoc --mode file --out website/docs/api --theme docusaurus2
+          --readme none --skipSidebar src/index.ts
+
+      - run: yarn install --frozen-lockfile
+        working-directory: website
+
+      - run: yarn build
+        working-directory: website
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./website/build
