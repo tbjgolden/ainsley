@@ -1,241 +1,241 @@
-import { Ainsley } from "../types";
-import { minify } from "./minify";
+import { Ainsley } from '../types'
+import { minify } from '.'
 
-describe("minify", () => {
-  test("example one", () => {
+describe('minify', () => {
+  test('example one', () => {
     const start: Ainsley = {
       children: [
         {
           variables: {
             colors: {
-              b: "black",
-              w: "white"
+              b: 'black',
+              w: 'white'
             }
           },
           children: [
             {
               variables: {
-                "+colors": {
-                  p: "#313375",
-                  s: "#b4d455"
+                '+colors': {
+                  p: '#313375',
+                  s: '#b4d455'
                 }
               },
               children: [
-                "*{box-sizing:border-box}",
-                ["&", [["color", "{colors}"]]],
+                '*{box-sizing:border-box}',
+                ['&', [['color', '{colors}']]],
                 {
                   variables: {
-                    "?colors": {
-                      gray: "#333"
+                    '?colors': {
+                      gray: '#333'
                     },
-                    unused: {
-                      magic: "val"
+                    'unused': {
+                      magic: 'val'
                     }
                   },
                   children: [
-                    "*{outline-offset:0}",
-                    ["b&", [["border-color", "{colors}"]]]
+                    '*{outline-offset:0}',
+                    ['b&', [['border-color', '{colors}']]]
                   ]
                 }
               ]
             },
-            ".h1{font-size:69px}"
+            '.h1{font-size:69px}'
           ]
         },
-        "body{margin:0}"
+        'body{margin:0}'
       ]
-    };
+    }
 
     expect(minify(start)).toEqual({
       variables: {
         colors: {
-          b: "black",
-          w: "white",
-          p: "#313375",
-          s: "#b4d455"
+          b: 'black',
+          w: 'white',
+          p: '#313375',
+          s: '#b4d455'
         }
       },
       children: [
-        "*{box-sizing:border-box}",
-        ["&", [["color", "{colors}"]]],
-        "*{outline-offset:0}",
-        ["b&", [["border-color", "{colors}"]]],
-        ".h1{font-size:69px}body{margin:0}"
+        '*{box-sizing:border-box}',
+        ['&', [['color', '{colors}']]],
+        '*{outline-offset:0}',
+        ['b&', [['border-color', '{colors}']]],
+        '.h1{font-size:69px}body{margin:0}'
       ]
-    });
-  });
+    })
+  })
 
-  test("example two", () => {
+  test('example two', () => {
     const start: Ainsley = {
       children: [
         {
           variables: {
             colors: {
-              b: "black",
-              w: "white"
+              b: 'black',
+              w: 'white'
             }
           },
           children: [
             {
               variables: {
-                "+colors": {
-                  p: "#313375",
-                  s: "#b4d455"
+                '+colors': {
+                  p: '#313375',
+                  s: '#b4d455'
                 }
               },
               children: [
-                "*{box-sizing:border-box}",
-                ["&", [["color", "{colors}"]]],
+                '*{box-sizing:border-box}',
+                ['&', [['color', '{colors}']]],
                 {
                   variables: {
-                    "?colors": {
-                      gray: "#333"
+                    '?colors': {
+                      gray: '#333'
                     },
-                    unused: {
-                      magic: "val"
+                    'unused': {
+                      magic: 'val'
                     }
                   },
                   children: [
-                    "*{outline-offset:0}",
-                    ["b&", [["border-color", "{colors}"]]]
+                    '*{outline-offset:0}',
+                    ['b&', [['border-color', '{colors}']]]
                   ]
                 }
               ]
             },
-            ".h1{font-size:69px}",
-            ["bg&", [["background-color", "{colors}"]]]
+            '.h1{font-size:69px}',
+            ['bg&', [['background-color', '{colors}']]]
           ]
         },
-        "body{margin:0}"
+        'body{margin:0}'
       ]
-    };
+    }
 
     expect(minify(start)).toEqual({
       variables: {
         colors: {
-          b: "black",
-          w: "white"
+          b: 'black',
+          w: 'white'
         }
       },
       children: [
         {
           variables: {
-            "+colors": {
-              p: "#313375",
-              s: "#b4d455"
+            '+colors': {
+              p: '#313375',
+              s: '#b4d455'
             }
           },
           children: [
-            "*{box-sizing:border-box}",
-            ["&", [["color", "{colors}"]]],
-            "*{outline-offset:0}",
-            ["b&", [["border-color", "{colors}"]]]
+            '*{box-sizing:border-box}',
+            ['&', [['color', '{colors}']]],
+            '*{outline-offset:0}',
+            ['b&', [['border-color', '{colors}']]]
           ]
         },
-        ".h1{font-size:69px}",
-        ["bg&", [["background-color", "{colors}"]]],
-        "body{margin:0}"
+        '.h1{font-size:69px}',
+        ['bg&', [['background-color', '{colors}']]],
+        'body{margin:0}'
       ]
-    });
-  });
+    })
+  })
 
-  test("example three", () => {
+  test('example three', () => {
     const start: Ainsley = {
       variables: {
         colors: {
-          b: "black"
+          b: 'black'
         }
       },
-      variations: [[["h-", ":hover"]]],
+      variations: [[['h-', ':hover']]],
       children: [
         {
-          variations: [[["f-", ":focus"]]],
+          variations: [[['f-', ':focus']]],
           children: [
             {
               variables: {
-                "+colors": { p: "#313375" }
+                '+colors': { p: '#313375' }
               },
-              children: [["&", [["color", "{colors}"]]]]
+              children: [['&', [['color', '{colors}']]]]
             }
           ]
         },
-        "body{margin:0}"
+        'body{margin:0}'
       ]
-    };
+    }
 
     expect(minify(start)).toEqual({
       variables: {
         colors: {
-          b: "black",
-          p: "#313375"
+          b: 'black',
+          p: '#313375'
         }
       },
-      variations: [[["h-", ":hover"]]],
+      variations: [[['h-', ':hover']]],
       children: [
         {
-          variations: [[["f-", ":focus"]]],
-          children: [["&", [["color", "{colors}"]]]]
+          variations: [[['f-', ':focus']]],
+          children: [['&', [['color', '{colors}']]]]
         },
-        "body{margin:0}"
+        'body{margin:0}'
       ]
-    });
-  });
+    })
+  })
 
-  test("example four", () => {
+  test('example four', () => {
     const start: Ainsley = {
       variations: [
         [
-          ["s", "@media(min-width:384px)"],
-          ["m", "@media(min-width:768px)"],
-          ["l", "@media(min-width:1024px)"]
+          ['s', '@media(min-width:384px)'],
+          ['m', '@media(min-width:768px)'],
+          ['l', '@media(min-width:1024px)']
         ]
       ],
       variables: {
         colors: {
-          b: "black",
-          w: "white"
+          b: 'black',
+          w: 'white'
         }
       },
       children: [
         {
           variables: {
-            "+colors": {
-              lg: "#eee",
-              g: "#888",
-              dg: "#222"
+            '+colors': {
+              lg: '#eee',
+              g: '#888',
+              dg: '#222'
             }
           },
-          children: [["bgc", [["background-color", "{colors}"]]]]
+          children: [['bgc', [['background-color', '{colors}']]]]
         }
       ]
-    };
+    }
 
     expect(minify(start)).toEqual({
       variations: [
         [
-          ["s", "@media(min-width:384px)"],
-          ["m", "@media(min-width:768px)"],
-          ["l", "@media(min-width:1024px)"]
+          ['s', '@media(min-width:384px)'],
+          ['m', '@media(min-width:768px)'],
+          ['l', '@media(min-width:1024px)']
         ]
       ],
       variables: {
         colors: {
-          b: "black",
-          w: "white",
-          lg: "#eee",
-          g: "#888",
-          dg: "#222"
+          b: 'black',
+          w: 'white',
+          lg: '#eee',
+          g: '#888',
+          dg: '#222'
         }
       },
-      children: [["bgc", [["background-color", "{colors}"]]]]
-    });
-  });
+      children: [['bgc', [['background-color', '{colors}']]]]
+    })
+  })
 
-  test("example five", () => {
+  test('example five', () => {
     const start: Ainsley = {
       variables: {
         colors: {
-          b: "black"
+          b: 'black'
         }
       },
       children: [
@@ -243,28 +243,28 @@ describe("minify", () => {
           children: [
             {
               variables: {
-                "+colors": { p: "#313375" }
+                '+colors': { p: '#313375' }
               },
-              children: [["&", [["color", "{colors}"]]], "html{padding:0}"]
+              children: [['&', [['color', '{colors}']]], 'html{padding:0}']
             }
           ]
         },
-        "",
-        "body{margin:0}"
+        '',
+        'body{margin:0}'
       ]
-    };
+    }
 
     expect(minify(start)).toEqual({
       variables: {
         colors: {
-          b: "black",
-          p: "#313375"
+          b: 'black',
+          p: '#313375'
         }
       },
       children: [
-        ["&", [["color", "{colors}"]]],
-        "html{padding:0}body{margin:0}"
+        ['&', [['color', '{colors}']]],
+        'html{padding:0}body{margin:0}'
       ]
-    });
-  });
-});
+    })
+  })
+})
