@@ -37,7 +37,6 @@
     "test:src": "jest --config ./scripts/jest/config.src.js",
     "test:umd": "jest --config ./scripts/jest/config.umd.js",
     "test:umdprod": "jest --config ./scripts/jest/config.umdprod.js",
-    "typedoc": "typedoc --mode file --out website/static/api --theme minimal --readme none src/index.ts",
     "semantic-release": "semantic-release"
   },
   "husky": {

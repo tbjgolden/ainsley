@@ -2,7 +2,8 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
-    '!src/index.ts',
+    '!src/ainsley.client.ts',
+    '!src/ainsley.ts',
     '!src/**/*.spec.{ts,tsx}',
     '!src/**/*.stories.{ts,tsx}'
   ],

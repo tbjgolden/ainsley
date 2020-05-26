@@ -10,7 +10,7 @@ import json from '@rollup/plugin-json'
 
 import pkg from './package.json'
 
-const inputs = ['./compiled/index.js']
+const inputs = ['./compiled/ainsley.js', './compiled/ainsley.client.js']
 
 const knownDependencyNames = {
   'react-dom': 'ReactDOM',
@@ -33,6 +33,8 @@ const kebabToPascal = (kebab) => {
   )
   return pascal
 }
+
+const getRoot = (input) => input.slice(input.lastIndexOf('/') + 1, -3)
 
 const getGlobals = (bundleType) =>
   ['UMD_DEV', 'UMD_PROD'].includes(bundleType)
@@ -108,7 +110,7 @@ const getCjsConfig = (input, bundleType) => ({
   input,
   external: getExternal(bundleType),
   output: {
-    file: `dist/ainsley.cjs.${
+    file: `dist/${getRoot(input)}.cjs.${
       isProduction(bundleType) ? 'production' : 'development'
     }.js`,
     format: 'cjs',
@@ -132,7 +134,7 @@ const getUmdConfig = (input, bundleType) => ({
   input,
   external: getExternal(bundleType),
   output: {
-    file: `dist/ainsley.umd.${
+    file: `dist/${getRoot(input)}.umd.${
       isProduction(bundleType) ? 'production' : 'development'
     }.js`,
     format: 'umd',
@@ -145,9 +147,12 @@ const getUmdConfig = (input, bundleType) => ({
 
 export default inputs
   .map((input) => [
-    getCjsConfig(input, 'CJS_DEV'),
-    getCjsConfig(input, 'CJS_PROD'),
     getEsConfig(input),
+    // if client is in the url, skip cjs builds
+    ...(input.includes('.client.')
+      ? []
+      : [getCjsConfig(input, 'CJS_DEV'), getCjsConfig(input, 'CJS_PROD')]),
+    // if browser isn't in package.json, skip umd builds
     ...(pkg.browser
       ? [getUmdConfig(input, 'UMD_DEV'), getUmdConfig(input, 'UMD_PROD')]
       : [])

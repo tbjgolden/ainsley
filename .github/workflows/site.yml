@@ -24,7 +24,7 @@ jobs:
 
       - run:
           npx typedoc --mode file --out website/docs/api --theme docusaurus2
-          --readme none --skipSidebar src/index.ts
+          --readme none --skipSidebar src/ainsley.ts
 
       - run: yarn install --frozen-lockfile
         working-directory: website

@@ -33,7 +33,7 @@ fs.writeFileSync(
 
           - run: yarn install --frozen-lockfile
 
-          - run: npx typedoc --mode file --out docs/api --theme markdown --readme none src/index.ts
+          - run: npx typedoc --mode file --out docs/api --theme markdown --readme none src/ainsley.ts
 
           - name: Commit files
             run: |
