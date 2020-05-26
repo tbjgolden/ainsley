@@ -108,7 +108,7 @@ const getCjsConfig = (input, bundleType) => ({
   input,
   external: getExternal(bundleType),
   output: {
-    file: `dist/gocvmmeyaahgakggbjwmcmif.cjs.${
+    file: `dist/ainsley.cjs.${
       isProduction(bundleType) ? 'production' : 'development'
     }.js`,
     format: 'cjs',
@@ -132,12 +132,12 @@ const getUmdConfig = (input, bundleType) => ({
   input,
   external: getExternal(bundleType),
   output: {
-    file: `dist/gocvmmeyaahgakggbjwmcmif.umd.${
+    file: `dist/ainsley.umd.${
       isProduction(bundleType) ? 'production' : 'development'
     }.js`,
     format: 'umd',
     globals: getGlobals(bundleType),
-    name: 'Gocvmmeyaahgakggbjwmcmif',
+    name: 'Ainsley',
     sourcemap: true
   },
   plugins: getPlugins(bundleType)

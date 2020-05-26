@@ -1,10 +1,10 @@
 ---
 id: "index"
-title: "gocvmmeyaahgakggbjwmcmif"
+title: "ainsley"
 sidebar_label: "Globals"
 ---
 
-[gocvmmeyaahgakggbjwmcmif](index.md)
+[ainsley](index.md)
 
 ## Index
 

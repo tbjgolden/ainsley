@@ -1,7 +1,7 @@
 'use strict'
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = require('./gocvmmeyaahgakggbjwmcmif.cjs.production.js')
+  module.exports = require('./ainsley.cjs.production.js')
 } else {
-  module.exports = require('./gocvmmeyaahgakggbjwmcmif.cjs.development.js')
+  module.exports = require('./ainsley.cjs.development.js')
 }

@@ -1,16 +1,16 @@
 module.exports = {
-  title: 'gocvmmeyaahgakggbjwmcmif',
-  tagline: 'rwmgkcxafpdrkuvtfszrfvwv',
-  url: 'https://xrdnwftmsmirdshgpfoyocjh.github.io',
-  baseUrl: '/gocvmmeyaahgakggbjwmcmif/',
+  title: 'ainsley',
+  tagline: '👨🏾‍🍳 Ainsley is to CSS what Markdown is to HTML',
+  url: 'https://tbjgolden.github.io',
+  baseUrl: '/ainsley/',
   favicon: 'img/favicon.ico',
-  organizationName: 'xrdnwftmsmirdshgpfoyocjh',
-  projectName: 'gocvmmeyaahgakggbjwmcmif',
+  organizationName: 'tbjgolden',
+  projectName: 'ainsley',
   themeConfig: {
     navbar: {
-      title: 'gocvmmeyaahgakggbjwmcmif',
+      title: 'ainsley',
       logo: {
-        alt: 'gocvmmeyaahgakggbjwmcmif logo',
+        alt: 'ainsley logo',
         src: 'img/logo.svg'
       },
       links: [
@@ -24,7 +24,7 @@ module.exports = {
         { to: 'blog', label: 'Blog', position: 'left' },
         {
           href:
-            'https://github.com/xrdnwftmsmirdshgpfoyocjh/gocvmmeyaahgakggbjwmcmif',
+            'https://github.com/tbjgolden/ainsley',
           label: 'GitHub',
           position: 'right'
         }
@@ -52,16 +52,16 @@ module.exports = {
             {
               label: 'Stack Overflow',
               href:
-                'https://stackoverflow.com/questions/tagged/gocvmmeyaahgakggbjwmcmif'
+                'https://stackoverflow.com/questions/tagged/ainsley'
             }
             /*
             {
               label: 'Discord',
-              href: 'https://discordapp.com/invite/gocvmmeyaahgakggbjwmcmif',
+              href: 'https://discordapp.com/invite/ainsley',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/gocvmmeyaahgakggbjwmcmif',
+              href: 'https://twitter.com/ainsley',
             },
             */
           ]
@@ -76,12 +76,12 @@ module.exports = {
             {
               label: 'GitHub',
               href:
-                'https://github.com/xrdnwftmsmirdshgpfoyocjh/gocvmmeyaahgakggbjwmcmif'
+                'https://github.com/tbjgolden/ainsley'
             }
           ]
         }
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} gocvmmeyaahgakggbjwmcmif (zkhshfmpcvllotfgoigdwyrr). Built with Docusaurus.`
+      copyright: `Copyright © ${new Date().getFullYear()} ainsley (Tom Golden). Built with Docusaurus.`
     }
   },
   presets: [
@@ -91,12 +91,12 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebar'),
           editUrl:
-            'https://github.com/xrdnwftmsmirdshgpfoyocjh/gocvmmeyaahgakggbjwmcmif/edit/master/website/'
+            'https://github.com/tbjgolden/ainsley/edit/master/website/'
         },
         blog: {
           showReadingTime: true,
           editUrl:
-            'https://github.com/xrdnwftmsmirdshgpfoyocjh/gocvmmeyaahgakggbjwmcmif/edit/master/website/blog/'
+            'https://github.com/tbjgolden/ainsley/edit/master/website/blog/'
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css')

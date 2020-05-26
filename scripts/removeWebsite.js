@@ -63,7 +63,7 @@ files.forEach((file) => {
         .readFileSync(file, 'utf8')
         .replace(
           new RegExp(
-            'https://xrdnwftmsmirdshgpfoyocjh.github.io/gocvmmeyaahgakggbjwmcmif/docs'.replace(
+            'https://tbjgolden.github.io/ainsley/docs'.replace(
               /[-\/\\^$*+?.()|[\]{}]/g,
               '\\$&'
             ),
