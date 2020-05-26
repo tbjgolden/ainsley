@@ -1,33 +1,33 @@
-import Ajv, { ErrorObject } from "ajv";
+import Ajv, { ErrorObject } from 'ajv'
 
 // TODO: formatError should give cleaner better errors
 
 export const validate = (maybeAinsley: unknown): string[] => {
-  const ajv = new Ajv({ allErrors: true });
-  const _valid = ajv.validate(schema, maybeAinsley) as boolean;
+  const ajv = new Ajv({ allErrors: true })
+  const _valid = ajv.validate(schema, maybeAinsley) as boolean
 
   if (ajv.errors !== null && ajv.errors !== undefined) {
     // find lowest error and show that
-    const lowestLength = Infinity;
-    let lowestErrors: string[] = [];
+    const lowestLength = Infinity
+    let lowestErrors: string[] = []
     ajv.errors.forEach((error) => {
-      const pathLength = error.schemaPath.split("/").length;
+      const pathLength = error.schemaPath.split('/').length
       if (pathLength === lowestLength) {
-        lowestErrors.push(formatError(error));
+        lowestErrors.push(formatError(error))
       } else if (pathLength < lowestLength) {
-        lowestErrors = [formatError(error)];
+        lowestErrors = [formatError(error)]
       }
-    });
-    return lowestErrors;
+    })
+    return lowestErrors
   } else {
-    return [];
+    return []
   }
-};
+}
 
 const formatError = (error: ErrorObject): string =>
   `Ainsley${error.dataPath}${
-    error.message === undefined ? "" : ` ${error.message}`
-  }`;
+    error.message === undefined ? '' : ` ${error.message}`
+  }`
 
 // prettier-ignore
 export const schema = {

@@ -1,14 +1,14 @@
-import { combinations } from "./utils";
+import { combinations } from '.'
 
-test("combinations", () => {
+test('combinations', () => {
   const ogTestArr = [
     [1, 2],
     [3, 4],
     [5, 6, 7]
-  ];
-  const result = combinations(ogTestArr);
+  ]
+  const result = combinations(ogTestArr)
 
-  expect(result).not.toBe(ogTestArr);
+  expect(result).not.toBe(ogTestArr)
   expect(result).toEqual([
     [1, 3, 5],
     [2, 3, 5],
@@ -22,7 +22,7 @@ test("combinations", () => {
     [2, 3, 7],
     [1, 4, 7],
     [2, 4, 7]
-  ]);
-  expect(combinations([])).toEqual([[]]);
-  expect(combinations([[1], [2], [3]])).toEqual([[1, 2, 3]]);
-});
+  ])
+  expect(combinations([])).toEqual([[]])
+  expect(combinations([[1], [2], [3]])).toEqual([[1, 2, 3]])
+})
