@@ -13,8 +13,7 @@ import pkg from './package.json'
 const inputs = ['./compiled/ainsley.js', './compiled/ainsley.client.js']
 
 const knownDependencyNames = {
-  'react-dom': 'ReactDOM',
-  'react': 'React'
+  'isomorphic-unfetch': 'fetch'
 }
 
 const kebabToPascal = (kebab) => {

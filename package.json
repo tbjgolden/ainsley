@@ -57,14 +57,9 @@
     "url": "github:tbjgolden/ainsley/issues"
   },
   "homepage": "github:tbjgolden/ainsley",
-  "peerDependencies": {
-    "csso": "^4.0.3",
-    "isomorphic-fetch": "^2.2.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
-  },
   "dependencies": {
     "@babel/runtime": "^7.7.7",
+    "csso": "^4.0.3",
     "fast-copy": "^2.0.5"
   },
   "devDependencies": {
@@ -82,6 +77,7 @@
     "@testing-library/react": "^10.0.4",
     "@types/csso": "^3.5.1",
     "@types/jest": "25.2.3",
+    "@types/node-fetch": "^2.5.7",
     "@types/react": "16.9.35",
     "@types/react-dom": "16.9.8",
     "@types/testing-library__react": "^10.0.1",
@@ -105,7 +101,7 @@
     "fork-ts-checker-webpack-plugin": "^4.1.4",
     "fs-extra": "^9.0.0",
     "husky": "^4.2.5",
-    "isomorphic-fetch": "^2.2.1",
+    "isomorphic-unfetch": "^3.0.0",
     "jest": "26.0.1",
     "npm-run-all": "4.1.5",
     "patch-package": "^6.2.2",
@@ -134,5 +130,8 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "peerDependencies": {
+    "isomorphic-unfetch": "^3.0.0"
   }
 }

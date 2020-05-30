@@ -1,4 +1,4 @@
-import 'isomorphic-fetch'
+import fetch from 'isomorphic-unfetch'
 import copy from 'fast-copy'
 import { Ainsley, AinsleyChild, AinsleyChildren } from '../types'
 import { validate } from '../validate'
