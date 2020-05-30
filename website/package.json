@@ -13,6 +13,7 @@
     "@docusaurus/preset-classic": "^2.0.0-alpha.54",
     "ainsley": "^0.0.1-beta.14",
     "classnames": "^2.2.6",
+    "gzip-js": "^0.3.2",
     "json-stringify-pretty-compact": "^2.0.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
@@ -25,5 +26,8 @@
     "last 2 safari versions and last 1 year",
     "last 4 ios_saf versions and last 2 years",
     "last 3 firefox versions"
-  ]
+  ],
+  "devDependencies": {
+    "wasm-loader": "^1.3.0"
+  }
 }

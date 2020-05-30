@@ -6,7 +6,7 @@
     "declarationDir": "dist",
     "downlevelIteration": true,
     "esModuleInterop": true,
-    "importHelpers": true,
+    "importHelpers": false,
     "jsx": "react",
     "lib": ["es2019", "dom"],
     "module": "esnext",

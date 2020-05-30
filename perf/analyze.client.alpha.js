@@ -2,7 +2,7 @@ const Ainsley = require('../dist/ainsley.cjs')
 
 const startTime = Date.now()
 Ainsley.ainsleyToCSS({
-  defs: [
+  'defs': [
     ['c&', [['color', '{colors}']]],
     ['bac&', [['background-color', '{colors}']]],
     [
@@ -24,7 +24,7 @@ Ainsley.ainsleyToCSS({
     ['&&', [['{flexCrossAxes}', '{flexCrossAxis}']]],
     ['ov&&', [['overflow', '{overflow} {overflow}']]]
   ],
-  props: [
+  'props': [
     [
       'Display',
       ['Inline', 'Block', 'FleX', 'None', 'Inline-Block', 'Inline-FleX']
@@ -51,7 +51,7 @@ Ainsley.ainsleyToCSS({
     ['Line-Height', { B: 1, T: 1.2, C: 1.3 }],
     ['FOnt-Weight', { N: 400, M: 600, B: 700 }]
   ],
-  mods: [
+  'mods': [
     [
       ['o-', ':hover'],
       ['o-', ':focus'],
@@ -73,8 +73,8 @@ Ainsley.ainsleyToCSS({
     'Baseline',
     'Stretch'
   ],
-  '{flexChange}': { '0': '0', '1': '1', '2': '2', X: '11111111' },
-  '{flexBasis}': { '0': '0%', A: 'auto', P: '100%' },
+  '{flexChange}': { '0': '0', '1': '1', '2': '2', 'X': '11111111' },
+  '{flexBasis}': { '0': '0%', 'A': 'auto', 'P': '100%' },
   '{xLoc}': ['Left', 'Right', 'Center'],
   '{yLoc}': ['Top', 'Bottom', 'Center'],
   '{scalar}': [
@@ -156,13 +156,13 @@ Ainsley.ainsleyToCSS({
     '85': '768px',
     '90': '1024px',
     '95': '1536px',
-    P50: '50%',
-    P: '100%',
-    H: '100vh',
-    W: '100vw',
-    X: '11111111px'
+    'P50': '50%',
+    'P': '100%',
+    'H': '100vh',
+    'W': '100vw',
+    'X': '11111111px'
   },
-  reset:
+  'reset':
     '*,::after,::before{box-sizing:border-box;outline-offset:0;border:0 solid}[type=button],[type=date],[type=datetime-local],[type=email],[type=file],[type=image],[type=month],[type=number],[type=password],[type=reset],[type=search],[type=submit],[type=tel],[type=text],[type=time],[type=url],[type=week],a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,button,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,time,tt,u,ul,var,video{margin:0;padding:0;border:0 solid;background:0 0;font:inherit;color:inherit;text-align:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}html{overflow-y:scroll;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote::after,blockquote::before,q::after,q::before{content:none}textarea{resize:vertical;overflow:auto}applet,canvas,img,object,svg,video{max-width:100%;height:auto}'
 })
 const endTime = Date.now()

@@ -1,42 +1,42 @@
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 
-import Editor from "react-simple-code-editor";
-import stringify from "json-stringify-pretty-compact";
-import "prismjs";
+import Editor from 'react-simple-code-editor'
+import stringify from 'json-stringify-pretty-compact'
+import 'prismjs'
 
 import {
   flatten,
   minify,
   generate,
   DEFAULT_OPTIONS
-} from "../entrypoints/ainsley";
-import { Ainsley } from "../types";
-import { isObject } from "../lib/utils";
+} from '../entrypoints/ainsley'
+import { Ainsley } from '../types'
+import { isObject } from '../lib/utils'
 
-const { highlight, languages } = window.Prism;
-const brotli = import("wasm-brotli");
+const { highlight, languages } = window.Prism
+const brotli = import('wasm-brotli')
 
 const parse = (str: string) => {
-  let result;
+  let result
   try {
     // eslint-disable-next-line no-eval
-    result = eval(`(${str})`);
+    result = eval(`(${str})`)
   } catch (e) {
     try {
       // eslint-disable-next-line no-new-func, @typescript-eslint/no-implied-eval
-      result = new Function(str)();
+      result = new Function(str)()
     } catch (e) {
-      result = e.message;
+      result = e.message
     }
   }
-  return result;
-};
+  return result
+}
 
 const formatBytes = (bytes: number) => {
-  if (bytes < 1e3) return `${bytes}B`;
-  else if (bytes < 1e4) return `${(bytes / 1e3).toFixed(1)}kB`;
-  else return `${Math.round(bytes / 1e3)}kB`;
-};
+  if (bytes < 1e3) return `${bytes}B`
+  else if (bytes < 1e4) return `${(bytes / 1e3).toFixed(1)}kB`
+  else return `${Math.round(bytes / 1e3)}kB`
+}
 
 const Repl = () => {
   const [
@@ -102,103 +102,103 @@ const ainsley = {
 
 // in this REPL, use \`return\`
 return ainsley;
-`);
+`)
 
-  const [optionsShown, setOptionsShown] = useState(false);
+  const [optionsShown, setOptionsShown] = useState(false)
   const [options, setOptions] = useState(`{
   ${Object.entries(DEFAULT_OPTIONS)
     .map(
       ([key, value]) =>
         `${JSON.stringify(key)}: ${
-          typeof value === "function" ? value.toString() : JSON.stringify(value)
+          typeof value === 'function' ? value.toString() : JSON.stringify(value)
         }`
     )
-    .join(",\n  ")}
-}`);
+    .join(',\n  ')}
+}`)
 
-  const generateDuration = useRef(0);
+  const generateDuration = useRef(0)
 
-  const [flattenedShown, setFlattenedShown] = useState(false);
+  const [flattenedShown, setFlattenedShown] = useState(false)
   const [[flattened, flattenedStr], setFlattened] = useState([
     null as Ainsley | null,
-    ""
-  ]);
+    ''
+  ])
 
   useEffect(() => {
-    const parsedInput = parse(input);
+    const parsedInput = parse(input)
     if (isObject(parsedInput)) {
       flatten(parsedInput)
         .then((flatAinsley) => {
-          setFlattened([flatAinsley, stringify(flatAinsley)]);
+          setFlattened([flatAinsley, stringify(flatAinsley)])
         })
         .catch((error: Error) => {
-          setFlattened([null, `Error while parsing:\n\n${error.message}`]);
-        });
-    } else if (typeof parsedInput === "string") {
-      setFlattened([null, `Error while parsing input:\n\n${parsedInput}`]);
+          setFlattened([null, `Error while parsing:\n\n${error.message}`])
+        })
+    } else if (typeof parsedInput === 'string') {
+      setFlattened([null, `Error while parsing input:\n\n${parsedInput}`])
     } else {
-      setFlattened([null, "Error while parsing"]);
+      setFlattened([null, 'Error while parsing'])
     }
-  }, [input]);
+  }, [input])
 
-  const [minifiedShown, setMinifiedShown] = useState(false);
+  const [minifiedShown, setMinifiedShown] = useState(false)
   const [minified, minifiedStr] = useMemo(() => {
     if (flattened !== null) {
-      const obj = minify(flattened);
-      return [obj, JSON.stringify(obj)];
+      const obj = minify(flattened)
+      return [obj, JSON.stringify(obj)]
     } else {
-      return [null, flattenedStr];
+      return [null, flattenedStr]
     }
-  }, [flattenedStr]);
+  }, [flattenedStr])
 
-  const [compressedBytes, setCompressedBytes] = useState(0);
+  const [compressedBytes, setCompressedBytes] = useState(0)
 
   useEffect(() => {
-    setCompressedBytes(0);
+    setCompressedBytes(0)
     if (minified !== null) {
       brotli
         .then(({ compress }) => {
-          const result = compress(new TextEncoder().encode(minifiedStr));
-          setCompressedBytes(result.byteLength);
+          const result = compress(new TextEncoder().encode(minifiedStr))
+          setCompressedBytes(result.byteLength)
         })
-        .catch(console.error);
+        .catch(console.error)
     }
-  }, [minifiedStr]);
+  }, [minifiedStr])
 
-  const [generatedShown, setGeneratedShown] = useState(true);
+  const [generatedShown, setGeneratedShown] = useState(true)
   const [generated, generatedStr] = useMemo(() => {
     if (minified !== null) {
-      const parsedOptions = parse(options);
-      if (typeof parsedOptions === "string") {
-        return [null, `Error while parsing options:\n\n${parsedOptions}`];
+      const parsedOptions = parse(options)
+      if (typeof parsedOptions === 'string') {
+        return [null, `Error while parsing options:\n\n${parsedOptions}`]
       } else {
-        const startTime = Date.now();
-        const obj = generate(minified, parsedOptions);
-        generateDuration.current = Date.now() - startTime;
-        return [obj, obj];
+        const startTime = Date.now()
+        const obj = generate(minified, parsedOptions)
+        generateDuration.current = Date.now() - startTime
+        return [obj, obj]
       }
     } else {
-      return [null, minifiedStr];
+      return [null, minifiedStr]
     }
-  }, [flattenedStr, options]);
+  }, [flattenedStr, options])
 
-  const [compressedCSSBytes, setCompressedCSSBytes] = useState(0);
+  const [compressedCSSBytes, setCompressedCSSBytes] = useState(0)
 
   useEffect(() => {
-    setCompressedCSSBytes(0);
+    setCompressedCSSBytes(0)
     if (generated !== null) {
       brotli
         .then(({ compress }) => {
-          const result = compress(new TextEncoder().encode(generatedStr));
-          setCompressedCSSBytes(result.byteLength);
+          const result = compress(new TextEncoder().encode(generatedStr))
+          setCompressedCSSBytes(result.byteLength)
         })
-        .catch(console.error);
+        .catch(console.error)
     }
-  }, [generatedStr]);
+  }, [generatedStr])
 
   useEffect(() => {
-    document.body.style.display = "block";
-  }, []);
+    document.body.style.display = 'block'
+  }, [])
 
   return (
     <div>
@@ -210,13 +210,13 @@ return ainsley;
           id="input"
           value={input}
           onValueChange={setInput}
-          highlight={(code) => highlight(code, languages.js, "js")}
+          highlight={(code) => highlight(code, languages.js, 'js')}
         />
       </div>
 
       <h2>
         <ShowHideButton shown={optionsShown} setShown={setOptionsShown} />
-        {" Options"}
+        {' Options'}
       </h2>
       {optionsShown ? (
         <div id="editor">
@@ -224,14 +224,14 @@ return ainsley;
             id="options"
             value={options}
             onValueChange={setOptions}
-            highlight={(code) => highlight(code, languages.js, "js")}
+            highlight={(code) => highlight(code, languages.js, 'js')}
           />
         </div>
       ) : null}
 
       <h2>
         <ShowHideButton shown={flattenedShown} setShown={setFlattenedShown} />
-        {" Flattened"}
+        {' Flattened'}
         {flattened === null
           ? null
           : ` (${formatBytes(Buffer.from(flattenedStr).byteLength)})`}
@@ -240,7 +240,7 @@ return ainsley;
         <pre className="output">
           <code
             dangerouslySetInnerHTML={{
-              __html: highlight(flattenedStr, languages.js, "json")
+              __html: highlight(flattenedStr, languages.js, 'json')
             }}
           />
         </pre>
@@ -248,7 +248,7 @@ return ainsley;
 
       <h2>
         <ShowHideButton shown={minifiedShown} setShown={setMinifiedShown} />
-        {" Minified"}
+        {' Minified'}
         {minified === null
           ? null
           : ` (${formatBytes(Buffer.from(minifiedStr).byteLength)})`}
@@ -260,7 +260,7 @@ return ainsley;
         <pre className="output one-line show-all">
           <code
             dangerouslySetInnerHTML={{
-              __html: highlight(minifiedStr, languages.js, "json")
+              __html: highlight(minifiedStr, languages.js, 'json')
             }}
           />
         </pre>
@@ -268,7 +268,7 @@ return ainsley;
 
       <h2>
         <ShowHideButton shown={generatedShown} setShown={setGeneratedShown} />
-        {" Generated CSS"}
+        {' Generated CSS'}
         {generated === null
           ? null
           : ` (${formatBytes(Buffer.from(generatedStr).byteLength)})`}
@@ -283,15 +283,15 @@ return ainsley;
         </pre>
       ) : null}
     </div>
-  );
-};
+  )
+}
 
 const ShowHideButton = ({
   shown,
   setShown
 }: {
-  shown: boolean;
-  setShown: (shown: boolean) => void;
-}) => <button onClick={() => setShown(!shown)}>[{shown ? "-" : "+"}]</button>;
+  shown: boolean
+  setShown: (shown: boolean) => void
+}) => <button onClick={() => setShown(!shown)}>[{shown ? '-' : '+'}]</button>
 
-export default Repl;
+export default Repl

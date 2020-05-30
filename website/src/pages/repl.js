@@ -3,7 +3,7 @@ import Layout from '@theme/Layout'
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import Editor from "react-simple-code-editor";
 import stringify from "json-stringify-pretty-compact";
-import "prismjs";
+import gzip from "gzip-js";
 import {
   flatten,
   minify,
@@ -11,8 +11,8 @@ import {
   DEFAULT_OPTIONS
 } from "ainsley";
 
+import "prismjs";
 const { highlight, languages } = window.Prism;
-const brotli = import("wasm-brotli");
 
 export const isObject = (val) =>
   !!(val !== null && typeof val === 'object' && !Array.isArray(val))
@@ -113,7 +113,7 @@ return ainsley;
   ${Object.entries(DEFAULT_OPTIONS)
     .map(
       ([key, value]) =>
-        `${JSON.stringify(key)}: ${
+        `${key}: ${
           typeof value === "function" ? value.toString() : JSON.stringify(value)
         }`
     )
@@ -160,12 +160,9 @@ return ainsley;
   useEffect(() => {
     setCompressedBytes(0);
     if (minified !== null) {
-      brotli
-        .then(({ compress }) => {
-          const result = compress(new TextEncoder().encode(minifiedStr));
-          setCompressedBytes(result.byteLength);
-        })
-        .catch(console.error);
+      const result = gzip.zip(minifiedStr);
+      console.log(result);
+      setCompressedBytes(Buffer.from(result).byteLength);
     }
   }, [minifiedStr]);
 
@@ -176,9 +173,9 @@ return ainsley;
       if (typeof parsedOptions === "string") {
         return [null, `Error while parsing options:\n\n${parsedOptions}`];
       } else {
-        const startTime = Date.now();
+        const startTime = performance.now();
         const obj = generate(minified, parsedOptions);
-        generateDuration.current = Date.now() - startTime;
+        generateDuration.current = performance.now() - startTime;
         return [obj, obj];
       }
     } else {
@@ -191,12 +188,8 @@ return ainsley;
   useEffect(() => {
     setCompressedCSSBytes(0);
     if (generated !== null) {
-      brotli
-        .then(({ compress }) => {
-          const result = compress(new TextEncoder().encode(generatedStr));
-          setCompressedCSSBytes(result.byteLength);
-        })
-        .catch(console.error);
+      const result = gzip.zip(generatedStr);
+      setCompressedCSSBytes(Buffer.from(result).byteLength);
     }
   }, [generatedStr]);
 
@@ -245,9 +238,7 @@ return ainsley;
           <section className="section">
             <h2 className="section-header">
               Flattened
-              {flattened === null
-                ? null
-                : ` (${formatBytes(Buffer.from(flattenedStr).byteLength)})`}
+              {flattened && ` (${formatBytes(Buffer.from(flattenedStr).byteLength)})`}
               <ShowHideButton shown={flattenedShown} setShown={setFlattenedShown} />
             </h2>
             {flattenedShown ? (
@@ -264,12 +255,8 @@ return ainsley;
           <section className="section">
             <h2 className="section-header">
               Minified
-              {minified === null
-                ? null
-                : ` (${formatBytes(Buffer.from(minifiedStr).byteLength)})`}
-              {compressedBytes === 0
-                ? null
-                : ` (Brotli: ${formatBytes(compressedBytes)})`}
+              {minified && ` (${formatBytes(Buffer.from(minifiedStr).byteLength)})`}
+              {compressedBytes > 0 && ` (gzip: ${formatBytes(compressedBytes)})`}
               <ShowHideButton shown={minifiedShown} setShown={setMinifiedShown} />
             </h2>
             {minifiedShown ? (
@@ -286,13 +273,9 @@ return ainsley;
           <section className="section">
             <h2 className="section-header">
               Generated CSS
-              {generated === null
-                ? null
-                : ` (${formatBytes(Buffer.from(generatedStr).byteLength)})`}
-              {compressedBytes === 0
-                ? null
-                : ` (Brotli: ${formatBytes(compressedCSSBytes)})`}
-              {generated === null ? null : ` (${generateDuration.current}ms)`}
+              {generated && ` (${formatBytes(Buffer.from(generatedStr).byteLength)})`}
+              {compressedBytes && ` (gzip: ${formatBytes(compressedCSSBytes)})`}
+              {generated && ` (${Math.round(generateDuration.current)}ms)`}
               <ShowHideButton shown={generatedShown} setShown={setGeneratedShown} />
             </h2>
             {generatedShown ? (
