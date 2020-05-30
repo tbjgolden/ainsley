@@ -3,9 +3,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "allowJs": true,
-    "checkJs": true
+    "checkJs": false
   },
-  "include": ["examples", "scripts", "src", "test", "website"],
+  "include": ["examples", "scripts", "src", "test"],
   "exclude": [],
   "files": ["index.js", "rollup.config.js"]
 }

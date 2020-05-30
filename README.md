@@ -1,7 +1,7 @@
 # 👨🏾‍🍳 Ainsley
 
-Ainsley is a better(maintainable, self documenting more efficient) way to define
-your stylesheet.
+Ainsley is a better (maintainable, self documenting more efficient) way to
+define your stylesheet.
 
 ```js
 // Define your stylesheet using JavaScript, or JSON

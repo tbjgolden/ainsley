@@ -7,14 +7,13 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: rgb(33, 175, 144);
-  --ifm-color-primary-darker: rgb(31, 165, 136);
-  --ifm-color-primary-darkest: rgb(26, 136, 112);
-  --ifm-color-primary-light: rgb(70, 203, 174);
-  --ifm-color-primary-lighter: rgb(102, 212, 189);
-  --ifm-color-primary-lightest: rgb(146, 224, 208);
-  --ifm-code-font-size: 95%;
+  --ifm-color-primary: hsl(327, 100%, 65%);
+  --ifm-color-primary-dark: hsl(327, 100%, 61%);
+  --ifm-color-primary-darker: hsl(327, 100%, 58%);
+  --ifm-color-primary-darkest: hsl(327, 100%, 52%);
+  --ifm-color-primary-light: hsl(327, 60%, 74%);
+  --ifm-color-primary-lighter: hsl(327, 60%, 82%);
+  --ifm-color-primary-lightest: hsl(327, 60%, 93%);
 }
 
 .docusaurus-highlight-code-line {
@@ -22,4 +21,146 @@
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
+}
+
+
+/* Main REPL Styles */
+.repl-outer {
+  padding: 0 2rem;
+}
+.repl-inner {
+  position: relative;
+}
+
+.section:not(:first-of-type) {
+  margin-top: 2rem;
+}
+
+.section-header {
+  display: flex;
+}
+
+.section-button {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#editor:focus-within {
+  border: 1px solid var(--ifm-color-primary) !important;
+  border-radius: var(--ifm-pre-border-radius) !important;
+}
+
+#editor textarea, #editor pre {
+  padding: var(--ifm-pre-padding) !important;
+  font-size: var(--ifm-code-font-size) !important;
+  line-height: var(--ifm-pre-line-height) !important;
+}
+
+#editor:focus-within textarea,
+#editor:focus-within pre {
+  padding: calc(var(--ifm-pre-padding) - 1px) !important;
+}
+
+#editor textarea {
+  color: transparent !important;
+}
+
+#editor textarea ::selection {
+  color: transparent !important;
+}
+#editor textarea ::-moz-selection {
+  color: transparent !important;
+}
+
+#editor textarea:focus {
+  outline: 0;
+}
+
+#editor,
+.output {
+  resize: vertical;
+  width: 100%;
+}
+
+#editor {
+  height: 480px;
+  overflow: auto;
+  border-radius: var(--ifm-pre-border-radius);
+  font-family: var(--ifm-font-family-monospace);
+  background-color: var(--ifm-pre-background);
+}
+
+.output {
+  height: 240px;
+}
+
+.output > code {
+  white-space: pre-wrap;
+}
+
+button {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+}
+
+.token.comment {
+  color: rgb(105, 112, 152);
+}
+
+.token.string, .token.inserted {
+  color: rgb(195, 232, 141);
+}
+
+.token.number {
+  color: rgb(247, 140, 108);
+}
+
+.token.builtin, .token.char, .token.constant, .token.function {
+  color: rgb(130, 170, 255);
+}
+
+.token.punctuation, .token.selector {
+  color: rgb(199, 146, 234);
+}
+
+.token.variable {
+  color: rgb(191, 199, 213);
+}
+
+.token.class-name, .token.attr-name {
+  color: rgb(255, 203, 107);
+}
+
+.token.tag, .token.deleted {
+  color: rgb(255, 85, 114);
+}
+
+.token.operator {
+  color: rgb(137, 221, 255);
+}
+
+.token.boolean {
+  color: rgb(255, 88, 116);
+}
+
+.token.doctype {
+  color: rgb(199, 146, 234);
+}
+
+.token.namespace {
+  color: rgb(178, 204, 214);
+}
+
+.token.url {
+  color: rgb(221, 221, 221);
+}
+
+/* Plugin styles */
+.token.tab:not(:empty):before,
+.token.cr:before,
+.token.lf:before {
+  color: #e0d7d1;
 }

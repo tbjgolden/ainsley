@@ -11,9 +11,13 @@
   "dependencies": {
     "@docusaurus/core": "^2.0.0-alpha.54",
     "@docusaurus/preset-classic": "^2.0.0-alpha.54",
+    "ainsley": "^0.0.1-beta.14",
     "classnames": "^2.2.6",
+    "json-stringify-pretty-compact": "^2.0.0",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "react-simple-code-editor": "^0.11.0",
+    "wasm-brotli": "^2.0.2"
   },
   "browserslist": [
     "last 3 chrome versions and last 1 year",
