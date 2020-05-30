@@ -6,7 +6,7 @@
     "declarationDir": "dist",
     "downlevelIteration": true,
     "esModuleInterop": true,
-    "importHelpers": false,
+    "importHelpers": true,
     "jsx": "react",
     "lib": ["es2019", "dom"],
     "module": "esnext",
@@ -20,7 +20,7 @@
     "removeComments": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es5"
+    "target": "ES2019"
   },
   "include": ["src"],
   "exclude": ["**/*.stories.tsx"]
