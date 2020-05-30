@@ -1,0 +1,12 @@
+# generated
+compiled/
+coverage/
+dist/
+node_modules/
+
+# old
+old/
+
+# config
+/*.js
+/*.json

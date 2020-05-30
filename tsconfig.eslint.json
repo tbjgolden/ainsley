@@ -1,0 +1,11 @@
+// This is used by ESLint
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": ["examples", "scripts", "src", "test", "website"],
+  "exclude": [],
+  "files": ["index.js", "rollup.config.js"]
+}

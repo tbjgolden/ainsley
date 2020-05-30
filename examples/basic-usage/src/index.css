@@ -1,0 +1,49 @@
+body {
+  margin: 0;
+  font-family: -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+  font-weight: 600;
+}
+
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inner {
+  background: black;
+  color: white;
+  padding: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+pre {
+  margin: 16px 0;
+  padding: 0;
+}
+
+.inner > :first-child {
+  margin-top: 0;
+}
+.inner > :last-child {
+  margin-bottom: 0;
+}
+
+strong {
+  font-weight: 900;
+  color: #ff9;
+}
