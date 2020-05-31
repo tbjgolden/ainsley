@@ -3,16 +3,18 @@ import { Ainsley, AinsleyChildren, AinsleyVariableMap } from '../types'
 import { validate } from '../validate'
 import { isObject } from '../utils'
 
-// Using any as csso doesn't expose it's types
+// Using any as csso doesn't expose its types
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let csso: any = undefined
-import('csso')
-  .then(({ default: _csso }) => {
-    csso = _csso
-  })
-  .catch(() => {
-    //
-  })
+let csso: any = (globalThis as { csso?: any })?.csso
+if (csso === undefined) {
+  import('csso')
+    .then(({ default: _csso }) => {
+      csso = _csso
+    })
+    .catch(() => {
+      //
+    })
+}
 
 /*
 TODOs:
