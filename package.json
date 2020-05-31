@@ -2,6 +2,7 @@
   "name": "ainsley",
   "version": "0.0.0-semantically-released",
   "description": "👨🏾‍🍳 Ainsley is to CSS what Markdown is to HTML",
+  "sideEffects": false,
   "main": "dist/index.js",
   "module": "dist/ainsley.esm.js",
   "jsnext:main": "dist/ainsley.esm.js",
