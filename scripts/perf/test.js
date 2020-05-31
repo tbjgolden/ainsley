@@ -1,9 +1,4 @@
-const fs = require('fs')
-const path = require('path')
-const { gzip } = require('node-gzip')
-const brotli = require('brotli')
-
-const input = {
+module.exports = {
   children: [
     '*,::after,::before{box-sizing:border-box;outline-offset:0;border:0 solid}[type=button],[type=date],[type=datetime-local],[type=email],[type=file],[type=image],[type=month],[type=number],[type=password],[type=reset],[type=search],[type=submit],[type=tel],[type=text],[type=time],[type=url],[type=week],a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,button,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,time,tt,u,ul,var,video{margin:0;padding:0;border:0 solid;background:0 0;font:inherit;color:inherit;text-align:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}html{overflow-y:scroll;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote::after,blockquote::before,q::after,q::before{content:none}textarea{resize:vertical;overflow:auto}applet,canvas,img,object,svg,video{max-width:100%;height:auto}',
     {
@@ -327,44 +322,3 @@ const input = {
     }
   ]
 }
-
-let count = 0
-const analyze = async (sourceFile) => {
-  let Ainsley
-  console.log('Testing', sourceFile)
-  const startTime = Date.now()
-  if (sourceFile.endsWith('.cjs.js')) {
-    Ainsley = require(sourceFile)
-  } else {
-    const fileStr = fs.readFileSync(path.join(__dirname, sourceFile), 'utf8')
-    eval(
-      fileStr
-        .replace(/^[\s\S]+?(var Ainsley)/, `(()=>{global.A${count}`)
-        .replace(/;\n\/\/.*\s*$/, `;})()`)
-    )
-    Ainsley = global[`A${count++}`]
-  }
-
-  Ainsley.generate(input)
-  const endTime = Date.now()
-
-  console.log('Duration:', endTime - startTime + 'ms')
-  // Duration: 47ms
-
-  const compiler = fs.readFileSync(path.join(__dirname, sourceFile))
-
-  console.log('Bytes:', compiler.byteLength)
-  // Bytes: 5879
-
-  const gz = await gzip(compiler.toString())
-  console.log('Gzip Bytes:', gz.byteLength)
-  // Gzip Bytes: 2267
-
-  const br = brotli.compress(compiler)
-  console.log('Brotli Bytes:', br.byteLength)
-  // Brotli Bytes: 1997
-
-  // const sourceFile = '../dist/ainsley.client.cjs.js'
-}
-
-analyze('../dist/ainsley.client.js')

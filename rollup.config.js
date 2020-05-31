@@ -93,7 +93,7 @@ const getPlugins = (bundleType) => [
     babelrc: false,
     exclude: 'node_modules/**',
     presets: [['@babel/env', { loose: true, modules: false }], '@babel/react'],
-    plugins: ['@babel/transform-runtime'],
+    plugins: ['@babel/transform-runtime', 'minify-builtins'],
     runtimeHelpers: true
   }),
   json(),
@@ -145,7 +145,7 @@ const getEsConfig = (input) => ({
   external: getExternal('ES'),
   inlineDynamicImports: true,
   output: {
-    file: `dist/${getRoot(input)}.esm.js`,
+    file: `dist/${getRoot(input)}.mjs`,
     format: 'es',
     banner: longBanner,
     sourcemap: true
