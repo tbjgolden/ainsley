@@ -3,11 +3,11 @@
   "version": "0.0.0-semantically-released",
   "description": "👨🏾‍🍳 Ainsley is to CSS what Markdown is to HTML",
   "main": "dist/index.js",
-  "module": "dist/ainsley.esm.js",
-  "jsnext:main": "dist/ainsley.esm.js",
+  "module": "dist/ainsley.esm.client.js",
+  "jsnext:main": "dist/ainsley.esm.client.js",
   "browser": {
     "./dist/index.js": "./dist/index.js",
-    "./dist/ainsley.esm.js": "./dist/ainsley.esm.js"
+    "./dist/ainsley.esm.client.js": "./dist/ainsley.esm.client.js"
   },
   "typings": "dist/index.d.ts",
   "files": [
