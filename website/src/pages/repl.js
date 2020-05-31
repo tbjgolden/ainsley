@@ -12,7 +12,7 @@ import {
 } from "ainsley";
 
 import "prismjs";
-const { highlight, languages } = window.Prism;
+const { highlight, languages } = globalThis.Prism;
 
 export const isObject = (val) =>
   !!(val !== null && typeof val === 'object' && !Array.isArray(val))
