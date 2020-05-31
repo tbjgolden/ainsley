@@ -1,7 +1,21 @@
 # 👨🏾‍🍳 Ainsley
 
-Ainsley is a better (maintainable, self documenting more efficient) way to
-define your stylesheet.
+[![Financial Contributors on Open Collective](https://opencollective.com/ainsley/all/badge.svg?label=financial+contributors)](https://opencollective.com/ainsley)
+![npm](https://img.shields.io/npm/v/ainsley)
+![coverage](/scripts/jest/shield.svg)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/ainsley)
+[![GitHub issues](https://img.shields.io/github/issues/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/issues)
+[![GitHub stars](https://img.shields.io/github/stars/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/stargazers)
+[![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley)
+
+Ainsley is a more efficient way to define your stylesheet.
+
+It promises to let you:
+
+- have an unmatched developer experience
+- use your existing CSS knowledge
+- compress your bytes sent by an order of magnitude
+- serialize your framework as tiny, readable JSON
 
 ```js
 // Define your stylesheet using JavaScript, or JSON
@@ -80,7 +94,83 @@ const minifiedConfig = minify(configWithoutDependencies)
 Ainsley.embed(Ainsley.generate(minifiedConfig /* , options */))
 ```
 
-### Use cases
+## Compression potential
+
+Instead of writing a stylesheet in CSS, you write it in a small JavaScript
+object, which can be optionally serialized as JSON.
+
+The browser receives this small object and recursively compiles it into CSS.
+This compresses it massively.
+
+```none
++==============+ +-------+-----------+------------+
+|    Example   | |    JS | JS-to-CSS | Equivalent |
++==============+ | input |  compiler | CSS output |
++----------------+-------+-----------+------------+
+| minified bytes | 5,094 |     2,751 |    786,877 |
++---+------------+-------+-----------+------------+
+    | TOTAL SENT |             7,845 |    786,877 |
+    +------------+-------------------+------------+
+
+(using default settings with src/configs/examples.baseConfig)
+```
+
+## Comparisons to others
+
+| **Name**      | **Minified** |    **Gzip** |  **Brotli** | **CSS Rules** | **Efficiency\*** |  **Load 1** |  **Load 2** | **Load 3** |
+| :------------ | -----------: | ----------: | ----------: | ------------: | ---------------: | ----------: | ----------: | ---------: |
+| **ainsley**   |  **`7,845`** | **`2,960`** | **`2,619`** |  **`22,809`** |       **`6.36`** | **`4,272`** | **`1,263`** |      `115` |
+| tailwindcss   |    `710,997` |    `97,417` |    `10,199` |      `14,445` |           `0.08` |    `18,031` |     `5,075` |      `183` |
+| tachyons      |     `73,497` |    `13,697` |     `2,421` |       `2,113` |           `0.10` |     `5,606` |     `1,621` |   **`71`** |
+| sane-tachyons |     `49,793` |     `9,200` |     `1,957` |       `1,278` |           `0.08` |     `5,345` |     `1,552` |       `75` |
+| turretcss     |     `93,542` |    `17,025` |     `4,311` |       `1,588` |           `0.06` |           - |           - |          - |
+| solid         |     `82,482` |    `12,585` |     `2,497` |       `1,469` |           `0.06` |           - |           - |          - |
+| basscss       |     `11,326` |     `2,477` |       `589` |         `260` |           `0.07` |           - |           - |          - |
+| bootstrap     |    `159,515` |    `23,681` |     `4,762` |       `2,027` |           `0.05` |           - |           - |          - |
+| bulma         |    `194,420` |    `25,511` |     `5,705` |       `2,142` |           `0.04` |           - |           - |          - |
+| materialize   |    `141,841` |    `21,558` |     `5,579` |       `1,609` |           `0.04` |           - |           - |          - |
+| spectre       |     `45,964` |     `9,631` |     `1,992` |         `638` |           `0.04` |           - |           - |          - |
+| foundation    |    `132,474` |    `17,219` |     `3,471` |       `1,420` |           `0.04` |           - |           - |          - |
+| milligram     |      `8,718` |     `2,295` |       `442` |          `90` |           `0.03` |           - |           - |          - |
+| skeleton      |      `5,879` |     `1,630` |       `356` |          `84` |           `0.04` |           - |           - |          - |
+
+> \* Efficiency here can be thought of as real-world rules per byte.
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute.
+[[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/tbjgolden/ainsley/graphs/contributors"><img src="https://opencollective.com/ainsley/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community.
+[[Contribute](https://opencollective.com/ainsley/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/ainsley"><img src="https://opencollective.com/ainsley/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a
+link to your website.
+[[Contribute](https://opencollective.com/ainsley/contribute)]
+
+<a href="https://opencollective.com/ainsley/organization/0/website"><img src="https://opencollective.com/ainsley/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/1/website"><img src="https://opencollective.com/ainsley/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/2/website"><img src="https://opencollective.com/ainsley/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/3/website"><img src="https://opencollective.com/ainsley/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/4/website"><img src="https://opencollective.com/ainsley/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/5/website"><img src="https://opencollective.com/ainsley/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/6/website"><img src="https://opencollective.com/ainsley/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/7/website"><img src="https://opencollective.com/ainsley/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/8/website"><img src="https://opencollective.com/ainsley/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/ainsley/organization/9/website"><img src="https://opencollective.com/ainsley/organization/9/avatar.svg"></a>
+
+## Use cases
 
 - Write it, translate it using repl, use it as css - easy
 - Webpack config - validate + flatten + minify + embed
@@ -91,57 +181,4 @@ Ainsley.embed(Ainsley.generate(minifiedConfig /* , options */))
 - SASS and wants to migrate - compile to CSS and gradually migrate
 - Explain why no webpack plugin / autoprefixer
 
-<!--
-
-# `ainsley`
-
-[![npm version](https://img.shields.io/npm/v/ainsley.svg?style=flat-square)](https://www.npmjs.com/package/ainsley)
-[![npm downloads](https://img.shields.io/npm/dm/ainsley.svg?style=flat-square)](https://www.npmjs.com/package/ainsley)
-![coverage](/scripts/jest/shield.svg)
-
->
-
-## Basic Usage
-
-```jsx
-import React from 'react'
-import { render } from 'react-dom'
-
-render(, document.getElementById('root'))
-```
-
-## Installation
-
-```
-$ npm install ainsley --save
-```
-
-There are also UMD builds available via [unpkg](https://unpkg.com/):
-
-- https://unpkg.com/ainsley/dist/ainsley.umd.development.js
-- https://unpkg.com/ainsley/dist/ainsley.umd.production.js
-
-For the non-minified development version, make sure you have already included:
-
-- [`React`](https://unpkg.com/react/umd/react.development.js)
-- [`ReactDOM`](https://unpkg.com/react-dom/umd/react-dom.development.js)
-- [`PropTypes`](https://unpkg.com/prop-types/prop-types.js)
-
-For the minified production version, make sure you have already included:
-
-- [`React`](https://unpkg.com/react/umd/react.production.min.js)
-- [`ReactDOM`](https://unpkg.com/react-dom/umd/react-dom.production.min.js)
-
-## [`Docs`](https://tbjgolden.github.io/ainsley/docs)
-
-## [`API`](https://tbjgolden.github.io/ainsley/docs/api)
-
-## Live Examples
-
-- [Basic Usage](https://github.com/tbjgolden/ainsley/tree/master/examples/basic-usage)
-
-## License
-
-MIT
-
--->
+(MIT Licence)

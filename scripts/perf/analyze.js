@@ -2,8 +2,7 @@
 
 const fs = require('fs')
 const path = require('path')
-const { gzip } = require('node-gzip')
-const brotli = require('brotli')
+const zlib = require('zlib')
 
 const input = require('./test')
 
@@ -20,9 +19,6 @@ const analyze = async () => {
   for (const [file, format] of Object.entries(builds)) {
     const filepath = path.join(__dirname, '../../dist', file)
     const contents = fs.readFileSync(filepath, 'utf8')
-
-    console.log(format)
-    console.log(contents.slice(0, 100) + '...\n')
 
     let Ainsley = new Promise(() => {
       //
@@ -48,12 +44,16 @@ const analyze = async () => {
       duration,
       bytes: {
         raw: Buffer.from(contents).byteLength,
-        gzip: (await gzip(contents)).byteLength,
-        brotli: brotli.compress(Buffer.from(contents)).byteLength
+        gzip: zlib.gzipSync(contents).byteLength,
+        brotli: zlib.brotliCompressSync(contents).byteLength
       }
     }
   }
   return results
 }
 
-analyze().then(console.log)
+if (require.main === module) {
+  analyze().then((result) => console.log(JSON.stringify(result)))
+}
+
+module.exports = analyze

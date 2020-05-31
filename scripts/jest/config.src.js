@@ -4,6 +4,7 @@ module.exports = {
     'src/**/*.{ts,tsx}',
     '!src/ainsley.client.ts',
     '!src/ainsley.ts',
+    '!src/**/*.d.ts',
     '!src/configs/**/*.ts',
     '!src/**/*.spec.{ts,tsx}',
     '!src/**/*.stories.{ts,tsx}'
