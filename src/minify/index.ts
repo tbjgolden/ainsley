@@ -1,8 +1,18 @@
 import copy from 'fast-copy'
-import csso from 'csso'
 import { Ainsley, AinsleyChildren, AinsleyVariableMap } from '../types'
 import { validate } from '../validate'
 import { isObject } from '../utils'
+
+// Using any as csso doesn't expose it's types
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let csso: any = undefined
+import('csso')
+  .then(({ default: _csso }) => {
+    csso = _csso
+  })
+  .catch(() => {
+    //
+  })
 
 /*
 TODOs:
@@ -165,7 +175,13 @@ const minifyRaw = (rawCSS: string) => {
   try {
     return csso.minify(rawCSS).css
   } catch (error) {
-    console.error(error)
+    if (csso && csso.minify) {
+      console.error(error)
+    } else {
+      console.warn(
+        '`csso` - an optional dependency - is not installed; inline CSS will not be minified'
+      )
+    }
     return rawCSS
   }
 }

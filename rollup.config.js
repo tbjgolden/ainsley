@@ -2,7 +2,6 @@ import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
 import nodeResolve from 'rollup-plugin-node-resolve'
 import replace from 'rollup-plugin-replace'
-import { sizeSnapshot } from 'rollup-plugin-size-snapshot'
 import sourcemaps from 'rollup-plugin-sourcemaps'
 import { terser } from 'rollup-plugin-terser'
 
@@ -13,7 +12,8 @@ import pkg from './package.json'
 const inputs = ['./compiled/ainsley.js', './compiled/ainsley.client.js']
 
 const knownDependencyNames = {
-  'isomorphic-unfetch': 'fetch'
+  'isomorphic-unfetch': 'fetch',
+  'csso': 'csso'
 }
 
 const kebabToPascal = (kebab) => {
@@ -35,9 +35,12 @@ const kebabToPascal = (kebab) => {
 
 const getRoot = (input) => input.slice(input.lastIndexOf('/') + 1, -3)
 
-const getGlobals = (bundleType) =>
-  ['UMD_DEV', 'IIFE_PROD'].includes(bundleType)
-    ? Object.keys(pkg.peerDependencies || {}).reduce(
+const getGlobals = (bundleType) => {
+  const optionalDependencies = Object.keys(pkg.optionalDependencies || {})
+  const peerDependencies = Object.keys(pkg.peerDependencies || {})
+
+  return ['UMD_DEV', 'IIFE_PROD'].includes(bundleType)
+    ? [...peerDependencies, ...optionalDependencies].reduce(
         (dependencyNameMap, npmDependency) => ({
           ...dependencyNameMap,
           [npmDependency]:
@@ -46,8 +49,10 @@ const getGlobals = (bundleType) =>
         {}
       )
     : {}
+}
 
 const getExternal = (bundleType) => {
+  const optionalDependencies = Object.keys(pkg.optionalDependencies || {})
   const peerDependencies = Object.keys(pkg.peerDependencies || {})
   const dependencies = Object.keys(pkg.dependencies)
 
@@ -64,9 +69,16 @@ const getExternal = (bundleType) => {
     case 'CJS_DEV':
     case 'CJS_PROD':
     case 'ES':
-      return makeExternalPredicate([...peerDependencies, ...dependencies])
+      return makeExternalPredicate([
+        ...optionalDependencies,
+        ...peerDependencies,
+        ...dependencies
+      ])
     default:
-      return makeExternalPredicate(peerDependencies)
+      return makeExternalPredicate([
+        ...optionalDependencies,
+        ...peerDependencies
+      ])
   }
 }
 
@@ -91,7 +103,6 @@ const getPlugins = (bundleType) => [
       : '"development"'
   }),
   sourcemaps(),
-  sizeSnapshot(),
   isProduction(bundleType) &&
     terser({
       output: { comments: false },
@@ -114,6 +125,7 @@ const getPlugins = (bundleType) => [
 const getCjsConfig = (input, bundleType) => ({
   input,
   external: getExternal(bundleType),
+  inlineDynamicImports: true,
   output: {
     file: `dist/${getRoot(input)}.cjs.${
       isProduction(bundleType) ? 'production' : 'development'
@@ -127,6 +139,7 @@ const getCjsConfig = (input, bundleType) => ({
 const getEsConfig = (input) => ({
   input,
   external: getExternal('ES'),
+  inlineDynamicImports: true,
   output: {
     file: `dist/${getRoot(input)}.esm.js`,
     format: 'es',
@@ -138,6 +151,7 @@ const getEsConfig = (input) => ({
 const getUmdConfig = (input, bundleType) => ({
   input,
   external: getExternal(bundleType),
+  inlineDynamicImports: true,
   output: {
     file: `dist/${getRoot(input)}.development.js`,
     format: 'umd',
@@ -151,6 +165,7 @@ const getUmdConfig = (input, bundleType) => ({
 const getIifeConfig = (input, bundleType) => ({
   input,
   external: getExternal(bundleType),
+  inlineDynamicImports: true,
   output: {
     file: `dist/${getRoot(input)}.production.js`,
     format: 'iife',

@@ -3,11 +3,11 @@
   "version": "0.0.0-semantically-released",
   "description": "👨🏾‍🍳 Ainsley is to CSS what Markdown is to HTML",
   "main": "dist/index.js",
-  "module": "dist/ainsley.esm.client.js",
-  "jsnext:main": "dist/ainsley.esm.client.js",
+  "module": "dist/ainsley.esm.js",
+  "jsnext:main": "dist/ainsley.esm.js",
   "browser": {
     "./dist/index.js": "./dist/index.js",
-    "./dist/ainsley.esm.client.js": "./dist/ainsley.esm.client.js"
+    "./dist/ainsley.esm.js": "./dist/ainsley.esm.js"
   },
   "typings": "dist/index.d.ts",
   "files": [
@@ -57,8 +57,10 @@
   "homepage": "github:tbjgolden/ainsley",
   "dependencies": {
     "@babel/runtime": "^7.7.7",
-    "csso": "^4.0.3",
     "fast-copy": "^2.0.5"
+  },
+  "optionalDependencies": {
+    "csso": "^4.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
