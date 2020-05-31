@@ -105,7 +105,7 @@ const getPlugins = (bundleType) => [
   sourcemaps(),
   isProduction(bundleType) &&
     terser({
-      output: { comments: false },
+      output: { comments: /^!/ },
       compress: {
         unsafe: true,
         keep_infinity: true,
@@ -122,6 +122,9 @@ const getPlugins = (bundleType) => [
     })
 ]
 
+const shortBanner = `/*! ainsley MIT @tbjgolden */`
+const longBanner = `/*! ainsley | MIT License | @tbjgolden | tom.bio */`
+
 const getCjsConfig = (input, bundleType) => ({
   input,
   external: getExternal(bundleType),
@@ -131,6 +134,7 @@ const getCjsConfig = (input, bundleType) => ({
       isProduction(bundleType) ? 'production' : 'development'
     }.js`,
     format: 'cjs',
+    banner: longBanner,
     sourcemap: true
   },
   plugins: getPlugins(bundleType)
@@ -143,6 +147,7 @@ const getEsConfig = (input) => ({
   output: {
     file: `dist/${getRoot(input)}.esm.js`,
     format: 'es',
+    banner: longBanner,
     sourcemap: true
   },
   plugins: getPlugins('ES')
@@ -157,6 +162,7 @@ const getUmdConfig = (input, bundleType) => ({
     format: 'umd',
     globals: getGlobals(bundleType),
     name: 'Ainsley',
+    banner: longBanner,
     sourcemap: true
   },
   plugins: getPlugins(bundleType)
@@ -171,6 +177,7 @@ const getIifeConfig = (input, bundleType) => ({
     format: 'iife',
     globals: getGlobals(bundleType),
     name: 'Ainsley',
+    banner: shortBanner,
     sourcemap: true
   },
   plugins: getPlugins(bundleType)
