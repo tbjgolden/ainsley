@@ -36,6 +36,8 @@ describe('compiler', () => {
       }
     }
 
+    console.log(bytes)
+
     expect(bytes.compiler.raw + bytes.input.raw).toBeLessThan(bytes.output.raw)
     expect(bytes.compiler.gzip + bytes.input.gzip).toBeLessThan(
       bytes.output.gzip
