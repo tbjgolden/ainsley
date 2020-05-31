@@ -123,6 +123,13 @@
     "typedoc-plugin-markdown": "^2.2.17",
     "typescript": "3.9.3"
   },
+  "browserslist": [
+    "last 3 chrome versions and last 1 year",
+    "last 2 and_chr versions",
+    "last 2 safari versions and last 1 year",
+    "last 4 ios_saf versions and last 2 years",
+    "last 3 firefox versions"
+  ],
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"

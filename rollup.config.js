@@ -36,7 +36,7 @@ const kebabToPascal = (kebab) => {
 const getRoot = (input) => input.slice(input.lastIndexOf('/') + 1, -3)
 
 const getGlobals = (bundleType) =>
-  ['UMD_DEV', 'UMD_PROD'].includes(bundleType)
+  ['UMD_DEV', 'IIFE_PROD'].includes(bundleType)
     ? Object.keys(pkg.peerDependencies || {}).reduce(
         (dependencyNameMap, npmDependency) => ({
           ...dependencyNameMap,
@@ -96,11 +96,17 @@ const getPlugins = (bundleType) => [
     terser({
       output: { comments: false },
       compress: {
+        unsafe: true,
         keep_infinity: true,
         pure_getters: true
       },
+      mangle: {
+        properties: {
+          regex: /^\$/
+        }
+      },
       warnings: true,
-      ecma: 5,
+      ecma: 2019,
       toplevel: false
     })
 ]
@@ -122,7 +128,7 @@ const getEsConfig = (input) => ({
   input,
   external: getExternal('ES'),
   output: {
-    file: pkg.module,
+    file: `dist/${getRoot(input)}.esm.js`,
     format: 'es',
     sourcemap: true
   },
@@ -133,10 +139,21 @@ const getUmdConfig = (input, bundleType) => ({
   input,
   external: getExternal(bundleType),
   output: {
-    file: `dist/${getRoot(input)}.umd.${
-      isProduction(bundleType) ? 'production' : 'development'
-    }.js`,
+    file: `dist/${getRoot(input)}.development.js`,
     format: 'umd',
+    globals: getGlobals(bundleType),
+    name: 'Ainsley',
+    sourcemap: true
+  },
+  plugins: getPlugins(bundleType)
+})
+
+const getIifeConfig = (input, bundleType) => ({
+  input,
+  external: getExternal(bundleType),
+  output: {
+    file: `dist/${getRoot(input)}.production.js`,
+    format: 'iife',
     globals: getGlobals(bundleType),
     name: 'Ainsley',
     sourcemap: true
@@ -153,7 +170,7 @@ export default inputs
       : [getCjsConfig(input, 'CJS_DEV'), getCjsConfig(input, 'CJS_PROD')]),
     // if browser isn't in package.json, skip umd builds
     ...(pkg.browser
-      ? [getUmdConfig(input, 'UMD_DEV'), getUmdConfig(input, 'UMD_PROD')]
+      ? [getUmdConfig(input, 'UMD_DEV'), getIifeConfig(input, 'IIFE_PROD')]
       : [])
   ])
   .flat()
