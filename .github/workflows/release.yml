@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'package.json'
+      - 'yarn.lock'
+      - 'rollup.config.js'
+      - 'src/**'
 
 jobs:
   release:
