@@ -135,6 +135,16 @@ This compresses it massively.
 | milligram     |      `8,718` |     `2,295` |       `442` |          `90` |             `0.20` |
 | skeleton      |      `5,879` |     `1,630` |       `356` |          `84` |             `0.24` |
 
+## Ideas for ways to use it
+
+- Use the interactive online tool to fetch configs and flatten
+- Use Webpack with `ainsley-loader` to write your config in a `.ainsley` file
+- Use the Babel macro `ainsley/macro` for toolchains that don't allow Webpack
+  config modifications (e.g. Create React App, Next.js, Gatsby)
+- Using a framework without Babel macros - use embed directly
+- Moving a project from CSS to `ainsley` - embed and gradually migrate
+- Moving a project from SASS to `ainsley` - compile, embed and gradually migrate
+
 ## Contributors
 
 ### Code Contributors
@@ -145,26 +155,9 @@ This project exists thanks to all the people who contribute.
 
 ### Contribute
 
-[[Contribute](https://opencollective.com/ainsley/contribute)]
+I didn't make this project to make money, but donating helps keep projects like
+this maintained properly.
+[Contribute](https://opencollective.com/ainsley/contribute)
 
-<a href="https://opencollective.com/ainsley"><img src="https://opencollective.com/ainsley/individuals.svg?width=890"></a>
-<a href="https://opencollective.com/ainsley/organization/0/website"><img src="https://opencollective.com/ainsley/organization/0/avatar.svg"></a>
-<a href="https://opencollective.com/ainsley/organization/1/website"><img src="https://opencollective.com/ainsley/organization/1/avatar.svg"></a>
-<a href="https://opencollective.com/ainsley/organization/2/website"><img src="https://opencollective.com/ainsley/organization/2/avatar.svg"></a>
-<a href="https://opencollective.com/ainsley/organization/3/website"><img src="https://opencollective.com/ainsley/organization/3/avatar.svg"></a>
-<a href="https://opencollective.com/ainsley/organization/4/website"><img src="https://opencollective.com/ainsley/organization/4/avatar.svg"></a>
-<a href="https://opencollective.com/ainsley/organization/5/website"><img src="https://opencollective.com/ainsley/organization/5/avatar.svg"></a>
-<a href="https://opencollective.com/ainsley/organization/6/website"><img src="https://opencollective.com/ainsley/organization/6/avatar.svg"></a>
-<a href="https://opencollective.com/ainsley/organization/7/website"><img src="https://opencollective.com/ainsley/organization/7/avatar.svg"></a>
-<a href="https://opencollective.com/ainsley/organization/8/website"><img src="https://opencollective.com/ainsley/organization/8/avatar.svg"></a>
-<a href="https://opencollective.com/ainsley/organization/9/website"><img src="https://opencollective.com/ainsley/organization/9/avatar.svg"></a>
-
-## Ideas for ways to use it
-
-- Use the interactive online tool to fetch configs and flatten
-- Use Webpack with `ainsley-loader` to write your config in a `.ainsley` file
-- Use the Babel macro `ainsley/macro` for toolchains that don't allow Webpack
-  config modifications (e.g. Create React App, Next.js, Gatsby)
-- Using a framework without Babel macros - use embed directly
-- Moving a project from CSS to `ainsley` - embed and gradually migrate
-- Moving a project from SASS to `ainsley` - compile, embed and gradually migrate
+Or perhaps you might like to donate to
+[a top rated charity instead](https://www.givewell.org/charities/top-charities).
