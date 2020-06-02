@@ -1,7 +1,7 @@
 # 👨🏾‍🍳 `ainsley`
 
 ![npm](https://img.shields.io/npm/v/ainsley?style=flat-square)
-
+![Coveralls github](https://img.shields.io/coveralls/github/tbjgolden/ainsley?style=flat-square)
 [![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley?style=flat-square)](https://github.com/tbjgolden/ainsley)
 
 `ainsley` is a more efficient way to define your stylesheet.

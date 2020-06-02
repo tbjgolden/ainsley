@@ -1,10 +1,13 @@
-on: ['push', 'pull_request']
+name: Coveralls
 
-name: Test Coveralls Parallel
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  build:
-    name: Build
+  coverage:
+    name: Coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -14,20 +17,14 @@ jobs:
         with:
           node-version: 12.x
 
-      - name: npm install, make test-coverage
-        run: |
-          npm install
-          npm run test
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run Tests
+        run: yarn test:src
 
       - name: Coveralls Parallel
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
           path-to-lcov: ./coverage/lcov.info
-
-      - name: Coveralls Finished
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel-finished: true
