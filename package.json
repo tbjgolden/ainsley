@@ -3,16 +3,17 @@
   "version": "0.0.0-semantically-released",
   "description": "👨🏾‍🍳 Ainsley is to CSS what Markdown is to HTML",
   "sideEffects": false,
-  "main": "dist/index.js",
+  "main": "dist/ainsley.js",
   "module": "dist/ainsley.mjs",
   "jsnext:main": "dist/ainsley.mjs",
   "browser": {
-    "./dist/index.js": "./dist/index.js",
+    "./dist/ainsley.js": "./dist/ainsley.js",
     "./dist/ainsley.mjs": "./dist/ainsley.mjs"
   },
   "typings": "dist/ainsley.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "macro.js"
   ],
   "scripts": {
     "build": "run-s clean compile bundle",
@@ -27,7 +28,7 @@
     "format": "prettier --write \"*.{js,ts,tsx}\"",
     "lint": "eslint . --ext .ts,.tsx",
     "postinstall": "npx patch-package",
-    "postbundle": "del compiled && cp-cli ./index.js ./dist/index.js",
+    "postbundle": "del compiled",
     "start": "node scripts/startTDD.js && yarn test:src --watch",
     "test": "run-s check:* lint build test:* && node scripts/jest/generateShield.js",
     "test:cjs": "jest --config ./scripts/jest/config.cjs.js",
@@ -59,7 +60,10 @@
   "homepage": "github:tbjgolden/ainsley",
   "dependencies": {
     "@babel/runtime": "^7.7.7",
-    "fast-copy": "^2.0.5"
+    "babel-plugin-macros": "^2.8.0",
+    "do-sync": "^2.2.0",
+    "fast-copy": "^2.0.5",
+    "json5": "^2.1.3"
   },
   "optionalDependencies": {
     "csso": "^4.0.3"
@@ -75,8 +79,10 @@
     "@rollup/plugin-json": "^4.0.3",
     "@testing-library/jest-dom": "^5.8.0",
     "@testing-library/react": "^10.0.4",
+    "@types/babel-plugin-macros": "^2.8.2",
     "@types/csso": "^3.5.1",
     "@types/jest": "25.2.3",
+    "@types/json5": "^0.0.30",
     "@types/node-fetch": "^2.5.7",
     "@types/react": "16.9.35",
     "@types/react-dom": "16.9.8",

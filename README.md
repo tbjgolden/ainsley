@@ -82,15 +82,15 @@ const ainsley = {
 
 // flatten replaces external dependencies with their contents
 // (i.e. CSS/JSON urls, configs)
-// 💞 ➡ ❤️
-const configWithoutDependencies = flatten(ainsley)
+// 💞 ➡ 💖
+const configWithoutDependencies = await flatten(ainsley)
 // minify generates a config which is designed to use less bytes
 // after it has been compressed; this is how it should be sent to the client
-// ❤️ ➡ 💌
+// 💖 ➡ 💌
 const minifiedConfig = minify(configWithoutDependencies)
 
 // (ON THE CLIENT) to generate CSS, and embed it into the page
-// 💌 ➡ ❤️🧡💛💚💙💜
+// 💌 ➡ 🧡💛💚💙💜
 Ainsley.embed(Ainsley.generate(minifiedConfig /* , options */))
 ```
 
@@ -146,21 +146,11 @@ This project exists thanks to all the people who contribute.
 [[Contribute](CONTRIBUTING.md)].
 <a href="https://github.com/tbjgolden/ainsley/graphs/contributors"><img src="https://opencollective.com/ainsley/contributors.svg?width=890&button=false" /></a>
 
-### Financial Contributors
+### Contribute
 
-Become a financial contributor and help us sustain our community.
 [[Contribute](https://opencollective.com/ainsley/contribute)]
-
-#### Individuals
 
 <a href="https://opencollective.com/ainsley"><img src="https://opencollective.com/ainsley/individuals.svg?width=890"></a>
-
-#### Organizations
-
-Support this project with your organization. Your logo will show up here with a
-link to your website.
-[[Contribute](https://opencollective.com/ainsley/contribute)]
-
 <a href="https://opencollective.com/ainsley/organization/0/website"><img src="https://opencollective.com/ainsley/organization/0/avatar.svg"></a>
 <a href="https://opencollective.com/ainsley/organization/1/website"><img src="https://opencollective.com/ainsley/organization/1/avatar.svg"></a>
 <a href="https://opencollective.com/ainsley/organization/2/website"><img src="https://opencollective.com/ainsley/organization/2/avatar.svg"></a>
@@ -174,7 +164,7 @@ link to your website.
 
 ## Use cases
 
-- Write it, translate it using repl, use it as css - easy
+- Write it, import and minify using repl, use it as css - easy
 - Webpack config - validate + flatten + minify + embed
 - CRA/SSG (locked Webpack config) - use babel macros
 - Babel macros - // @preval file comment

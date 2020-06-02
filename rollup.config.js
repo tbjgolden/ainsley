@@ -9,7 +9,7 @@ import json from '@rollup/plugin-json'
 
 import pkg from './package.json'
 
-const inputs = ['./compiled/ainsley.js', './compiled/ainsley.client.js']
+const inputs = ['./compiled/index.js', './compiled/index.client.js']
 
 const knownDependencyNames = {
   'isomorphic-unfetch': 'fetch',
@@ -33,7 +33,12 @@ const kebabToPascal = (kebab) => {
   return pascal
 }
 
-const getRoot = (input) => input.slice(input.lastIndexOf('/') + 1, -3)
+const getRoot = (input) =>
+  ({
+    './compiled/index.js': 'ainsley',
+    './compiled/index.client.js': 'ainsley.client',
+    './compiled/macro/index.js': 'macro/index'
+  }[input])
 
 const getGlobals = (bundleType) => {
   const optionalDependencies = Object.keys(pkg.optionalDependencies || {})
@@ -66,8 +71,7 @@ const getExternal = (bundleType) => {
   }
 
   switch (bundleType) {
-    case 'CJS_DEV':
-    case 'CJS_PROD':
+    case 'CJS':
     case 'ES':
       return makeExternalPredicate([
         ...optionalDependencies,
@@ -85,7 +89,9 @@ const getExternal = (bundleType) => {
 const isProduction = (bundleType) => bundleType.endsWith('_PROD')
 
 const getPlugins = (bundleType) => [
-  nodeResolve(),
+  nodeResolve({
+    preferBuiltins: true
+  }),
   commonjs({
     include: 'node_modules/**'
   }),
@@ -125,19 +131,17 @@ const getPlugins = (bundleType) => [
 const shortBanner = `/*! ainsley MIT @tbjgolden */`
 const longBanner = `/*! ainsley | MIT License | @tbjgolden | tom.bio */`
 
-const getCjsConfig = (input, bundleType) => ({
+const getCjsConfig = (input) => ({
   input,
-  external: getExternal(bundleType),
+  external: getExternal('CJS'),
   inlineDynamicImports: true,
   output: {
-    file: `dist/${getRoot(input)}.cjs.${
-      isProduction(bundleType) ? 'production' : 'development'
-    }.js`,
+    file: `dist/${getRoot(input)}.js`,
     format: 'cjs',
     banner: longBanner,
     sourcemap: true
   },
-  plugins: getPlugins(bundleType)
+  plugins: getPlugins('CJS')
 })
 
 const getEsConfig = (input) => ({
@@ -183,16 +187,17 @@ const getIifeConfig = (input, bundleType) => ({
   plugins: getPlugins(bundleType)
 })
 
-export default inputs
-  .map((input) => [
-    getEsConfig(input),
-    // if client is in the url, skip cjs builds
-    ...(input.includes('.client.')
-      ? []
-      : [getCjsConfig(input, 'CJS_DEV'), getCjsConfig(input, 'CJS_PROD')]),
-    // if browser isn't in package.json, skip umd builds
-    ...(pkg.browser
-      ? [getUmdConfig(input, 'UMD_DEV'), getIifeConfig(input, 'IIFE_PROD')]
-      : [])
-  ])
-  .flat()
+export default [
+  ...inputs
+    .map((input) => [
+      getEsConfig(input),
+      // if client is in the url, skip cjs builds
+      ...(input.includes('.client.') ? [] : [getCjsConfig(input)]),
+      // if browser isn't in package.json, skip umd builds
+      ...(pkg.browser
+        ? [getUmdConfig(input, 'UMD_DEV'), getIifeConfig(input, 'IIFE_PROD')]
+        : [])
+    ])
+    .flat(),
+  getCjsConfig('./compiled/macro/index.js', 'CJS_DEV')
+]

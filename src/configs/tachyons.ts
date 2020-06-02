@@ -6,7 +6,7 @@ import {
   AinsleyVariations,
   AinsleyChildren,
   AinsleyGenerateOptions
-} from '../ainsley'
+} from '..'
 
 const addToSelector = (selector: string, abbreviation: string): string => {
   let nextAmp = selector.indexOf('&')

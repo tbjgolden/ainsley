@@ -11,7 +11,7 @@ const builds = {
   'ainsley.client.mjs': 'esm',
   'ainsley.client.development.js': 'umd',
   'ainsley.client.production.js': 'iife',
-  'ainsley.cjs.production.js': 'cjs'
+  'ainsley.js': 'cjs'
 }
 
 const analyze = async () => {

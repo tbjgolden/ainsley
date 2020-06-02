@@ -1,4 +1,4 @@
-export * from './ainsley.client'
+export * from './index.client'
 
 export * from './flatten'
 export * from './minify'
