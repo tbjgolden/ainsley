@@ -1,8 +1,9 @@
 # 👨🏾‍🍳 `ainsley`
 
 ![npm](https://img.shields.io/npm/v/ainsley?style=flat-square)
-![Coveralls github](https://img.shields.io/coveralls/github/tbjgolden/ainsley?style=flat-square)
-[![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley?style=flat-square)](https://github.com/tbjgolden/ainsley)
+![Coveralls Github](https://img.shields.io/coveralls/github/tbjgolden/ainsley?style=flat-square)
+[![GitHub License](https://img.shields.io/github/license/tbjgolden/ainsley?style=flat-square)](https://github.com/tbjgolden/ainsley)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/tbjgolden/ainsley/Release?style=flat-square)
 
 `ainsley` is a more efficient way to define your stylesheet.
 
