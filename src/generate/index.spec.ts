@@ -92,7 +92,7 @@ describe('compiler', () => {
     )
   })
 
-  test('compiles complex ainsley successfully and under 100ms', () => {
+  test('compiles complex ainsley successfully and under 200ms', () => {
     const gen = () =>
       generate(
         {
@@ -433,7 +433,7 @@ describe('compiler', () => {
     const runs = 5
     const startTime = Date.now()
     for (let i = 0; i < 5; i++) gen()
-    expect(Date.now() - startTime).toBeLessThan(runs * 100)
+    expect(Date.now() - startTime).toBeLessThan(runs * 200)
   })
 
   test('compiles ainsley with nested at rules', () => {
