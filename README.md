@@ -1,14 +1,10 @@
-# 👨🏾‍🍳 Ainsley
+# 👨🏾‍🍳 `ainsley`
 
-[![Financial Contributors on Open Collective](https://opencollective.com/ainsley/all/badge.svg?label=financial+contributors)](https://opencollective.com/ainsley)
-![npm](https://img.shields.io/npm/v/ainsley)
-![coverage](/scripts/jest/shield.svg)
-![npm bundle size](https://img.shields.io/bundlephobia/minzip/ainsley)
-[![GitHub issues](https://img.shields.io/github/issues/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/issues)
-[![GitHub stars](https://img.shields.io/github/stars/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley/stargazers)
-[![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley)](https://github.com/tbjgolden/ainsley)
+![npm](https://img.shields.io/npm/v/ainsley?style=flat-square)
 
-Ainsley is a more efficient way to define your stylesheet.
+[![GitHub license](https://img.shields.io/github/license/tbjgolden/ainsley?style=flat-square)](https://github.com/tbjgolden/ainsley)
+
+`ainsley` is a more efficient way to define your stylesheet.
 
 It promises to let you:
 
@@ -162,15 +158,12 @@ This project exists thanks to all the people who contribute.
 <a href="https://opencollective.com/ainsley/organization/8/website"><img src="https://opencollective.com/ainsley/organization/8/avatar.svg"></a>
 <a href="https://opencollective.com/ainsley/organization/9/website"><img src="https://opencollective.com/ainsley/organization/9/avatar.svg"></a>
 
-## Use cases
+## Ideas for ways to use it
 
-- Write it, import and minify using repl, use it as css - easy
-- Webpack config - validate + flatten + minify + embed
-- CRA/SSG (locked Webpack config) - use babel macros
-- Babel macros - // @preval file comment
-- Using a framework without babel macros - use embed directly
-- CSS and wants to migrate - embed as string, and gradually migrate
-- SASS and wants to migrate - compile to CSS and gradually migrate
-- Explain why no webpack plugin / autoprefixer
-
-(MIT Licence)
+- Use the interactive online tool to fetch configs and flatten
+- Use Webpack with `ainsley-loader` to write your config in a `.ainsley` file
+- Use the Babel macro `ainsley/macro` for toolchains that don't allow Webpack
+  config modifications (e.g. Create React App, Next.js, Gatsby)
+- Using a framework without Babel macros - use embed directly
+- Moving a project from CSS to `ainsley` - embed and gradually migrate
+- Moving a project from SASS to `ainsley` - compile, embed and gradually migrate
