@@ -145,19 +145,27 @@ This compresses it massively.
 - Moving a project from CSS to `ainsley` - embed and gradually migrate
 - Moving a project from SASS to `ainsley` - compile, embed and gradually migrate
 
-## Contributors
+<!--
+# Roadmap
 
-### Code Contributors
-
-This project exists thanks to all the people who contribute.
-[[Contribute](CONTRIBUTING.md)].
-<a href="https://github.com/tbjgolden/ainsley/graphs/contributors"><img src="https://opencollective.com/ainsley/contributors.svg?width=890&button=false" /></a>
+- [ ] mangle variables in minify
+- [ ] get repl to somehow import configs
+- [ ] create some configs
+- [ ] improved syntax for same val as key
+- [ ] make it possible to use variables in properties
+- [ ] make it possible to use properties as variables
+  - circular dependency problem?
+- [ ] better array nesting in rules?
+-->
 
 ### Contribute
 
-I didn't make this project to make money, but donating helps keep projects like
-this maintained properly.
+If you'd like to help, send me a message! 👨🏾‍🍳
+
+I didn't make this project to make money, but donating can help keep projects
+like this maintained properly.
 [Contribute](https://opencollective.com/ainsley/contribute)
 
 Or perhaps you might like to donate to
-[a top rated charity instead](https://www.givewell.org/charities/top-charities).
+[a top rated charity instead](https://www.givewell.org/charities/top-charities)
+(they need the money more!)
