@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/workflows/release.yml'
       - 'package.json'
       - 'yarn.lock'
       - 'rollup.config.js'
