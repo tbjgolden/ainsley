@@ -40,7 +40,7 @@ export const flatten = async (
 
 export const defaultGetConfig = async (ref: string): Promise<AinsleyChild> => {
   try {
-    return require(`ainsley-config-${ref}`).config
+    return (await import(`ainsley-config-${ref}`)).config
   } catch (err) {
     try {
       const url = new URL(ref)

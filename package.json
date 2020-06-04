@@ -10,7 +10,7 @@
     "./dist/ainsley.js": "./dist/ainsley.js",
     "./dist/ainsley.mjs": "./dist/ainsley.mjs"
   },
-  "typings": "dist/ainsley.d.ts",
+  "typings": "dist/index.d.ts",
   "files": [
     "dist",
     "macro.js"
