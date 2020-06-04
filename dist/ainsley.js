@@ -7539,7 +7539,7 @@ const defaultGetConfig = async ref => {
   var _a;
 
   try {
-    return require(`ainsley-config-${ref}`).config;
+    return (await Promise.resolve().then(function () { return _interopNamespace(require(`ainsley-config-${ref}`)); })).config;
   } catch (err) {
     try {
       const url = new URL(ref);

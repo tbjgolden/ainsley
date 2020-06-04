@@ -7847,7 +7847,7 @@
       var _a;
 
       try {
-        return require(`ainsley-config-${ref}`).config;
+        return (await import(`ainsley-config-${ref}`)).config;
       } catch (err) {
         try {
           const url = new URL(ref);
