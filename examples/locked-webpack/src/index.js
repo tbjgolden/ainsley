@@ -6,7 +6,7 @@ import getAinsley from 'ainsley/macro'
 import App from './App'
 
 embed(generate(getAinsley('styles.ainsley')))
-document.body.style.display = ''
+document.body.style.visibility = ''
 
 ReactDOM.render(
   <React.StrictMode>

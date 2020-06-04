@@ -24,7 +24,7 @@ const Home = () => {
                 'button button--outline button--secondary button--lg',
                 styles.getStarted
               )}
-              to={useBaseUrl('docs/doc1')}
+              to={useBaseUrl('docs/index')}
             >
               Get Started
             </Link>

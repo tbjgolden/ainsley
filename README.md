@@ -141,7 +141,7 @@ This compresses it massively.
 - Use Webpack with `ainsley-loader` to write your config in a `.ainsley` file
 - Use the Babel macro `ainsley/macro` for toolchains that don't allow Webpack
   config modifications (e.g. Create React App, Next.js, Gatsby)
-- Using a framework without Babel macros - use embed directly
+- Write it in JavaScript and unit test it
 - Moving a project from CSS to `ainsley` - embed and gradually migrate
 - Moving a project from SASS to `ainsley` - compile, embed and gradually migrate
 

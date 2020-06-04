@@ -11,7 +11,7 @@ module.exports = {
       title: '👨🏾‍🍳\xa0\xa0ainsley',
       links: [
         {
-          to: 'docs/doc1',
+          to: 'docs/intro',
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'left'
