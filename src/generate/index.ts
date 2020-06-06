@@ -129,7 +129,7 @@ const ainsleyToAst = (
       const modAndBase = parseVariable(variable)
       const mod = modAndBase[0]
       const base = modAndBase[1]
-      if (mod === 0) {
+      if (mod === 0 || (mod === 1 && newVariables[base] === undefined)) {
         newVariables[base] = variables[variable]
       } else if (mod === 2) {
         newVariables[base] = {
@@ -210,6 +210,11 @@ const ainsleyRuleToAst = (
       const iterator = iteratorAndType[0]
       const location = iteratorAndType[1]
       const variableName = iterator.slice(1, -1)
+
+      if (!(variableName in variables)) {
+        console.log(variables, variableName)
+      }
+
       return Object.keys(variables[variableName]).map(
         (abbreviation: string): AinsleyGenerateIteratorContext => [
           iterator,

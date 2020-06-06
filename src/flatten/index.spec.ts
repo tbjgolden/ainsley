@@ -2,6 +2,16 @@ import { Ainsley, AinsleyChild } from '../types'
 import { flatten } from '.'
 
 describe('flatten', () => {
+  test('invalid config', async () => {
+    await flatten((null as unknown) as Ainsley)
+      .then(() => {
+        expect(1).toBe(2)
+      })
+      .catch((err) => {
+        expect(err.message).toMatch(/^Invalid input Ainsley:/)
+      })
+  })
+
   test('mock getConfig', async () => {
     const start: Ainsley = {
       children: ['$not-a-real-config', 'body{margin:0}']
