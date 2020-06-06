@@ -135,7 +135,7 @@ const ainsleyToAst = (ainsley, options, inheritedVariables) => {
       const mod = modAndBase[0];
       const base = modAndBase[1];
 
-      if (mod === 0) {
+      if (mod === 0 || mod === 1 && newVariables[base] === undefined) {
         newVariables[base] = variables[variable];
       } else if (mod === 2) {
         newVariables[base] = { ...((_a = inheritedVariables[base]) !== null && _a !== void 0 ? _a : {}),
@@ -148,23 +148,10 @@ const ainsleyToAst = (ainsley, options, inheritedVariables) => {
 
   const rulesListWithoutVariations = ainsley.children === undefined ? [] : ainsleyChildrenToAst(ainsley.children, options, newVariables); // lastly, multiply ast with variations
 
-  const rulesList = combinations(((_a = ainsley.variations) !== null && _a !== void 0 ? _a : []).map(variationSet => [['', '']].concat(variationSet))).flatMap(variations => {
-    return rulesListWithoutVariations.map(ainsleyASTNode => {
-      if (typeof ainsleyASTNode.$content === 'string' || Array.isArray(ainsleyASTNode.$content)) {
-        const ainsleyFlatASTNode = ainsleyASTNode;
-        return {
-          $variations: [...variations, ...ainsleyFlatASTNode.$variations],
-          $content: ainsleyFlatASTNode.$content
-        };
-      } else {
-        const ainsleyNestedASTNode = ainsleyASTNode;
-        return {
-          $variations: [...variations, ...ainsleyNestedASTNode.$variations],
-          $content: ainsleyNestedASTNode.$content.$content
-        };
-      }
-    });
-  });
+  const rulesList = combinations(((_a = ainsley.variations) !== null && _a !== void 0 ? _a : []).map(variationSet => [['', '']].concat(variationSet))).flatMap(variations => rulesListWithoutVariations.map(ainsleyASTNode => ({
+    $variations: [...variations, ...ainsleyASTNode.$variations],
+    $content: ainsleyASTNode.$content
+  })));
   return rulesList;
 };
 
@@ -201,6 +188,11 @@ const ainsleyRuleToAst = (ainsleyRule, options, variables) => {
     const iterator = iteratorAndType[0];
     const location = iteratorAndType[1];
     const variableName = iterator.slice(1, -1);
+
+    if (!(variableName in variables)) {
+      console.log(variables, variableName);
+    }
+
     return Object.keys(variables[variableName]).map(abbreviation => [iterator, abbreviation, variables[variableName][abbreviation], location]);
   })).map(combination => {
     let combinationIndex = 0;
