@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - '.github/workflows/release.yml'
-      - 'package.json'
-      - 'yarn.lock'
-      - 'rollup.config.js'
-      - 'src/**'
 
 jobs:
   release:
