@@ -138,7 +138,7 @@ const ainsleyToAst = (
         newVariables[base] = variables[variable]
       } else if (mod === 2) {
         newVariables[base] = {
-          ...inheritedVariables[base],
+          ...(inheritedVariables[base] ?? {}),
           ...variables[variable]
         }
       }

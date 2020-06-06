@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`macros macro generates object correctly: macro generates object correctly 1`] = `
+
+import ainsley from '../../macro'
+console.log(ainsley("../../examples/locked-webpack/src/styles.ainsley"))
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+console.log({
+  variations: [
+    [
+      ['s', '@media(min-width:384px)'],
+      ['m', '@media(min-width:768px)'],
+      ['l', '@media(min-width:1024px)']
+    ]
+  ],
+  variables: {
+    color: {
+      b: 'black',
+      w: 'white',
+      lg: '#eee',
+      g: '#888',
+      dg: '#222'
+    },
+    length: {
+      '0': 0,
+      '1': '1px',
+      '2': '2px',
+      '8': '8px',
+      '16': '16px'
+    }
+  },
+  children: [
+    'a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:none}table{border-collapse:collapse;border-spacing:0}body{font:16px/1.25 sans-serif}',
+    ['bg', [['background-color', '{color}']]],
+    [
+      'b',
+      [
+        ['border', '{length} {color}'],
+        ['border-style', 'solid']
+      ]
+    ],
+    ['c', [['color', '{color}']]],
+    ['pa', [['padding', '{length}']]],
+    ['mt', [['margin-top', '{length}']]],
+    [
+      'h1',
+      [
+        ['font-size', '32px'],
+        ['font-weight', 'bold']
+      ]
+    ]
+  ]
+})
+
+
+`;

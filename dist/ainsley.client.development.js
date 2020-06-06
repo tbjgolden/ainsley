@@ -106,6 +106,8 @@
       if (ainsley.variables !== undefined) {
         const variables = ainsley.variables;
         Object.keys(variables).map(variable => {
+          var _a;
+
           const modAndBase = parseVariable(variable);
           const mod = modAndBase[0];
           const base = modAndBase[1];
@@ -113,7 +115,7 @@
           if (mod === 0) {
             newVariables[base] = variables[variable];
           } else if (mod === 2) {
-            newVariables[base] = { ...inheritedVariables[base],
+            newVariables[base] = { ...((_a = inheritedVariables[base]) !== null && _a !== void 0 ? _a : {}),
               ...variables[variable]
             };
           }
