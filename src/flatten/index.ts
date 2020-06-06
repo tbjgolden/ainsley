@@ -51,7 +51,7 @@ export const defaultGetConfig = async (ref: string): Promise<AinsleyChild> => {
       } catch (err) {}
       return body
     } catch (err) {
-      return await Promise.resolve(`/* $${ref} */`)
+      return `/* ${ref.trim()} */`
     }
   }
 }
@@ -68,6 +68,6 @@ export const getFlatConfig = async (
       return config
     }
   } catch (e) {
-    return `/* $${ref} */`
+    return `/* ${ref.trim()} */`
   }
 }

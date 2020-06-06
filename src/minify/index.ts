@@ -177,7 +177,7 @@ const minifyRaw = (rawCSS: string) => {
   try {
     return csso.minify(rawCSS).css
   } catch (error) {
-    if (csso && csso.minify) {
+    if (csso?.minify) {
       console.error(error)
     } else {
       console.warn(

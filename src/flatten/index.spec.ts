@@ -93,4 +93,27 @@ describe('flatten', () => {
       children: [config]
     })
   })
+
+  test('if not a config, the default getConfig will return a comment', async () => {
+    expect(
+      await flatten({
+        children: ['$not a real thing']
+      })
+    ).toEqual({
+      children: ['/* not a real thing */']
+    })
+  })
+
+  test('if the getConfig throws an error, it returns a comment', async () => {
+    expect(
+      await flatten(
+        {
+          children: ['$also not a real thing']
+        },
+        () => Promise.reject(new Error("I'm an error"))
+      )
+    ).toEqual({
+      children: ['/* also not a real thing */']
+    })
+  })
 })

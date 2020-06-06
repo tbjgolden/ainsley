@@ -2,6 +2,15 @@ import { Ainsley } from '../types'
 import { minify } from '.'
 
 describe('minify', () => {
+  test('invalid config', async () => {
+    try {
+      minify((null as unknown) as Ainsley)
+      expect(1).toBe(2)
+    } catch (err) {
+      expect(err.message).toMatch(/^Invalid input Ainsley:/)
+    }
+  })
+
   test('example one', () => {
     const start: Ainsley = {
       children: [
@@ -265,6 +274,35 @@ describe('minify', () => {
         ['&', [['color', '{colors}']]],
         'html{padding:0}body{margin:0}'
       ]
+    })
+  })
+
+  test('example six', () => {
+    const start: Ainsley = {
+      variables: {
+        colors: {
+          b: 'black'
+        }
+      },
+      children: [
+        {
+          children: [
+            {
+              variations: [],
+              variables: {
+                '+colors': { p: '#313375' }
+              },
+              children: []
+            }
+          ]
+        },
+        '',
+        'body{margin:0}'
+      ]
+    }
+
+    expect(minify(start)).toEqual({
+      children: ['body{margin:0}']
     })
   })
 })

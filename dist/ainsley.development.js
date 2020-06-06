@@ -7852,7 +7852,7 @@
 
           return body;
         } catch (err) {
-          return await Promise.resolve(`/* $${ref} */`);
+          return `/* ${ref.trim()} */`;
         }
       }
     };
@@ -7866,7 +7866,7 @@
           return config;
         }
       } catch (e) {
-        return `/* $${ref} */`;
+        return `/* ${ref.trim()} */`;
       }
     };
 

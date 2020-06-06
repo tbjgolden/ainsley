@@ -8,7 +8,7 @@ export const validate = (maybeAinsley: unknown): string[] => {
 
   if (ajv.errors !== null && ajv.errors !== undefined) {
     // find lowest error and show that
-    const lowestLength = Infinity
+    let lowestLength = Infinity
     let lowestErrors: string[] = []
     ajv.errors.forEach((error) => {
       const pathLength = error.schemaPath.split('/').length
@@ -16,6 +16,7 @@ export const validate = (maybeAinsley: unknown): string[] => {
         lowestErrors.push(formatError(error))
       } else if (pathLength < lowestLength) {
         lowestErrors = [formatError(error)]
+        lowestLength = pathLength
       }
     })
     return lowestErrors
@@ -25,9 +26,7 @@ export const validate = (maybeAinsley: unknown): string[] => {
 }
 
 const formatError = (error: ErrorObject): string =>
-  `Ainsley${error.dataPath}${
-    error.message === undefined ? '' : ` ${error.message}`
-  }`
+  `Ainsley${error.dataPath} is invalid`
 
 // prettier-ignore
 export const schema = {

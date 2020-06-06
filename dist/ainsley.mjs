@@ -7519,7 +7519,7 @@ const defaultGetConfig = async ref => {
 
       return body;
     } catch (err) {
-      return await Promise.resolve(`/* $${ref} */`);
+      return `/* ${ref.trim()} */`;
     }
   }
 };
@@ -7533,7 +7533,7 @@ const getFlatConfig = async (ref, getConfig) => {
       return config;
     }
   } catch (e) {
-    return `/* $${ref} */`;
+    return `/* ${ref.trim()} */`;
   }
 };
 

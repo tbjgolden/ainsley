@@ -24,4 +24,14 @@ describe('doSync', () => {
     )
     expect(doAsync(3)).toEqual('333')
   })
+
+  test('error', () => {
+    const doAsync = doSync(
+      (): Promise<string> => {
+        console.log('{}')
+        return Promise.reject('Intentional test error')
+      }
+    )
+    expect(doAsync()).toEqual({})
+  })
 })
