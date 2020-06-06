@@ -3,40 +3,26 @@ import { spawnSync, SpawnSyncOptions } from 'child_process'
 export type JSONPrimitive = string | number | boolean | null | undefined
 export type JSONValue = JSONObject | JSONArray | JSONPrimitive
 export type JSONArray = JSONValue[]
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface JSONObject extends Record<string, JSONValue> {}
 
-/**
- * Value represents data that can safely be input to,
- * or returned from a doSync() function.
- */
-export type Value = JSONValue
-
-/**
- * An AsyncFn can be used with doSync().
- */
-export type AsyncFn<I extends Value[], O extends Value> = (
+export type AsyncFn<I extends JSONValue[], O extends JSONValue> = (
   ...v: I
 ) => Promise<O>
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const gen: (input: Value[], fn: AsyncFn<any, any>) => string = (input, fn) => `
+const gen: (input: JSONValue[], fn: AsyncFn<any, any>) => string = (
+  input,
+  fn
+) => `
 const main = async () => {
     console.log(JSON.stringify(await (${fn})(...${JSON.stringify(input)})));
 }
 main().catch(e => console.error(e));
 `
 
-/**
- * doSync returns a synchronous version of certian
- * special asynchronous functions by extracting them
- * and running them as a synchronous node subprocess.
- *
- * The input and output types of the function must be serializible
- * to JSON, and the function must not reference any parent
- * scopes (i.e. file-defined variables) to function.
- */
-export const doSync: <I extends Value[], O extends Value>(
+export const doSync: <I extends JSONArray, O extends JSONValue>(
   f: AsyncFn<I, O>,
   opts?: SpawnSyncOptions
 ) => (...ip: I) => O = (

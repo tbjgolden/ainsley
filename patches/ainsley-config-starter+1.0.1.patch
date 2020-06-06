@@ -1,0 +1,9 @@
+diff --git a/node_modules/ainsley-config-starter/dist/config.d.ts b/node_modules/ainsley-config-starter/dist/config.d.ts
+index 3a43f06..5a5a62d 100644
+--- a/node_modules/ainsley-config-starter/dist/config.d.ts
++++ b/node_modules/ainsley-config-starter/dist/config.d.ts
+@@ -1,3 +1,3 @@
+-import { Ainsley, AinsleyGenerateOptions } from 'ainsley';
++import { Ainsley, AinsleyGenerateOptions } from '../../../src/index';
+ export declare const config: Ainsley;
+ export declare const options: Partial<AinsleyGenerateOptions>;

@@ -113,7 +113,7 @@ This compresses it massively.
     | TOTAL SENT |             2,984 |     23,747 |
     +------------+-------------------+------------+
 
-(using default settings with src/configs/examples.baseConfig)
+(using default settings with ainsley-plugin-starter)
 ```
 
 ## Comparisons to others
@@ -156,6 +156,10 @@ This compresses it massively.
 - [ ] make it possible to use properties as variables
   - circular dependency problem?
 - [ ] better array nesting in rules?
+
+{
+  $: ['Center', 'Flex-Start', 'Flex-End', 'Space-Between', 'Space-Evenly']
+}
 -->
 
 ### Contribute
@@ -169,4 +173,3 @@ like this maintained properly.
 Or perhaps you might like to donate to
 [a top rated charity instead](https://www.givewell.org/charities/top-charities)
 (they need the money more!)
-

@@ -1,13 +1,14 @@
-import { baseConfig } from './configs/examples'
 import { generate } from './generate'
+import { config } from 'ainsley-config-starter'
+
 import { execSync } from 'child_process'
 import path from 'path'
 import zlib from 'zlib'
 
 describe('compiler', () => {
   test('compiles ainsley as expected', () => {
-    const input = JSON.stringify(baseConfig)
-    const output = generate(baseConfig)
+    const input = JSON.stringify(config)
+    const output = generate(config)
 
     const compiler = JSON.parse(
       execSync(
