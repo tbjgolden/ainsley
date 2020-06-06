@@ -461,10 +461,7 @@ describe('compiler', () => {
       children: [
         ['c', [['color', '{color}']]],
         {
-          variations: [
-            [['n', '@supports(-webkit-box-orient:vertical)']],
-            [['l', '@media(min-width:1024px)']]
-          ],
+          variations: [[['l', '@media(min-width:1024px)']]],
           children: [['bg', [['background-color', '{color}']]]]
         }
       ],
@@ -473,11 +470,51 @@ describe('compiler', () => {
           b: 'black',
           w: 'white'
         }
-      }
+      },
+      variations: [[['n', '@supports(-webkit-box-orient:vertical)']]]
     })
 
     expect(css).toEqual(
-      '.cB{color:black}.cW{color:white}.bgB{background-color:black}.bgW{background-color:white}@supports(-webkit-box-orient:vertical){.n-bgB{background-color:black}.n-bgW{background-color:white}}@media(min-width:1024px){.l-bgB{background-color:black}.l-bgW{background-color:white}}@supports(-webkit-box-orient:vertical){@media(min-width:1024px){.l-n-bgB{background-color:black}.l-n-bgW{background-color:white}}}'
+      '.cB{color:black}.cW{color:white}.bgB{background-color:black}.bgW{background-color:white}@media(min-width:1024px){.l-bgB{background-color:black}.l-bgW{background-color:white}}@supports(-webkit-box-orient:vertical){.n-cB{color:black}.n-cW{color:white}.n-bgB{background-color:black}.n-bgW{background-color:white}@media(min-width:1024px){.l-n-bgB{background-color:black}.l-n-bgW{background-color:white}}}'
+    )
+  })
+
+  test('compiles ainsley even when it is getting ugly', () => {
+    const css = generate({
+      variables: {
+        '+colors': {
+          b: 'black',
+          w: 'white'
+        }
+      },
+      variations: [[['s', '@media(min-width:384px)']]],
+      children: [
+        ['c', [['color', '{colors}']]],
+        {
+          variables: {
+            '+colors': {
+              g: '#777'
+            }
+          },
+          variations: [[['m', '@media(min-width:768px)']]],
+          children: [
+            ['bgc', [['background-color', '{colors}']]],
+            {
+              variables: {
+                '+colors': {
+                  y: '#ff0'
+                }
+              },
+              variations: [[['l', '@media(min-width:1024px)']]],
+              children: [['bc', [['border-color', '{colors}']]]]
+            }
+          ]
+        }
+      ]
+    })
+
+    expect(css).toEqual(
+      '.cB{color:black}.cW{color:white}.bgcB{background-color:black}.bgcW{background-color:white}.bgcG{background-color:#777}.bcB{border-color:black}.bcW{border-color:white}.bcG{border-color:#777}.bcY{border-color:#ff0}@media(min-width:1024px){.l-bcB{border-color:black}.l-bcW{border-color:white}.l-bcG{border-color:#777}.l-bcY{border-color:#ff0}}@media(min-width:768px){.m-bgcB{background-color:black}.m-bgcW{background-color:white}.m-bgcG{background-color:#777}.m-bcB{border-color:black}.m-bcW{border-color:white}.m-bcG{border-color:#777}.m-bcY{border-color:#ff0}@media(min-width:1024px){.l-m-bcB{border-color:black}.l-m-bcW{border-color:white}.l-m-bcG{border-color:#777}.l-m-bcY{border-color:#ff0}}}@media(min-width:384px){.s-cB{color:black}.s-cW{color:white}.s-bgcB{background-color:black}.s-bgcW{background-color:white}.s-bgcG{background-color:#777}.s-bcB{border-color:black}.s-bcW{border-color:white}.s-bcG{border-color:#777}.s-bcY{border-color:#ff0}@media(min-width:1024px){.l-s-bcB{border-color:black}.l-s-bcW{border-color:white}.l-s-bcG{border-color:#777}.l-s-bcY{border-color:#ff0}}@media(min-width:768px){.m-s-bgcB{background-color:black}.m-s-bgcW{background-color:white}.m-s-bgcG{background-color:#777}.m-s-bcB{border-color:black}.m-s-bcW{border-color:white}.m-s-bcG{border-color:#777}.m-s-bcY{border-color:#ff0}@media(min-width:1024px){.l-m-s-bcB{border-color:black}.l-m-s-bcW{border-color:white}.l-m-s-bcG{border-color:#777}.l-m-s-bcY{border-color:#ff0}}}}'
     )
   })
 })

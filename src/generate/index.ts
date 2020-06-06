@@ -9,14 +9,9 @@ import {
 } from '../types'
 import { combinations } from '../utils'
 
-interface AinsleyFlatASTNode {
-  $variations: Array<[string, string]>
-  $content: string | AinsleyRule
-}
-type AinsleyFlatAST = AinsleyFlatASTNode[]
 interface AinsleyASTNode {
   $variations: Array<[string, string]>
-  $content: string | AinsleyRule | AinsleyFlatASTNode
+  $content: string | AinsleyRule
 }
 type AinsleyAST = AinsleyASTNode[]
 
@@ -62,7 +57,7 @@ export const generate = (
 // business is made much simpler
 
 const generateFromAst = (
-  ainsleyRules: AinsleyFlatAST,
+  ainsleyRules: AinsleyAST,
   options: AinsleyGenerateOptions
 ): string => {
   let css = ''
@@ -125,7 +120,7 @@ const ainsleyToAst = (
   ainsley: Ainsley,
   options: AinsleyGenerateOptions,
   inheritedVariables: AinsleyVariableMap
-): AinsleyFlatAST => {
+): AinsleyAST => {
   // first, compute variables
   const newVariables = { ...inheritedVariables }
   if (ainsley.variables !== undefined) {
@@ -156,29 +151,12 @@ const ainsleyToAst = (
     (ainsley.variations ?? []).map((variationSet) =>
       [['', ''] as [string, string]].concat(variationSet)
     )
-  ).flatMap((variations) => {
-    return rulesListWithoutVariations.map((ainsleyASTNode) => {
-      if (
-        typeof ainsleyASTNode.$content === 'string' ||
-        Array.isArray(ainsleyASTNode.$content)
-      ) {
-        const ainsleyFlatASTNode = ainsleyASTNode as AinsleyFlatASTNode
-        return {
-          $variations: [...variations, ...ainsleyFlatASTNode.$variations],
-          $content: ainsleyFlatASTNode.$content
-        }
-      } else {
-        const ainsleyNestedASTNode = ainsleyASTNode as {
-          $variations: Array<[string, string]>
-          $content: AinsleyFlatASTNode
-        }
-        return {
-          $variations: [...variations, ...ainsleyNestedASTNode.$variations],
-          $content: ainsleyNestedASTNode.$content.$content
-        }
-      }
-    })
-  })
+  ).flatMap((variations) =>
+    rulesListWithoutVariations.map((ainsleyASTNode) => ({
+      $variations: [...variations, ...ainsleyASTNode.$variations],
+      $content: ainsleyASTNode.$content
+    }))
+  )
 
   return rulesList
 }
