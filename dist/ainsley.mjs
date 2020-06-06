@@ -7505,20 +7505,19 @@ const flatten = async (configWithPlugins, getConfig = defaultGetConfig) => {
   return flatAinsley;
 };
 const defaultGetConfig = async ref => {
-  var _a;
-
   try {
     return (await import(`ainsley-config-${ref}`)).config;
   } catch (err) {
     try {
       const url = new URL(ref);
       const response = await fetch(url.href);
+      let body = await response.text();
 
-      if (((_a = response.headers.get('Content-Type')) !== null && _a !== void 0 ? _a : '').endsWith('/json')) {
-        return await response.json();
-      } else {
-        return await response.text();
-      }
+      try {
+        body = JSON.parse(body);
+      } catch (err) {}
+
+      return body;
     } catch (err) {
       return await Promise.resolve(`/* $${ref} */`);
     }

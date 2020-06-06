@@ -45,11 +45,11 @@ export const defaultGetConfig = async (ref: string): Promise<AinsleyChild> => {
     try {
       const url = new URL(ref)
       const response = await fetch(url.href)
-      if ((response.headers.get('Content-Type') ?? '').endsWith('/json')) {
-        return await response.json()
-      } else {
-        return await response.text()
-      }
+      let body = await response.text()
+      try {
+        body = JSON.parse(body)
+      } catch (err) {}
+      return body
     } catch (err) {
       return await Promise.resolve(`/* $${ref} */`)
     }
@@ -62,7 +62,6 @@ export const getFlatConfig = async (
 ): Promise<AinsleyChild> => {
   try {
     const config = await getConfig(ref)
-
     if (isObject(config)) {
       return await flatten(config as Ainsley, getConfig)
     } else {

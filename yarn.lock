@@ -2280,9 +2280,9 @@ aggregate-error@^3.0.0:
     indent-string "^4.0.0"
 
 ainsley-config-starter@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ainsley-config-starter/-/ainsley-config-starter-1.0.1.tgz#4304ea42aa1ff638ab3ceea8ccef401c016b0d97"
-  integrity sha512-jYkWzUgZlYhWqW46ThNE4hLz80FsPd+wALzQtjPFce8QtrEiYI5gGyEm3JYVa+IHyOwkzqmCWNmWjSy6DTSgSQ==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ainsley-config-starter/-/ainsley-config-starter-1.1.0.tgz#db29cb6b2d41e6ccdece2bae7d41179884027fa7"
+  integrity sha512-q98llJgJeqmzgUN08j/SaIo0PfYdHv/rT80DfpxulzS9TK4tLLLUfuUtwTGwktVFxJvMWkkWDyi4pNUC5huVUQ==
   dependencies:
     "@babel/runtime" "^7.7.7"
 

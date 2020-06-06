@@ -1,5 +1,6 @@
 import { Ainsley, AinsleyChild } from '../types'
 import { flatten } from '.'
+import { config } from 'ainsley-config-starter'
 
 describe('flatten', () => {
   test('invalid config', async () => {
@@ -78,6 +79,18 @@ describe('flatten', () => {
         (await import('ainsley-config-starter')).config,
         'body{margin:0}'
       ]
+    })
+  })
+
+  test('gets a json url', async () => {
+    expect(
+      await flatten({
+        children: [
+          '$https://rawcdn.githack.com/tbjgolden/ainsley-config-starter/03ee0f72f6468dc1cdf8f72e7f8cea0da90f9b81/dist/config.json'
+        ]
+      })
+    ).toEqual({
+      children: [config]
     })
   })
 })
