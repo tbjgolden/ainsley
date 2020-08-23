@@ -19,6 +19,7 @@ if (csso === undefined) {
 /*
 TODOs:
 - mangle variable names
+- if a variable is an empty object, remove all uses of it
 - check if strings can be turnt into numbers
 */
 
