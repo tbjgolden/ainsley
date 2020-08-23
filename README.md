@@ -113,7 +113,7 @@ This compresses it massively.
     | TOTAL SENT |             2,984 |     23,747 |
     +------------+-------------------+------------+
 
-(using default settings with ainsley-plugin-starter)
+(using default settings with ainsley-config-starter)
 ```
 
 ## Comparisons to others
