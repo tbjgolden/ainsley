@@ -29,7 +29,7 @@
     "postinstall": "npx patch-package",
     "postbundle": "del compiled",
     "start": "node scripts/startTDD.js && yarn test:src --watch",
-    "test": "run-s check:* lint build test:* && node scripts/jest/generateShield.js",
+    "test": "run-s check:* lint build test:*",
     "test:cjs": "jest --config ./scripts/jest/config.cjs.js",
     "test:cjsprod": "cross-env NODE_ENV=production jest --config ./scripts/jest/config.cjs.js",
     "test:es": "jest --config ./scripts/jest/config.es.js",
