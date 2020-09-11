@@ -36,8 +36,7 @@ const kebabToPascal = (kebab) => {
 const getRoot = (input) =>
   ({
     './compiled/index.js': 'ainsley',
-    './compiled/index.client.js': 'ainsley.client',
-    './compiled/macro/index.js': 'macro/index'
+    './compiled/index.client.js': 'ainsley.client'
   }[input])
 
 const getGlobals = (bundleType) => {
@@ -198,6 +197,5 @@ export default [
         ? [getUmdConfig(input, 'UMD_DEV'), getIifeConfig(input, 'IIFE_PROD')]
         : [])
     ])
-    .flat(),
-  getCjsConfig('./compiled/macro/index.js', 'CJS_DEV')
+    .flat()
 ]

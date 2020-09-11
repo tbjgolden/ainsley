@@ -4,7 +4,6 @@ module.exports = {
     'src/**/*.{ts,tsx}',
     '!src/index.client.ts',
     '!src/index.ts',
-    '!src/macro/index.ts',
     '!src/**/*.d.ts',
     '!src/configs/**/*.ts',
     '!src/**/*.spec.{ts,tsx}',
