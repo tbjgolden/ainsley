@@ -1,4 +1,6 @@
-/*! ainsley | MIT License | @tbjgolden | tom.bio */
+/*!
+ainsley | MIT License | @tbjgolden | tom.bio
+*/
 import fetch from 'isomorphic-unfetch';
 import copy$1 from 'fast-copy';
 
@@ -7788,4 +7790,4 @@ const toAST = (ainsley, definedVariables, parent) => {
 };
 
 export { DEFAULT_OPTIONS, ITERATOR_REGEX, combinations, defaultGetConfig, embed, flatten, generate, getFlatConfig, isObject, minify, schema, validate$2 as validate };
-//# sourceMappingURL=ainsley.mjs.map
+//# sourceMappingURL=ainsley.esm.js.map

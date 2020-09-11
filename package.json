@@ -4,11 +4,11 @@
   "description": "👨🏾‍🍳 Ainsley is to CSS what Markdown is to HTML",
   "sideEffects": false,
   "main": "dist/ainsley.js",
-  "module": "dist/ainsley.mjs",
-  "jsnext:main": "dist/ainsley.mjs",
+  "module": "dist/ainsley.esm.js",
+  "jsnext:main": "dist/ainsley.esm.js",
   "browser": {
     "./dist/ainsley.js": "./dist/ainsley.js",
-    "./dist/ainsley.mjs": "./dist/ainsley.mjs"
+    "./dist/ainsley.esm.js": "./dist/ainsley.esm.js"
   },
   "typings": "dist/index.d.ts",
   "files": [

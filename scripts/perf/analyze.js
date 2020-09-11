@@ -3,16 +3,26 @@
 const fs = require('fs')
 const path = require('path')
 const zlib = require('zlib')
+const babel = require('@babel/core')
 
 const input = require('./test')
 
 const builds = {
   'ac.js': 'iife',
-  'ainsley.client.mjs': 'esm',
+  'ainsley.client.esm.js': 'esm',
   'ainsley.client.development.js': 'umd',
   'ainsley.client.production.js': 'iife',
   'ainsley.js': 'cjs'
 }
+
+const requireFromString = (jsStr, filepath) => {
+  const Module = module.constructor
+  const m = new Module()
+  m._compile(jsStr, filepath)
+  return m.exports
+}
+
+// console.log(requireFromString('module.exports = { test: 1 }'));
 
 const analyze = async () => {
   const results = {}
@@ -21,7 +31,7 @@ const analyze = async () => {
     const contents = fs.readFileSync(filepath, 'utf8')
 
     let Ainsley = new Promise(() => {
-      //
+      /**/
     })
 
     if (format === 'iife') {
@@ -29,7 +39,10 @@ const analyze = async () => {
     } else if (['umd', 'cjs'].includes(format)) {
       Ainsley = Promise.resolve(require(filepath))
     } else if (format === 'esm') {
-      Ainsley = import(filepath)
+      const js = babel.transformSync(contents, {
+        presets: ['@babel/preset-env']
+      }).code
+      Ainsley = Promise.resolve(requireFromString(js, filepath))
     }
 
     const { generate } = await Ainsley

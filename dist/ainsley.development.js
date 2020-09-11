@@ -1,4 +1,6 @@
-/*! ainsley | MIT License | @tbjgolden | tom.bio */
+/*!
+ainsley | MIT License | @tbjgolden | tom.bio
+*/
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('isomorphic-unfetch')) :
     typeof define === 'function' && define.amd ? define(['exports', 'isomorphic-unfetch'], factory) :

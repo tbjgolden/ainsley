@@ -1,4 +1,6 @@
-/*! ainsley | MIT License | @tbjgolden | tom.bio */
+/*!
+ainsley | MIT License | @tbjgolden | tom.bio
+*/
 const combinations = mods => {
   let list = [[]];
   let index = 0;
@@ -223,4 +225,4 @@ const embed = (css, id) => {
 };
 
 export { DEFAULT_OPTIONS, ITERATOR_REGEX, embed, generate };
-//# sourceMappingURL=ainsley.client.mjs.map
+//# sourceMappingURL=ainsley.client.esm.js.map

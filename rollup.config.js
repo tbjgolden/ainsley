@@ -127,8 +127,8 @@ const getPlugins = (bundleType) => [
     })
 ]
 
-const shortBanner = `/*! ainsley MIT @tbjgolden */`
-const longBanner = `/*! ainsley | MIT License | @tbjgolden | tom.bio */`
+const shortBanner = `/*!\nainsley MIT @tbjgolden\n*/`
+const longBanner = `/*!\nainsley | MIT License | @tbjgolden | tom.bio\n*/`
 
 const getCjsConfig = (input) => ({
   input,
@@ -148,7 +148,7 @@ const getEsConfig = (input) => ({
   external: getExternal('ES'),
   inlineDynamicImports: true,
   output: {
-    file: `dist/${getRoot(input)}.mjs`,
+    file: `dist/${getRoot(input)}.esm.js`,
     format: 'es',
     banner: longBanner,
     sourcemap: true

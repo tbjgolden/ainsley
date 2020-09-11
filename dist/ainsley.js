@@ -1,4 +1,6 @@
-/*! ainsley | MIT License | @tbjgolden | tom.bio */
+/*!
+ainsley | MIT License | @tbjgolden | tom.bio
+*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
