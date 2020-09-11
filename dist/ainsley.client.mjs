@@ -159,11 +159,6 @@ const ainsleyRuleToAst = (ainsleyRule, options, variables) => {
     const iterator = iteratorAndType[0];
     const location = iteratorAndType[1];
     const variableName = iterator.slice(1, -1);
-
-    if (!(variableName in variables)) {
-      console.log(variables, variableName);
-    }
-
     return Object.keys(variables[variableName]).map(abbreviation => [iterator, abbreviation, variables[variableName][abbreviation], location]);
   })).map(combination => {
     let combinationIndex = 0;

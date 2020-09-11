@@ -97,7 +97,7 @@ const getPlugins = (bundleType) => [
   babel({
     babelrc: false,
     exclude: 'node_modules/**',
-    presets: [['@babel/env', { loose: true, modules: false }], '@babel/react'],
+    presets: [['@babel/env', { loose: true, modules: false }]],
     plugins: ['@babel/transform-runtime', 'minify-builtins'],
     runtimeHelpers: true
   }),

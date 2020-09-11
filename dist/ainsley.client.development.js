@@ -2,7 +2,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (global = global || self, factory(global.Ainsley = {}));
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Ainsley = {}));
 }(this, (function (exports) { 'use strict';
 
     const combinations = mods => {
@@ -165,11 +165,6 @@
         const iterator = iteratorAndType[0];
         const location = iteratorAndType[1];
         const variableName = iterator.slice(1, -1);
-
-        if (!(variableName in variables)) {
-          console.log(variables, variableName);
-        }
-
         return Object.keys(variables[variableName]).map(abbreviation => [iterator, abbreviation, variables[variableName][abbreviation], location]);
       })).map(combination => {
         let combinationIndex = 0;

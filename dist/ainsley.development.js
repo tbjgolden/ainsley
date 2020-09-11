@@ -2,10 +2,12 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('isomorphic-unfetch')) :
     typeof define === 'function' && define.amd ? define(['exports', 'isomorphic-unfetch'], factory) :
-    (global = global || self, factory(global.Ainsley = {}, global.fetch));
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Ainsley = {}, global.fetch));
 }(this, (function (exports, fetch) { 'use strict';
 
-    fetch = fetch && Object.prototype.hasOwnProperty.call(fetch, 'default') ? fetch['default'] : fetch;
+    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+    var fetch__default = /*#__PURE__*/_interopDefaultLegacy(fetch);
 
     const isObject = val => !!(val !== null && typeof val === 'object' && !Array.isArray(val));
     const combinations = mods => {
@@ -168,11 +170,6 @@
         const iterator = iteratorAndType[0];
         const location = iteratorAndType[1];
         const variableName = iterator.slice(1, -1);
-
-        if (!(variableName in variables)) {
-          console.log(variables, variableName);
-        }
-
         return Object.keys(variables[variableName]).map(abbreviation => [iterator, abbreviation, variables[variableName][abbreviation], location]);
       })).map(combination => {
         let combinationIndex = 0;
@@ -363,8 +360,24 @@
                 property = properties[index];
                 if (property !== 'callee' && property !== 'caller') {
                     descriptor = getOwnPropertyDescriptor(object, property);
-                    descriptor.value = handleCopy(object[property], cache);
-                    defineProperty(clone, property, descriptor);
+                    if (descriptor) {
+                        // Only clone the value if actually a value, not a getter / setter.
+                        if (!descriptor.get && !descriptor.set) {
+                            descriptor.value = handleCopy(object[property], cache);
+                        }
+                        try {
+                            defineProperty(clone, property, descriptor);
+                        }
+                        catch (error) {
+                            // Tee above can fail on node in edge cases, so fall back to the loose assignment.
+                            clone[property] = descriptor.value;
+                        }
+                    }
+                    else {
+                        // In extra edge cases where the property descriptor cannot be retrived, fall back to
+                        // the loose assignment.
+                        clone[property] = handleCopy(object[property], cache);
+                    }
                 }
             }
         }
@@ -505,6 +518,11 @@
                 });
                 return clone;
             }
+            // blobs
+            if (realm.Blob && object instanceof realm.Blob) {
+                clone = new Blob([object], { type: object.type });
+                return clone;
+            }
             // buffers (node-only)
             if (realm.Buffer && realm.Buffer.isBuffer(object)) {
                 clone = realm.Buffer.allocUnsafe
@@ -579,7 +597,7 @@
     }
 
     var uri_all = createCommonjsModule(function (module, exports) {
-    /** @license URI.js v4.2.1 (c) 2011 Gary Court. License: http://github.com/garycourt/uri-js */
+    /** @license URI.js v4.4.0 (c) 2011 Gary Court. License: http://github.com/garycourt/uri-js */
     (function (global, factory) {
     	 factory(exports) ;
     }(commonjsGlobal, (function (exports) {
@@ -1502,9 +1520,9 @@
                 return "[" + $1 + ($2 ? "%25" + $2 : "") + "]";
             }));
         }
-        if (typeof components.port === "number") {
+        if (typeof components.port === "number" || typeof components.port === "string") {
             uriTokens.push(":");
-            uriTokens.push(components.port.toString(10));
+            uriTokens.push(String(components.port));
         }
         return uriTokens.length ? uriTokens.join("") : undefined;
     }
@@ -1707,8 +1725,9 @@
             return components;
         },
         serialize: function serialize(components, options) {
+            var secure = String(components.scheme).toLowerCase() === "https";
             //normalize the default port
-            if (components.port === (String(components.scheme).toLowerCase() !== "https" ? 80 : 443) || components.port === "") {
+            if (components.port === (secure ? 443 : 80) || components.port === "") {
                 components.port = undefined;
             }
             //normalize the empty path
@@ -1727,6 +1746,57 @@
         domainHost: handler.domainHost,
         parse: handler.parse,
         serialize: handler.serialize
+    };
+
+    function isSecure(wsComponents) {
+        return typeof wsComponents.secure === 'boolean' ? wsComponents.secure : String(wsComponents.scheme).toLowerCase() === "wss";
+    }
+    //RFC 6455
+    var handler$2 = {
+        scheme: "ws",
+        domainHost: true,
+        parse: function parse(components, options) {
+            var wsComponents = components;
+            //indicate if the secure flag is set
+            wsComponents.secure = isSecure(wsComponents);
+            //construct resouce name
+            wsComponents.resourceName = (wsComponents.path || '/') + (wsComponents.query ? '?' + wsComponents.query : '');
+            wsComponents.path = undefined;
+            wsComponents.query = undefined;
+            return wsComponents;
+        },
+        serialize: function serialize(wsComponents, options) {
+            //normalize the default port
+            if (wsComponents.port === (isSecure(wsComponents) ? 443 : 80) || wsComponents.port === "") {
+                wsComponents.port = undefined;
+            }
+            //ensure scheme matches secure flag
+            if (typeof wsComponents.secure === 'boolean') {
+                wsComponents.scheme = wsComponents.secure ? 'wss' : 'ws';
+                wsComponents.secure = undefined;
+            }
+            //reconstruct path from resource name
+            if (wsComponents.resourceName) {
+                var _wsComponents$resourc = wsComponents.resourceName.split('?'),
+                    _wsComponents$resourc2 = slicedToArray(_wsComponents$resourc, 2),
+                    path = _wsComponents$resourc2[0],
+                    query = _wsComponents$resourc2[1];
+
+                wsComponents.path = path && path !== '/' ? path : undefined;
+                wsComponents.query = query;
+                wsComponents.resourceName = undefined;
+            }
+            //forbid fragment component
+            wsComponents.fragment = undefined;
+            return wsComponents;
+        }
+    };
+
+    var handler$3 = {
+        scheme: "wss",
+        domainHost: handler$2.domainHost,
+        parse: handler$2.parse,
+        serialize: handler$2.serialize
     };
 
     var O = {};
@@ -1758,7 +1828,7 @@
         var decStr = pctDecChars(str);
         return !decStr.match(UNRESERVED) ? str : decStr;
     }
-    var handler$2 = {
+    var handler$4 = {
         scheme: "mailto",
         parse: function parse$$1(components, options) {
             var mailtoComponents = components;
@@ -1846,7 +1916,7 @@
 
     var URN_PARSE = /^([^\:]+)\:(.*)/;
     //RFC 2141
-    var handler$3 = {
+    var handler$5 = {
         scheme: "urn",
         parse: function parse$$1(components, options) {
             var matches = components.path && components.path.match(URN_PARSE);
@@ -1885,7 +1955,7 @@
 
     var UUID = /^[0-9A-Fa-f]{8}(?:\-[0-9A-Fa-f]{4}){3}\-[0-9A-Fa-f]{12}$/;
     //RFC 4122
-    var handler$4 = {
+    var handler$6 = {
         scheme: "urn:uuid",
         parse: function parse(urnComponents, options) {
             var uuidComponents = urnComponents;
@@ -1909,6 +1979,8 @@
     SCHEMES[handler$2.scheme] = handler$2;
     SCHEMES[handler$3.scheme] = handler$3;
     SCHEMES[handler$4.scheme] = handler$4;
+    SCHEMES[handler$5.scheme] = handler$5;
+    SCHEMES[handler$6.scheme] = handler$6;
 
     exports.SCHEMES = SCHEMES;
     exports.pctEncChar = pctEncChar;
@@ -2007,8 +2079,6 @@
       ucs2length: ucs2length,
       varOccurences: varOccurences,
       varReplace: varReplace,
-      cleanUpCode: cleanUpCode,
-      finalCleanUpCode: finalCleanUpCode,
       schemaHasRules: schemaHasRules,
       schemaHasRulesExcept: schemaHasRulesExcept,
       schemaUnknownRules: schemaUnknownRules,
@@ -2030,7 +2100,7 @@
     }
 
 
-    function checkDataType(dataType, data, negate) {
+    function checkDataType(dataType, data, strictNumbers, negate) {
       var EQUAL = negate ? ' !== ' : ' === '
         , AND = negate ? ' || ' : ' && '
         , OK = negate ? '!' : ''
@@ -2043,15 +2113,18 @@
                               NOT + 'Array.isArray(' + data + '))';
         case 'integer': return '(typeof ' + data + EQUAL + '"number"' + AND +
                                NOT + '(' + data + ' % 1)' +
-                               AND + data + EQUAL + data + ')';
+                               AND + data + EQUAL + data +
+                               (strictNumbers ? (AND + OK + 'isFinite(' + data + ')') : '') + ')';
+        case 'number': return '(typeof ' + data + EQUAL + '"' + dataType + '"' +
+                              (strictNumbers ? (AND + OK + 'isFinite(' + data + ')') : '') + ')';
         default: return 'typeof ' + data + EQUAL + '"' + dataType + '"';
       }
     }
 
 
-    function checkDataTypes(dataTypes, data) {
+    function checkDataTypes(dataTypes, data, strictNumbers) {
       switch (dataTypes.length) {
-        case 1: return checkDataType(dataTypes[0], data, true);
+        case 1: return checkDataType(dataTypes[0], data, strictNumbers, true);
         default:
           var code = '';
           var types = toHash(dataTypes);
@@ -2064,7 +2137,7 @@
           }
           if (types.number) delete types.integer;
           for (var t in types)
-            code += (code ? ' && ' : '' ) + checkDataType(t, data, true);
+            code += (code ? ' && ' : '' ) + checkDataType(t, data, strictNumbers, true);
 
           return code;
       }
@@ -2127,42 +2200,6 @@
       dataVar += '([^0-9])';
       expr = expr.replace(/\$/g, '$$$$');
       return str.replace(new RegExp(dataVar, 'g'), expr + '$1');
-    }
-
-
-    var EMPTY_ELSE = /else\s*{\s*}/g
-      , EMPTY_IF_NO_ELSE = /if\s*\([^)]+\)\s*\{\s*\}(?!\s*else)/g
-      , EMPTY_IF_WITH_ELSE = /if\s*\(([^)]+)\)\s*\{\s*\}\s*else(?!\s*if)/g;
-    function cleanUpCode(out) {
-      return out.replace(EMPTY_ELSE, '')
-                .replace(EMPTY_IF_NO_ELSE, '')
-                .replace(EMPTY_IF_WITH_ELSE, 'if (!($1))');
-    }
-
-
-    var ERRORS_REGEXP = /[^v.]errors/g
-      , REMOVE_ERRORS = /var errors = 0;|var vErrors = null;|validate.errors = vErrors;/g
-      , REMOVE_ERRORS_ASYNC = /var errors = 0;|var vErrors = null;/g
-      , RETURN_VALID = 'return errors === 0;'
-      , RETURN_TRUE = 'validate.errors = null; return true;'
-      , RETURN_ASYNC = /if \(errors === 0\) return data;\s*else throw new ValidationError\(vErrors\);/
-      , RETURN_DATA_ASYNC = 'return data;'
-      , ROOTDATA_REGEXP = /[^A-Za-z_$]rootData[^A-Za-z0-9_$]/g
-      , REMOVE_ROOTDATA = /if \(rootData === undefined\) rootData = data;/;
-
-    function finalCleanUpCode(out, async) {
-      var matches = out.match(ERRORS_REGEXP);
-      if (matches && matches.length == 2) {
-        out = async
-              ? out.replace(REMOVE_ERRORS_ASYNC, '')
-                   .replace(RETURN_ASYNC, RETURN_DATA_ASYNC)
-              : out.replace(REMOVE_ERRORS, '')
-                   .replace(RETURN_VALID, RETURN_TRUE);
-      }
-
-      matches = out.match(ROOTDATA_REGEXP);
-      if (!matches || matches.length !== 3) return out;
-      return out.replace(REMOVE_ROOTDATA, '');
     }
 
 
@@ -2244,7 +2281,7 @@
 
     function joinPaths (a, b) {
       if (a == '""') return b;
-      return (a + ' + ' + b).replace(/' \+ '/g, '');
+      return (a + ' + ' + b).replace(/([^\\])' \+ '/g, '$1');
     }
 
 
@@ -2866,47 +2903,39 @@
           var $schemaPath = it.schemaPath + '.type',
             $errSchemaPath = it.errSchemaPath + '/type',
             $method = $typeIsArray ? 'checkDataTypes' : 'checkDataType';
-          out += ' if (' + (it.util[$method]($typeSchema, $data, true)) + ') { ';
+          out += ' if (' + (it.util[$method]($typeSchema, $data, it.opts.strictNumbers, true)) + ') { ';
           if ($coerceToTypes) {
             var $dataType = 'dataType' + $lvl,
               $coerced = 'coerced' + $lvl;
-            out += ' var ' + ($dataType) + ' = typeof ' + ($data) + '; ';
+            out += ' var ' + ($dataType) + ' = typeof ' + ($data) + '; var ' + ($coerced) + ' = undefined; ';
             if (it.opts.coerceTypes == 'array') {
-              out += ' if (' + ($dataType) + ' == \'object\' && Array.isArray(' + ($data) + ')) ' + ($dataType) + ' = \'array\'; ';
+              out += ' if (' + ($dataType) + ' == \'object\' && Array.isArray(' + ($data) + ') && ' + ($data) + '.length == 1) { ' + ($data) + ' = ' + ($data) + '[0]; ' + ($dataType) + ' = typeof ' + ($data) + '; if (' + (it.util.checkDataType(it.schema.type, $data, it.opts.strictNumbers)) + ') ' + ($coerced) + ' = ' + ($data) + '; } ';
             }
-            out += ' var ' + ($coerced) + ' = undefined; ';
-            var $bracesCoercion = '';
+            out += ' if (' + ($coerced) + ' !== undefined) ; ';
             var arr1 = $coerceToTypes;
             if (arr1) {
               var $type, $i = -1,
                 l1 = arr1.length - 1;
               while ($i < l1) {
                 $type = arr1[$i += 1];
-                if ($i) {
-                  out += ' if (' + ($coerced) + ' === undefined) { ';
-                  $bracesCoercion += '}';
-                }
-                if (it.opts.coerceTypes == 'array' && $type != 'array') {
-                  out += ' if (' + ($dataType) + ' == \'array\' && ' + ($data) + '.length == 1) { ' + ($coerced) + ' = ' + ($data) + ' = ' + ($data) + '[0]; ' + ($dataType) + ' = typeof ' + ($data) + ';  } ';
-                }
                 if ($type == 'string') {
-                  out += ' if (' + ($dataType) + ' == \'number\' || ' + ($dataType) + ' == \'boolean\') ' + ($coerced) + ' = \'\' + ' + ($data) + '; else if (' + ($data) + ' === null) ' + ($coerced) + ' = \'\'; ';
+                  out += ' else if (' + ($dataType) + ' == \'number\' || ' + ($dataType) + ' == \'boolean\') ' + ($coerced) + ' = \'\' + ' + ($data) + '; else if (' + ($data) + ' === null) ' + ($coerced) + ' = \'\'; ';
                 } else if ($type == 'number' || $type == 'integer') {
-                  out += ' if (' + ($dataType) + ' == \'boolean\' || ' + ($data) + ' === null || (' + ($dataType) + ' == \'string\' && ' + ($data) + ' && ' + ($data) + ' == +' + ($data) + ' ';
+                  out += ' else if (' + ($dataType) + ' == \'boolean\' || ' + ($data) + ' === null || (' + ($dataType) + ' == \'string\' && ' + ($data) + ' && ' + ($data) + ' == +' + ($data) + ' ';
                   if ($type == 'integer') {
                     out += ' && !(' + ($data) + ' % 1)';
                   }
                   out += ')) ' + ($coerced) + ' = +' + ($data) + '; ';
                 } else if ($type == 'boolean') {
-                  out += ' if (' + ($data) + ' === \'false\' || ' + ($data) + ' === 0 || ' + ($data) + ' === null) ' + ($coerced) + ' = false; else if (' + ($data) + ' === \'true\' || ' + ($data) + ' === 1) ' + ($coerced) + ' = true; ';
+                  out += ' else if (' + ($data) + ' === \'false\' || ' + ($data) + ' === 0 || ' + ($data) + ' === null) ' + ($coerced) + ' = false; else if (' + ($data) + ' === \'true\' || ' + ($data) + ' === 1) ' + ($coerced) + ' = true; ';
                 } else if ($type == 'null') {
-                  out += ' if (' + ($data) + ' === \'\' || ' + ($data) + ' === 0 || ' + ($data) + ' === false) ' + ($coerced) + ' = null; ';
+                  out += ' else if (' + ($data) + ' === \'\' || ' + ($data) + ' === 0 || ' + ($data) + ' === false) ' + ($coerced) + ' = null; ';
                 } else if (it.opts.coerceTypes == 'array' && $type == 'array') {
-                  out += ' if (' + ($dataType) + ' == \'string\' || ' + ($dataType) + ' == \'number\' || ' + ($dataType) + ' == \'boolean\' || ' + ($data) + ' == null) ' + ($coerced) + ' = [' + ($data) + ']; ';
+                  out += ' else if (' + ($dataType) + ' == \'string\' || ' + ($dataType) + ' == \'number\' || ' + ($dataType) + ' == \'boolean\' || ' + ($data) + ' == null) ' + ($coerced) + ' = [' + ($data) + ']; ';
                 }
               }
             }
-            out += ' ' + ($bracesCoercion) + ' if (' + ($coerced) + ' === undefined) {   ';
+            out += ' else {   ';
             var $$outStack = $$outStack || [];
             $$outStack.push(out);
             out = ''; /* istanbul ignore else */
@@ -2946,7 +2975,7 @@
             } else {
               out += ' var err = ' + (__err) + ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
             }
-            out += ' } else {  ';
+            out += ' } if (' + ($coerced) + ' !== undefined) {  ';
             var $parentData = $dataLvl ? 'data' + (($dataLvl - 1) || '') : 'parentData',
               $parentDataProperty = $dataLvl ? it.dataPathArr[$dataLvl] : 'parentDataProperty';
             out += ' ' + ($data) + ' = ' + ($coerced) + '; ';
@@ -3019,7 +3048,7 @@
             $rulesGroup = arr2[i2 += 1];
             if ($shouldUseGroup($rulesGroup)) {
               if ($rulesGroup.type) {
-                out += ' if (' + (it.util.checkDataType($rulesGroup.type, $data)) + ') { ';
+                out += ' if (' + (it.util.checkDataType($rulesGroup.type, $data, it.opts.strictNumbers)) + ') { ';
               }
               if (it.opts.useDefaults) {
                 if ($rulesGroup.type == 'object' && it.schema.properties) {
@@ -3187,10 +3216,6 @@
       } else {
         out += ' var ' + ($valid) + ' = errors === errs_' + ($lvl) + ';';
       }
-      out = it.util.cleanUpCode(out);
-      if ($top) {
-        out = it.util.finalCleanUpCode(out, $async);
-      }
 
       function $shouldUseGroup($rulesGroup) {
         var rules = $rulesGroup.rules;
@@ -3316,7 +3341,7 @@
                        + vars(defaults, defaultCode) + vars(customRules, customRuleCode)
                        + sourceCode;
 
-        if (opts.processCode) sourceCode = opts.processCode(sourceCode);
+        if (opts.processCode) sourceCode = opts.processCode(sourceCode, _schema);
         // console.log('\n\n\n *** \n', JSON.stringify(sourceCode));
         var validate$1;
         try {
@@ -3919,7 +3944,6 @@
           out += ' ' + ($closingBraces.slice(0, -1)) + ' ';
         }
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -3988,7 +4012,6 @@
         if (it.opts.allErrors) {
           out += ' } ';
         }
-        out = it.util.cleanUpCode(out);
       } else {
         if ($breakOnError) {
           out += ' if (true) { ';
@@ -4141,7 +4164,6 @@
       if (it.opts.allErrors) {
         out += ' } ';
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -4163,6 +4185,7 @@
         $propertyDeps = {},
         $ownProperties = it.opts.ownProperties;
       for ($property in $schema) {
+        if ($property == '__proto__') continue;
         var $sch = $schema[$property];
         var $deps = Array.isArray($sch) ? $propertyDeps : $schemaDeps;
         $deps[$property] = $sch;
@@ -4309,7 +4332,6 @@
       if ($breakOnError) {
         out += '   ' + ($closingBraces) + ' if (' + ($errs) + ' == errors) {';
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -4620,7 +4642,6 @@
         if ($breakOnError) {
           out += ' else { ';
         }
-        out = it.util.cleanUpCode(out);
       } else {
         if ($breakOnError) {
           out += ' if (true) { ';
@@ -4766,7 +4787,6 @@
       if ($breakOnError) {
         out += ' ' + ($closingBraces) + ' if (' + ($errs) + ' == errors) {';
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -4795,6 +4815,12 @@
         $op = $isMax ? '<' : '>',
         $notOp = $isMax ? '>' : '<',
         $errorKeyword = undefined;
+      if (!($isData || typeof $schema == 'number' || $schema === undefined)) {
+        throw new Error($keyword + ' must be number');
+      }
+      if (!($isDataExcl || $schemaExcl === undefined || typeof $schemaExcl == 'number' || typeof $schemaExcl == 'boolean')) {
+        throw new Error($exclusiveKeyword + ' must be number or boolean');
+      }
       if ($isDataExcl) {
         var $schemaValueExcl = it.util.getData($schemaExcl.$data, $dataLvl, it.dataPathArr),
           $exclusive = 'exclusive' + $lvl,
@@ -4945,6 +4971,9 @@
       } else {
         $schemaValue = $schema;
       }
+      if (!($isData || typeof $schema == 'number')) {
+        throw new Error($keyword + ' must be number');
+      }
       var $op = $keyword == 'maxItems' ? '>' : '<';
       out += 'if ( ';
       if ($isData) {
@@ -5021,6 +5050,9 @@
         $schemaValue = 'schema' + $lvl;
       } else {
         $schemaValue = $schema;
+      }
+      if (!($isData || typeof $schema == 'number')) {
+        throw new Error($keyword + ' must be number');
       }
       var $op = $keyword == 'maxLength' ? '>' : '<';
       out += 'if ( ';
@@ -5104,6 +5136,9 @@
       } else {
         $schemaValue = $schema;
       }
+      if (!($isData || typeof $schema == 'number')) {
+        throw new Error($keyword + ' must be number');
+      }
       var $op = $keyword == 'maxProperties' ? '>' : '<';
       out += 'if ( ';
       if ($isData) {
@@ -5179,6 +5214,9 @@
         $schemaValue = 'schema' + $lvl;
       } else {
         $schemaValue = $schema;
+      }
+      if (!($isData || typeof $schema == 'number')) {
+        throw new Error($keyword + ' must be number');
       }
       out += 'var division' + ($lvl) + ';if (';
       if ($isData) {
@@ -5491,9 +5529,9 @@
         $dataNxt = $it.dataLevel = it.dataLevel + 1,
         $nextData = 'data' + $dataNxt,
         $dataProperties = 'dataProperties' + $lvl;
-      var $schemaKeys = Object.keys($schema || {}),
+      var $schemaKeys = Object.keys($schema || {}).filter(notProto),
         $pProperties = it.schema.patternProperties || {},
-        $pPropertyKeys = Object.keys($pProperties),
+        $pPropertyKeys = Object.keys($pProperties).filter(notProto),
         $aProperties = it.schema.additionalProperties,
         $someProperties = $schemaKeys.length || $pPropertyKeys.length,
         $noAdditional = $aProperties === false,
@@ -5503,7 +5541,13 @@
         $ownProperties = it.opts.ownProperties,
         $currentBaseId = it.baseId;
       var $required = it.schema.required;
-      if ($required && !(it.opts.$data && $required.$data) && $required.length < it.opts.loopRequired) var $requiredHash = it.util.toHash($required);
+      if ($required && !(it.opts.$data && $required.$data) && $required.length < it.opts.loopRequired) {
+        var $requiredHash = it.util.toHash($required);
+      }
+
+      function notProto(p) {
+        return p !== '__proto__';
+      }
       out += 'var ' + ($errs) + ' = errors;var ' + ($nextValid) + ' = true;';
       if ($ownProperties) {
         out += ' var ' + ($dataProperties) + ' = undefined;';
@@ -5798,7 +5842,6 @@
       if ($breakOnError) {
         out += ' ' + ($closingBraces) + ' if (' + ($errs) + ' == errors) {';
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -5880,7 +5923,6 @@
       if ($breakOnError) {
         out += ' ' + ($closingBraces) + ' if (' + ($errs) + ' == errors) {';
       }
-      out = it.util.cleanUpCode(out);
       return out;
     };
 
@@ -6180,7 +6222,7 @@
         } else {
           out += ' var itemIndices = {}, item; for (;i--;) { var item = ' + ($data) + '[i]; ';
           var $method = 'checkDataType' + ($typeIsArray ? 's' : '');
-          out += ' if (' + (it.util[$method]($itemType, 'item', true)) + ') continue; ';
+          out += ' if (' + (it.util[$method]($itemType, 'item', it.opts.strictNumbers, true)) + ') continue; ';
           if ($typeIsArray) {
             out += ' if (typeof item == \'string\') item = \'"\' + item; ';
           }
@@ -6370,7 +6412,7 @@
             keywords[key] = {
               anyOf: [
                 schema,
-                { $ref: 'https://raw.githubusercontent.com/epoberezkin/ajv/master/lib/refs/data.json#' }
+                { $ref: 'https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#' }
               ]
             };
           }
@@ -6963,7 +7005,7 @@
     var require$$2 = getCjsExportFromNamespace(jsonSchemaDraft07$1);
 
     var definition_schema = {
-      $id: 'https://github.com/epoberezkin/ajv/blob/master/lib/definition_schema.js',
+      $id: 'https://github.com/ajv-validator/ajv/blob/master/lib/definition_schema.js',
       definitions: {
         simpleTypes: require$$2.definitions.simpleTypes
       },
@@ -7042,7 +7084,7 @@
             metaSchema = {
               anyOf: [
                 metaSchema,
-                { '$ref': 'https://raw.githubusercontent.com/epoberezkin/ajv/master/lib/refs/data.json#' }
+                { '$ref': 'https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#' }
               ]
             };
           }
@@ -7142,7 +7184,7 @@
     }
 
     var $schema$1 = "http://json-schema.org/draft-07/schema#";
-    var $id$1 = "https://raw.githubusercontent.com/epoberezkin/ajv/master/lib/refs/data.json#";
+    var $id$1 = "https://raw.githubusercontent.com/ajv-validator/ajv/master/lib/refs/data.json#";
     var description = "Meta-schema for $data reference (JSON Schema extension proposal)";
     var type$1 = "object";
     var required$1 = [
@@ -7689,7 +7731,7 @@
 
       if (ajv$1.errors !== null && ajv$1.errors !== undefined) {
         // find lowest error and show that
-        const lowestLength = Infinity;
+        let lowestLength = Infinity;
         let lowestErrors = [];
         ajv$1.errors.forEach(error => {
           const pathLength = error.schemaPath.split('/').length;
@@ -7698,6 +7740,7 @@
             lowestErrors.push(formatError(error));
           } else if (pathLength < lowestLength) {
             lowestErrors = [formatError(error)];
+            lowestLength = pathLength;
           }
         });
         return lowestErrors;
@@ -7706,7 +7749,7 @@
       }
     };
 
-    const formatError = error => `Ainsley${error.dataPath}${error.message === undefined ? '' : ` ${error.message}`}`; // prettier-ignore
+    const formatError = error => `Ainsley${error.dataPath} is invalid`; // prettier-ignore
 
 
     const schema = {
@@ -7843,7 +7886,7 @@
       } catch (err) {
         try {
           const url = new URL(ref);
-          const response = await fetch(url.href);
+          const response = await fetch__default['default'](url.href);
           let body = await response.text();
 
           try {
@@ -7886,6 +7929,7 @@
     /*
     TODOs:
     - mangle variable names
+    - if a variable is an empty object, remove all uses of it
     - check if strings can be turnt into numbers
     */
 
@@ -8031,7 +8075,7 @@
       try {
         return csso.minify(rawCSS).css;
       } catch (error) {
-        if (csso && csso.minify) {
+        if (csso === null || csso === void 0 ? void 0 : csso.minify) {
           console.error(error);
         } else {
           console.warn('`csso` - an optional dependency - is not installed; inline CSS will not be minified');

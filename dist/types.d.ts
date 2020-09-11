@@ -2,7 +2,10 @@ export interface AinsleyAbbreviationMapObject {
     [propName: string]: string | number;
 }
 export declare type AinsleyRule = [string, Array<[string, string | number]>];
-export declare type AinsleyPropertyOrPlaceholder = [string, AinsleyAbbreviationMapObject];
+export declare type AinsleyPropertyOrPlaceholder = [
+    string,
+    AinsleyAbbreviationMapObject
+];
 export declare type AinsleyLeaf = AinsleyRule | AinsleyPropertyOrPlaceholder | string;
 export declare type AinsleyChild = Ainsley | AinsleyLeaf;
 export declare type AinsleyVariation = Array<[string, string]>;
