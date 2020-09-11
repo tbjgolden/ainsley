@@ -100,18 +100,18 @@ The browser receives this small object and recursively compiles it into CSS.
 This compresses it massively.
 
 ```none
-+==============+ +-------+-----------+------------+
-|    Example   | |    JS | JS-to-CSS | Equivalent |
-+==============+ | input |  compiler | CSS output |
-+----------------+-------+-----------+------------+
-| minified bytes | 5,094 |     2,751 |    786,877 |
-+---+------------+-------+-----------+------------+
-|  gzipped bytes | 2,146 |     1,317 |    139,296 |
-+---+------------+-------+-----------+------------+
-|   brotli bytes | 1,821 |     1,163 |     23,747 |
-+---+------------+-------+-----------+------------+
-    | TOTAL SENT |             2,984 |     23,747 |
-    +------------+-------------------+------------+
+                 ┌───────┬───────────┬────────────┐
+                 │    JS │ JS-to-CSS │ Equivalent │
+                 │ input │  compiler │ CSS output │
+┌────────────────┼───────┼───────────┼────────────┤
+│ minified bytes │ 5,094 │     2,751 │    786,877 │
+└┬───────────────┼───────┼───────────┼────────────┤
+ │ gzipped bytes │ 2,146 │     1,317 │    139,296 │
+ └┬──────────────┼───────┼───────────┼────────────┤
+  │ brotli bytes │ 1,821 │     1,163 │     23,747 │
+  └─┬────────────┼───────┴───────────┼────────────┤
+    │ TOTAL SENT │             2,984 │     23,747 │
+    └────────────┴───────────────────┴────────────┘
 
 (using default settings with ainsley-config-starter)
 ```
@@ -147,8 +147,6 @@ This compresses it massively.
 # Roadmap
 
 - [ ] mangle variables in minify
-- [ ] get repl to somehow import configs
-- [ ] create some configs
 - [ ] improved syntax for same val as key
 - [ ] make it possible to use variables in properties
 - [ ] make it possible to use properties as variables
