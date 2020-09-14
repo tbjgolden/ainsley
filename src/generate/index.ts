@@ -18,18 +18,17 @@ type AinsleyAST = AinsleyASTNode[]
 export const ITERATOR_REGEX = '\\{[a-zA-Z0-9_-]+\\}'
 export const DEFAULT_OPTIONS: AinsleyGenerateOptions = {
   addVariationToSelector: (selector, variationAbbreviation) =>
-    variationAbbreviation + '-' + selector,
+    variationAbbreviation + '_' + selector,
   addPropertyToSelector: (selector, propertyAbbreviation) =>
-    selector + propertyAbbreviation.toLowerCase(),
+    selector + '-' + propertyAbbreviation,
   addValueToSelector: (selector, valueAbbreviation) =>
-    selector + valueAbbreviation.toUpperCase(),
+    selector + '-' + valueAbbreviation,
   abbreviateProperty: (propertyName) => [
     propertyName
       .split('-')
-      .map((word) => word.charAt(0))
-      .join('')
-      .toLowerCase(),
-    propertyName.toLowerCase()
+      .map((word) => word[0])
+      .join(''),
+    propertyName
   ]
 }
 

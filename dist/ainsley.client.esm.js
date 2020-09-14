@@ -14,10 +14,10 @@ const combinations = mods => {
 
 const ITERATOR_REGEX = '\\{[a-zA-Z0-9_-]+\\}';
 const DEFAULT_OPTIONS = {
-  addVariationToSelector: (selector, variationAbbreviation) => variationAbbreviation + '-' + selector,
-  addPropertyToSelector: (selector, propertyAbbreviation) => selector + propertyAbbreviation.toLowerCase(),
-  addValueToSelector: (selector, valueAbbreviation) => selector + valueAbbreviation.toUpperCase(),
-  abbreviateProperty: propertyName => [propertyName.split('-').map(word => word.charAt(0)).join('').toLowerCase(), propertyName.toLowerCase()]
+  addVariationToSelector: (selector, variationAbbreviation) => variationAbbreviation + '_' + selector,
+  addPropertyToSelector: (selector, propertyAbbreviation) => selector + '-' + propertyAbbreviation,
+  addValueToSelector: (selector, valueAbbreviation) => selector + '-' + valueAbbreviation,
+  abbreviateProperty: propertyName => [propertyName.split('-').map(word => word[0]).join(''), propertyName]
 };
 const ITERATOR_SEARCH = new RegExp(ITERATOR_REGEX, 'g');
 const generate = (ainsley, options = {}) => {
