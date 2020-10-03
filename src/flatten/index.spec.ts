@@ -55,6 +55,45 @@ describe('flatten', () => {
     })
   })
 
+  test('grandchild config to test recursion', async () => {
+    const start: Ainsley = {
+      children: [
+        {
+          children: ['$missing-config']
+        },
+        {
+          variables: {
+            unused: {
+              var: 'iable'
+            }
+          }
+        },
+        'body{margin:0}'
+      ]
+    }
+
+    expect(
+      await flatten(
+        start,
+        async (ref: string): Promise<AinsleyChild> => `/* $${ref} */`
+      )
+    ).toEqual({
+      children: [
+        {
+          children: ['/* $missing-config */']
+        },
+        {
+          variables: {
+            unused: {
+              var: 'iable'
+            }
+          }
+        },
+        'body{margin:0}'
+      ]
+    })
+  })
+
   test('default getConfig', async () => {
     expect(
       await flatten({

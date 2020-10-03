@@ -4,6 +4,25 @@ import { Ainsley, AinsleyChild, AinsleyChildren } from '../types'
 import { validate } from '../validate'
 import { isObject } from '../utils'
 
+type CfgLoc = [AinsleyChildren, number]
+const findConfigs = (ainsley: Ainsley): CfgLoc[] => {
+  const cfgLocs: CfgLoc[] = []
+  if (ainsley.children) {
+    const children = ainsley.children
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i]
+      if (typeof child === 'string') {
+        if (child[0] === '$') {
+          cfgLocs.push([children, i])
+        }
+      } else if (!Array.isArray(child)) {
+        cfgLocs.push(...findConfigs(child))
+      }
+    }
+  }
+  return cfgLocs
+}
+
 /* config with external dependencies => flat config */
 export const flatten = async (
   configWithPlugins: Ainsley,
@@ -17,23 +36,14 @@ export const flatten = async (
 
   // deep clone as we'll be mutating
   const flatAinsley = copy(configWithPlugins)
+  const allConfigs = findConfigs(flatAinsley)
 
-  // check for configs and inject them
-  if (Array.isArray(flatAinsley.children)) {
-    await Promise.all(
-      flatAinsley.children.map(
-        async (child: AinsleyChild, i: number): Promise<AinsleyChild> => {
-          if (typeof child === 'string') {
-            if (child.startsWith('$')) {
-              const flatConfig = await getFlatConfig(child.slice(1), getConfig)
-              ;(flatAinsley.children as AinsleyChildren)[i] = flatConfig
-            }
-          }
-          return child
-        }
-      )
-    )
-  }
+  await Promise.all(
+    allConfigs.map(async ([children, index]) => {
+      const child = children[index] as string
+      children[index] = await getFlatConfig(child.slice(1), getConfig)
+    })
+  )
 
   return flatAinsley
 }
