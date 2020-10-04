@@ -82,6 +82,7 @@ export const minify = (ainsley: Ainsley): Ainsley => {
 
         if (node.parent !== undefined) {
           // remove default variables that are already defined
+
           if (mod === 1 && node.parent.definedVariables.has(base)) {
             delete thisVars[variable]
             return
@@ -97,10 +98,12 @@ export const minify = (ainsley: Ainsley): Ainsley => {
 
             const parentVars = node.parent.ainsley
               .variables as AinsleyVariableMap
-            const parentVariable =
-              Object.keys(parentVars).find((variable) =>
-                variable.endsWith(base)
-              ) ?? buildVariable(mod, '')
+
+            let parentVariable = buildVariable(mod, '')
+            if (`?${base}` in parentVars) parentVariable = `?${base}`
+            if (base in parentVars) parentVariable = base
+            if (`+${base}` in parentVars) parentVariable = `+${base}`
+
             const [parentMod] = parseVariable(parentVariable)
             const parentValue = parentVars[parentVariable] ?? {}
             const childValue = thisVars[variable]
@@ -113,10 +116,29 @@ export const minify = (ainsley: Ainsley): Ainsley => {
             // remove old child variable
             delete thisVars[variable]
 
-            // add new variable to parent
-            parentVars[buildVariable(mod === 2 ? parentMod : 0, base)] = {
-              ...(mod === 2 ? parentValue : {}),
-              ...childValue
+            if (mod === 1) {
+              if (parentVariable === '?') {
+                // when variable is not in parent, just lift it
+                parentVars[buildVariable(1, base)] = childValue
+              } else {
+                // if it is in parent, the parent should just stay as it was
+                parentVars[parentVariable] = parentValue
+              }
+            } else {
+              // add new variable to parent
+              parentVars[
+                buildVariable(
+                  mod === 2
+                    ? parentMod
+                    : mod === 1 && parentVariable === '?'
+                    ? 1
+                    : 0,
+                  base
+                )
+              ] = {
+                ...(mod === 2 ? parentValue : {}),
+                ...childValue
+              }
             }
           }
         }

@@ -36,10 +36,9 @@ export const flatten = async (
 
   // deep clone as we'll be mutating
   const flatAinsley = copy(configWithPlugins)
-  const allConfigs = findConfigs(flatAinsley)
 
   await Promise.all(
-    allConfigs.map(async ([children, index]) => {
+    findConfigs(flatAinsley).map(async ([children, index]) => {
       const child = children[index] as string
       children[index] = await getFlatConfig(child.slice(1), getConfig)
     })

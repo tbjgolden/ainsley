@@ -305,4 +305,74 @@ describe('minify', () => {
       children: ['body{margin:0}']
     })
   })
+
+  test('example seven', () => {
+    const start: Ainsley = {
+      children: [
+        {
+          children: [
+            {
+              children: [['c', [['color', '{colors}']]]],
+              variables: {
+                '?colors': {
+                  B05: 'hsla(0,0%,0%,05%)',
+                  B10: 'hsla(0,0%,0%,10%)',
+                  B20: 'hsla(0,0%,0%,20%)',
+                  B40: 'hsla(0,0%,0%,40%)',
+                  B80: 'hsla(0,0%,0%,80%)',
+                  W05: 'hsla(0,0%,100%,05%)',
+                  W10: 'hsla(0,0%,100%,10%)',
+                  W20: 'hsla(0,0%,100%,20%)',
+                  W40: 'hsla(0,0%,100%,40%)',
+                  W80: 'hsla(0,0%,100%,80%)'
+                }
+              }
+            }
+          ]
+        }
+      ],
+      variables: {
+        colors: {
+          b: 'black',
+          w: 'white',
+          t: 'transparent',
+          g90: 'hsl(0,0%,90%)',
+          g80: 'hsl(0,0%,80%)',
+          g70: 'hsl(0,0%,70%)',
+          g60: 'hsl(0,0%,60%)',
+          g50: 'hsl(0,0%,50%)',
+          g40: 'hsl(0,0%,40%)',
+          g30: 'hsl(0,0%,30%)',
+          g20: 'hsl(0,0%,20%)',
+          g10: 'hsl(0,0%,10%)',
+          p: '#43A5FF',
+          pl: '#F2F9FE',
+          pd: '#2F4066'
+        }
+      }
+    }
+
+    expect(minify(start)).toEqual({
+      children: [['c', [['color', '{colors}']]]],
+      variables: {
+        colors: {
+          b: 'black',
+          w: 'white',
+          t: 'transparent',
+          g90: 'hsl(0,0%,90%)',
+          g80: 'hsl(0,0%,80%)',
+          g70: 'hsl(0,0%,70%)',
+          g60: 'hsl(0,0%,60%)',
+          g50: 'hsl(0,0%,50%)',
+          g40: 'hsl(0,0%,40%)',
+          g30: 'hsl(0,0%,30%)',
+          g20: 'hsl(0,0%,20%)',
+          g10: 'hsl(0,0%,10%)',
+          p: '#43A5FF',
+          pl: '#F2F9FE',
+          pd: '#2F4066'
+        }
+      }
+    })
+  })
 })

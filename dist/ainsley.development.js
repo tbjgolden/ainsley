@@ -7854,7 +7854,29 @@ ainsley | MIT License | @tbjgolden | tom.bio
       "type": "object"
     };
 
+    const findConfigs = ainsley => {
+      const cfgLocs = [];
+
+      if (ainsley.children) {
+        const children = ainsley.children;
+
+        for (let i = 0; i < children.length; i++) {
+          const child = children[i];
+
+          if (typeof child === 'string') {
+            if (child[0] === '$') {
+              cfgLocs.push([children, i]);
+            }
+          } else if (!Array.isArray(child)) {
+            cfgLocs.push(...findConfigs(child));
+          }
+        }
+      }
+
+      return cfgLocs;
+    };
     /* config with external dependencies => flat config */
+
 
     const flatten = async (configWithPlugins, getConfig = defaultGetConfig) => {
       // validate
@@ -7865,21 +7887,11 @@ ainsley | MIT License | @tbjgolden | tom.bio
       } // deep clone as we'll be mutating
 
 
-      const flatAinsley = copy(configWithPlugins); // check for configs and inject them
-
-      if (Array.isArray(flatAinsley.children)) {
-        await Promise.all(flatAinsley.children.map(async (child, i) => {
-          if (typeof child === 'string') {
-            if (child.startsWith('$')) {
-              const flatConfig = await getFlatConfig(child.slice(1), getConfig);
-              flatAinsley.children[i] = flatConfig;
-            }
-          }
-
-          return child;
-        }));
-      }
-
+      const flatAinsley = copy(configWithPlugins);
+      await Promise.all(findConfigs(flatAinsley).map(async ([children, index]) => {
+        const child = children[index];
+        children[index] = await getFlatConfig(child.slice(1), getConfig);
+      }));
       return flatAinsley;
     };
     const defaultGetConfig = async ref => {
@@ -7987,7 +7999,7 @@ ainsley | MIT License | @tbjgolden | tom.bio
 
         const thisVars = (_b = node.ainsley.variables) !== null && _b !== void 0 ? _b : {};
         Object.keys(thisVars).forEach(variable => {
-          var _a, _b, _c;
+          var _a, _b;
 
           const [mod, base] = parseVariable$1(variable);
 
@@ -8009,9 +8021,12 @@ ainsley | MIT License | @tbjgolden | tom.bio
                 }
 
                 const parentVars = node.parent.ainsley.variables;
-                const parentVariable = (_b = Object.keys(parentVars).find(variable => variable.endsWith(base))) !== null && _b !== void 0 ? _b : buildVariable(mod, '');
+                let parentVariable = buildVariable(mod, '');
+                if (`?${base}` in parentVars) parentVariable = `?${base}`;
+                if (base in parentVars) parentVariable = base;
+                if (`+${base}` in parentVars) parentVariable = `+${base}`;
                 const [parentMod] = parseVariable$1(parentVariable);
-                const parentValue = (_c = parentVars[parentVariable]) !== null && _c !== void 0 ? _c : {};
+                const parentValue = (_b = parentVars[parentVariable]) !== null && _b !== void 0 ? _b : {};
                 const childValue = thisVars[variable]; // remove old parent variable
 
                 if (parentVars[parentVariable] !== undefined) {
@@ -8019,11 +8034,22 @@ ainsley | MIT License | @tbjgolden | tom.bio
                 } // remove old child variable
 
 
-                delete thisVars[variable]; // add new variable to parent
+                delete thisVars[variable];
 
-                parentVars[buildVariable(mod === 2 ? parentMod : 0, base)] = { ...(mod === 2 ? parentValue : {}),
-                  ...childValue
-                };
+                if (mod === 1) {
+                  if (parentVariable === '?') {
+                    // when variable is not in parent, just lift it
+                    parentVars[buildVariable(1, base)] = childValue;
+                  } else {
+                    // if it is in parent, the parent should just stay as it was
+                    parentVars[parentVariable] = parentValue;
+                  }
+                } else {
+                  // add new variable to parent
+                  parentVars[buildVariable(mod === 2 ? parentMod : mod === 1 && parentVariable === '?' ? 1 : 0, base)] = { ...(mod === 2 ? parentValue : {}),
+                    ...childValue
+                  };
+                }
               }
             }
           } else {
