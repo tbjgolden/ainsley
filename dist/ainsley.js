@@ -71,6 +71,7 @@ const generate = (ainsley, options = {}) => {
 const generateFromAst = (ainsleyRules, options) => {
   let css = '';
   let lastVariations = [];
+  let atNestCount = 0;
 
   for (let i = 0; i < ainsleyRules.length; i++) {
     const ainsleyRule = ainsleyRules[i];
@@ -84,18 +85,28 @@ const generateFromAst = (ainsleyRules, options) => {
 
     for (const variationToClose of variationsToClose) {
       const variationInstruction = variationToClose[1];
-      if (variationInstruction.startsWith('@')) css += '}';
+
+      if (variationInstruction.startsWith('@')) {
+        css += '}';
+        atNestCount--;
+      }
     }
 
     const variationsToOpen = ainsleyRule.$variations.slice(firstChange);
 
     for (const variationToOpen of variationsToOpen) {
       const variationInstruction = variationToOpen[1];
-      if (variationInstruction.startsWith('@')) css += `${variationInstruction}{`;
+
+      if (variationInstruction.startsWith('@')) {
+        css += `${variationInstruction}{`;
+        atNestCount++;
+      }
     }
 
     if (typeof ainsleyRule.$content === 'string') {
-      css += ainsleyRule.$content;
+      if (atNestCount === 0) {
+        css += ainsleyRule.$content;
+      }
     } else {
       let selector = ainsleyRule.$content[0];
       let selectorSuffix = '';
