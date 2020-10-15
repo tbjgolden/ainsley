@@ -494,11 +494,14 @@ describe('compiler', () => {
           w: 'white'
         }
       },
-      variations: [[['n', '@supports(-webkit-box-orient:vertical)']]]
+      variations: [
+        [['n', '@supports(-webkit-box-orient:vertical)']],
+        [['o', ':hover']]
+      ]
     })
 
     const expected =
-      '.example-css{color:red}.c-b{color:black}.c-w{color:white}@supports(-webkit-box-orient:vertical){.n_c-b{color:black}.n_c-w{color:white}}'
+      '.example-css{color:red}.c-b{color:black}.c-w{color:white}@supports(-webkit-box-orient:vertical){.n_c-b{color:black}.n_c-w{color:white}}.o_c-b:hover{color:black}.o_c-w:hover{color:white}@supports(-webkit-box-orient:vertical){.o_n_c-b:hover{color:black}.o_n_c-w:hover{color:white}}'
 
     expect(css).toEqual(expected)
   })
