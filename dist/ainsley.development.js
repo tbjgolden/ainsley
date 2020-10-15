@@ -48,7 +48,6 @@ ainsley | MIT License | @tbjgolden | tom.bio
     const generateFromAst = (ainsleyRules, options) => {
       let css = '';
       let lastVariations = [];
-      let atNestCount = 0;
 
       for (let i = 0; i < ainsleyRules.length; i++) {
         const ainsleyRule = ainsleyRules[i];
@@ -65,7 +64,6 @@ ainsley | MIT License | @tbjgolden | tom.bio
 
           if (variationInstruction.startsWith('@')) {
             css += '}';
-            atNestCount--;
           }
         }
 
@@ -76,12 +74,11 @@ ainsley | MIT License | @tbjgolden | tom.bio
 
           if (variationInstruction.startsWith('@')) {
             css += `${variationInstruction}{`;
-            atNestCount++;
           }
         }
 
         if (typeof ainsleyRule.$content === 'string') {
-          if (atNestCount === 0) {
+          if (ainsleyRule.$variations.every(pair => pair[1] === '')) {
             css += ainsleyRule.$content;
           }
         } else {

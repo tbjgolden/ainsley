@@ -71,7 +71,6 @@ const generate = (ainsley, options = {}) => {
 const generateFromAst = (ainsleyRules, options) => {
   let css = '';
   let lastVariations = [];
-  let atNestCount = 0;
 
   for (let i = 0; i < ainsleyRules.length; i++) {
     const ainsleyRule = ainsleyRules[i];
@@ -88,7 +87,6 @@ const generateFromAst = (ainsleyRules, options) => {
 
       if (variationInstruction.startsWith('@')) {
         css += '}';
-        atNestCount--;
       }
     }
 
@@ -99,12 +97,11 @@ const generateFromAst = (ainsleyRules, options) => {
 
       if (variationInstruction.startsWith('@')) {
         css += `${variationInstruction}{`;
-        atNestCount++;
       }
     }
 
     if (typeof ainsleyRule.$content === 'string') {
-      if (atNestCount === 0) {
+      if (ainsleyRule.$variations.every(pair => pair[1] === '')) {
         css += ainsleyRule.$content;
       }
     } else {
