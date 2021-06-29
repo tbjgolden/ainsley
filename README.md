@@ -12,7 +12,8 @@
 > declares what is included in their stylesheet - a possibility.
 >
 > As those objectives require a big reshuffle, this repo is being archived and work continues here:
-> https://github.com/tbjgolden/funk-css
+> 
+> #### [funk-css](https://github.com/tbjgolden/funk-css)
 
 ---
 
