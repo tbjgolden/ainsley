@@ -9,10 +9,10 @@
 > Additionally, it's not reasonable to assume developers will be happy to write styles in JSON.
 >
 > The most exciting part of these results is that this makes "declarative CSS" - where the developer themself
-> declares what is included in their stylesheet.
+> declares what is included in their stylesheet - a possibility.
 >
-> As the objectives of this are different to that of this project, this repo is being archived and work
-> continues here: https://github.com/tbjgolden/funk-css
+> As those objectives require a big reshuffle, this repo is being archived and work continues here:
+> https://github.com/tbjgolden/funk-css
 
 ---
 
